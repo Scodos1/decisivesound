@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log In — Decisive Sound NG</title>
+<meta name="robots" content="noindex">
+{% include "booking/portal/_head.html" %}
+</head>
+<body>
+
+{% include "booking/portal/_nav.html" %}
+
+<section class="page-hero">
+  <div class="wrap">
+    <div class="eyebrow eyebrow-primary">Customer Portal</div>
+    <h1>Welcome back</h1>
+    <p>Log in to view your bookings, payments, quotations and invoices.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    {% include "booking/portal/_messages.html" %}
+    <div class="glass-card card-pad auth-card">
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        <div class="form-grid" style="grid-template-columns:1fr;">
+          <div class="field">
+            <label for="id_username">Email</label>
+            {{ form.username }}
+          </div>
+          <div class="field">
+            <label for="id_password">Password</label>
+            {{ form.password }}
+          </div>
+        </div>
+        {% if form.errors %}<div style="color:#ff8080;font-size:13px;margin-top:10px;">That email/password combination doesn't match our records.</div>{% endif %}
+        <button type="submit" class="btn btn-solid" style="width:100%;margin-top:22px;">Log In</button>
+      </form>
+      <p class="helper-link"><a href="{% url 'portal_password_reset' %}">Forgot your password?</a></p>
+      <p class="helper-link">New here? <a href="{% url 'portal_register' %}">Create an account</a></p>
+    </div>
+  </div>
+</section>
+
+{% include "booking/portal/_footer.html" %}
+</body>
+</html>

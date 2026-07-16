@@ -1,0 +1,483 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Online — Decisive Sound NG</title>
+<meta name="description" content="Get an instant quote and book Decisive Sound NG's silent disco headsets online for your wedding, birthday, corporate event or party across Nigeria.">
+<link rel="canonical" href="https://decisivesoundng.com/booking.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Book Online — Decisive Sound NG">
+<meta property="og:description" content="Instant quote calculator and online booking form for silent disco headset rental in Nigeria.">
+<meta property="og:image" content="images/hero.jpg">
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/variables.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/animations.css' %}">
+<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+<link rel="stylesheet" href="{% static 'css/enhance.css' %}">
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" id="main-nav">
+  <div class="nav-inner">
+    <a href="{% url 'home' %}" class="logo">
+      <img src="{% static 'images/logo-badge.png' %}" alt="Decisive Sound NG" class="logo-mark" onerror="this.style.display='none'"><span class="eq" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      Decisive Sound NG
+    </a>
+    <nav class="nav-links">
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'services' %}">Services</a>
+      <a href="{% url 'equipment' %}">Equipment</a>
+      <a href="{% url 'gallery' %}">Gallery</a>
+      <a href="{% url 'contact' %}">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="{% url 'booking' %}" class="btn btn-solid btn-sm">Book Now</a>
+    </div>
+    <button class="nav-toggle" aria-label="Menu"><span class="material-symbols-outlined">menu</span></button>
+  </div>
+  <div class="nav-mobile">
+    <a href="{% url 'home' %}">Home</a><a href="{% url 'about' %}">About</a>
+    <a href="{% url 'services' %}">Services</a><a href="{% url 'equipment' %}">Equipment</a>
+    <a href="{% url 'gallery' %}">Gallery</a><a href="{% url 'contact' %}">Contact</a>
+    <a href="{% url 'booking' %}" class="btn btn-solid btn-sm" style="width:fit-content;">Book Now</a>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-hero-rings" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="eyebrow eyebrow-primary">Book online</div>
+    <h1>Get your instant quote, then lock in your date</h1>
+    <p>Use the calculator for a ballpark figure, then submit the booking form with your date — we reply within the hour.</p>
+  </div>
+</section>
+
+<!-- LIVE QUOTE CALCULATOR -->
+<section id="calculator">
+  <div class="wrap" style="max-width:800px;">
+    <div class="section-head center mx-auto reveal">
+      <div class="eyebrow eyebrow-tertiary">Live quote calculator</div>
+      <h2>Get an Instant Estimate</h2>
+      <p>Headset rental is a flat fee — no hourly charges. Adjust your headset count and location below to see your full cost breakdown instantly.</p>
+    </div>
+
+    <div class="glass-card reveal card-pad">
+
+      <!-- Inputs: headsets + location only (no hours — pricing is flat) -->
+      <div class="calc-inputs-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:end;">
+        <div class="calc-field">
+          <label>Number of Headsets</label>
+          <div class="calc-line">
+            <span class="material-symbols-outlined calc-icon">headphones</span>
+            <input type="range" id="calc-headsets" min="10" max="1000" value="100" step="5">
+          </div>
+          <div class="calc-value"><span id="calc-headsets-value">100</span> headsets</div>
+        </div>
+        <div class="calc-field">
+          <label>State</label>
+          <div class="calc-line" style="gap:8px;">
+            <span class="material-symbols-outlined calc-icon">location_on</span>
+            <select id="calc-location">
+              <option value="Abia">Abia</option>
+              <option value="Adamawa">Adamawa</option>
+              <option value="Akwa Ibom">Akwa Ibom</option>
+              <option value="Anambra">Anambra</option>
+              <option value="Bauchi">Bauchi</option>
+              <option value="Bayelsa">Bayelsa</option>
+              <option value="Benue">Benue</option>
+              <option value="Borno">Borno</option>
+              <option value="Cross River">Cross River</option>
+              <option value="Delta">Delta</option>
+              <option value="Ebonyi">Ebonyi</option>
+              <option value="Edo">Edo</option>
+              <option value="Ekiti">Ekiti</option>
+              <option value="Enugu">Enugu</option>
+              <option value="FCT (Abuja)">FCT (Abuja)</option>
+              <option value="Gombe">Gombe</option>
+              <option value="Imo">Imo</option>
+              <option value="Jigawa">Jigawa</option>
+              <option value="Kaduna">Kaduna</option>
+              <option value="Kano">Kano</option>
+              <option value="Katsina">Katsina</option>
+              <option value="Kebbi">Kebbi</option>
+              <option value="Kogi">Kogi</option>
+              <option value="Kwara">Kwara</option>
+              <option value="Lagos" selected>Lagos</option>
+              <option value="Nasarawa">Nasarawa</option>
+              <option value="Niger">Niger</option>
+              <option value="Ogun">Ogun</option>
+              <option value="Ondo">Ondo</option>
+              <option value="Osun">Osun</option>
+              <option value="Oyo">Oyo</option>
+              <option value="Plateau">Plateau</option>
+              <option value="Rivers">Rivers</option>
+              <option value="Sokoto">Sokoto</option>
+              <option value="Taraba">Taraba</option>
+              <option value="Yobe">Yobe</option>
+              <option value="Zamfara">Zamfara</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pricing note banner -->
+      <div style="margin-top:32px;padding:14px 18px;border-radius:var(--r-md);background:rgba(240,168,217,0.08);border:1px solid rgba(240,168,217,0.2);display:flex;align-items:flex-start;gap:12px;">
+        <span class="material-symbols-outlined" style="color:var(--primary);font-size:20px !important;flex-shrink:0;margin-top:1px;">info</span>
+        <p style="font-size:13.5px;color:var(--on-surface-variant);line-height:1.6;margin:0;">
+          The rental fee is <strong style="color:var(--on-surface);">₦1,500 per headset</strong> — a flat rate with no hourly increase regardless of how long the event runs.
+          A <strong style="color:var(--on-surface);">₦80,000 service charge</strong> covers transport and logistics (may be adjusted based on actual fares on the event day), and a <strong style="color:var(--on-surface);">₦80,000 caution fee</strong> is a separate upfront deposit — fully refundable within 48 hours after the event, provided no headset or transmitter is missing or damaged.
+          Pricing shown is for a standard booking within Lagos state; pricing outside Lagos state differs — <a href="{% url 'terms' %}" style="color:var(--primary);text-decoration:underline;">see our full terms</a> or message us for a custom quote.
+        </p>
+      </div>
+
+      <!-- Custom quote note (shown for non-Lagos locations) -->
+      <div id="custom-quote-note" style="display:none;margin-top:16px;padding:14px 18px;border-radius:var(--r-md);background:rgba(255,203,77,0.08);border:1px solid rgba(255,203,77,0.25);align-items:flex-start;gap:12px;">
+        <span class="material-symbols-outlined" style="color:var(--tertiary);font-size:20px !important;flex-shrink:0;margin-top:1px;">local_shipping</span>
+        <p style="font-size:13.5px;color:var(--on-surface-variant);line-height:1.6;margin:0;">
+          Pricing outside Lagos state is different from the standard rate shown here. Message us on WhatsApp with your headset count and location for an accurate custom quote.
+        </p>
+      </div>
+
+      <!-- Breakdown table -->
+      <div style="margin-top:32px;display:flex;flex-direction:column;gap:0;border-radius:var(--r-md);overflow:hidden;border:1px solid var(--line);">
+
+        <!-- Headset rental row -->
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:rgba(255,255,255,0.03);">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="material-symbols-outlined" style="color:var(--secondary);font-size:18px !important;">headphones</span>
+            <div>
+              <div style="font-family:var(--font-heading);font-weight:600;font-size:14.5px;">Headset Rental</div>
+              <div style="font-size:12px;color:var(--on-surface-variant);margin-top:2px;"><span id="calc-headsets-value2">100</span> headsets × ₦1,500 (flat rate)</div>
+            </div>
+          </div>
+          <div style="font-family:var(--font-heading);font-weight:700;font-size:16px;color:var(--secondary);" id="line-rental">₦150,000</div>
+        </div>
+
+        <!-- Caution fee row -->
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:rgba(255,255,255,0.02);border-top:1px solid var(--line);">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="material-symbols-outlined" style="color:var(--primary);font-size:18px !important;">security</span>
+            <div>
+              <div style="font-family:var(--font-heading);font-weight:600;font-size:14.5px;">Caution Fee <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;background:rgba(240,168,217,0.15);color:var(--primary);margin-left:6px;vertical-align:middle;">Paid Upfront</span></div>
+              <div style="font-size:12px;color:var(--on-surface-variant);margin-top:2px;">Refundable within 48hrs if equipment is returned complete &amp; undamaged</div>
+            </div>
+          </div>
+          <div style="font-family:var(--font-heading);font-weight:700;font-size:16px;color:var(--primary);" id="line-caution">₦80,000</div>
+        </div>
+
+        <!-- Service charge row -->
+        <div id="line-travel-row" style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:rgba(255,255,255,0.02);border-top:1px solid var(--line);">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="material-symbols-outlined" style="color:var(--tertiary);font-size:18px !important;">local_shipping</span>
+            <div>
+              <div style="font-family:var(--font-heading);font-weight:600;font-size:14.5px;">Service Charge</div>
+              <div style="font-size:12px;color:var(--on-surface-variant);margin-top:2px;">Transport &amp; logistics · adjusted based on actual fares outside Lagos</div>
+            </div>
+          </div>
+          <div style="font-family:var(--font-heading);font-weight:700;font-size:16px;color:var(--tertiary);" id="line-travel">₦80,000</div>
+        </div>
+
+        <!-- Total row -->
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:20px;background:linear-gradient(135deg,rgba(139,42,130,0.12),rgba(232,130,60,0.08));border-top:1px solid var(--line);">
+          <div style="font-family:var(--font-heading);font-weight:700;font-size:16px;">
+            Total Due to Confirm Booking
+          </div>
+          <div style="font-family:var(--font-heading);font-weight:800;font-size:24px;background:linear-gradient(135deg,var(--primary),var(--secondary-container));-webkit-background-clip:text;background-clip:text;color:transparent;" id="line-total">₦310,000</div>
+        </div>
+      </div>
+
+      <!-- Disclaimer + CTA -->
+      <div style="margin-top:20px;text-align:center;">
+        <p style="font-size:12.5px;color:var(--on-surface-variant);line-height:1.6;">
+          Final pricing is confirmed when your booking is processed. Travel surcharges apply outside Lagos.
+        </p>
+        <div style="margin-top:24px;">
+          <a href="{% url 'booking' %}#booking" class="btn btn-primary btn-lg">
+            <span class="material-symbols-outlined" style="font-size:18px !important;">event</span> Proceed to Booking
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING FORM -->
+<section id="booking">
+  <div class="wrap" style="max-width:800px;">
+    <div class="section-head center mx-auto reveal">
+      <div class="eyebrow eyebrow-primary">Booking form</div>
+      <h2>Tell us about your event</h2>
+      <p>Submitting opens a pre-filled WhatsApp message to our team — we reply within the hour.</p>
+    </div>
+
+    <div class="glass-card reveal card-pad">
+      <form id="booking-form" method="POST"
+       action="{% url 'booking' %}"
+       class="form-grid">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+        <div class="field full" style="color:#ff6b6b;font-size:13px;">{{ form.non_field_errors.0 }}</div>
+        {% endif %}
+        <div class="field">
+          <label for="f-name">Full Name</label>
+          <input id="f-name" name="name" type="text" required placeholder="Your full name" value="{{ form.name.value|default_if_none:'' }}">
+          {% if form.name.errors %}<div style="color:#ff6b6b;font-size:12px;margin-top:6px;">{{ form.name.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="field">
+          <label for="f-phone">Phone Number</label>
+          <input id="f-phone" name="phone" type="tel" required placeholder="+234 803 380 7067" value="{{ form.phone.value|default_if_none:'' }}">
+          {% if form.phone.errors %}<div style="color:#ff6b6b;font-size:12px;margin-top:6px;">{{ form.phone.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="field">
+    <label for="f-email">Email Address</label>
+    <input id="f-email"
+           name="email"
+           type="email"
+           placeholder="you@example.com"
+           value="{{ form.email.value|default_if_none:'' }}">
+    {% if form.email.errors %}<div style="color:#ff6b6b;font-size:12px;margin-top:6px;">{{ form.email.errors.0 }}</div>{% endif %}
+</div>
+        <div class="field">
+          <label for="f-type">Event Type</label>
+          <select id="f-type" name="event_type">
+            <option value="Wedding" {% if form.event_type.value == "Wedding" %}selected{% endif %}>Wedding</option>
+            <option value="Birthday Party" {% if form.event_type.value == "Birthday Party" %}selected{% endif %}>Birthday Party</option>
+            <option value="Corporate Event" {% if form.event_type.value == "Corporate Event" %}selected{% endif %}>Corporate Event</option>
+            <option value="Beach Party" {% if form.event_type.value == "Beach Party" %}selected{% endif %}>Beach Party</option>
+            <option value="School Event" {% if form.event_type.value == "School Event" %}selected{% endif %}>School Event</option>
+            <option value="Church Event" {% if form.event_type.value == "Church Event" %}selected{% endif %}>Church Event</option>
+            <option value="Festival" {% if form.event_type.value == "Festival" %}selected{% endif %}>Festival</option>
+            <option value="Private Party" {% if form.event_type.value == "Private Party" %}selected{% endif %}>Private Party</option>
+          </select>
+          {% if form.event_type.errors %}<div style="color:#ff6b6b;font-size:12px;margin-top:6px;">{{ form.event_type.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="field">
+          <label for="f-date">Event Date</label>
+          <input id="f-date" name="event_date" type="date" required value="{{ form.event_date.value|default_if_none:'' }}">
+          {% if form.event_date.errors %}<div style="color:#ff6b6b;font-size:12px;margin-top:6px;">{{ form.event_date.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="field">
+          <label for="f-state">State</label>
+          <select id="f-state" name="state" required data-selected="{{ form.state.value|default_if_none:'' }}">
+            <option value="" {% if not form.state.value %}selected{% endif %} disabled>— Select state —</option>
+            <option value="Abia">Abia</option>
+            <option value="Adamawa">Adamawa</option>
+            <option value="Akwa Ibom">Akwa Ibom</option>
+            <option value="Anambra">Anambra</option>
+            <option value="Bauchi">Bauchi</option>
+            <option value="Bayelsa">Bayelsa</option>
+            <option value="Benue">Benue</option>
+            <option value="Borno">Borno</option>
+            <option value="Cross River">Cross River</option>
+            <option value="Delta">Delta</option>
+            <option value="Ebonyi">Ebonyi</option>
+            <option value="Edo">Edo</option>
+            <option value="Ekiti">Ekiti</option>
+            <option value="Enugu">Enugu</option>
+            <option value="FCT (Abuja)">FCT (Abuja)</option>
+            <option value="Gombe">Gombe</option>
+            <option value="Imo">Imo</option>
+            <option value="Jigawa">Jigawa</option>
+            <option value="Kaduna">Kaduna</option>
+            <option value="Kano">Kano</option>
+            <option value="Katsina">Katsina</option>
+            <option value="Kebbi">Kebbi</option>
+            <option value="Kogi">Kogi</option>
+            <option value="Kwara">Kwara</option>
+            <option value="Lagos">Lagos</option>
+            <option value="Nasarawa">Nasarawa</option>
+            <option value="Niger">Niger</option>
+            <option value="Ogun">Ogun</option>
+            <option value="Ondo">Ondo</option>
+            <option value="Osun">Osun</option>
+            <option value="Oyo">Oyo</option>
+            <option value="Plateau">Plateau</option>
+            <option value="Rivers">Rivers</option>
+            <option value="Sokoto">Sokoto</option>
+            <option value="Taraba">Taraba</option>
+            <option value="Yobe">Yobe</option>
+            <option value="Zamfara">Zamfara</option>
+          </select>
+          <!-- Live service-charge indicator -->
+          <div id="state-charge-note" style="
+            display:none; margin-top:10px; padding:11px 14px;
+            border-radius:var(--r-md); font-size:13px; line-height:1.5;
+            align-items:flex-start; gap:10px;
+          ">
+            <span class="material-symbols-outlined" id="state-charge-icon" style="font-size:16px !important; flex-shrink:0; margin-top:1px;"></span>
+            <span id="state-charge-text"></span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-venue">Venue Location</label>
+          <input id="f-venue" name="address" type="text" required placeholder="e.g. Ikorodu, Lekki, Yaba…" value="{{ form.address.value|default_if_none:'' }}">
+          <span style="font-size:12px;color:var(--on-surface-variant);margin-top:6px;display:block;">Specific city, town or area within the selected state</span>
+          {% if form.address.errors %}<div style="color:#ff6b6b;font-size:12px;margin-top:6px;">{{ form.address.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="field">
+          <label for="f-guests">Number of Guests</label>
+          <input id="f-guests" name="guests" type="number" min="1" required placeholder="e.g. 200" value="{{ form.guests.value|default_if_none:'' }}">
+          {% if form.guests.errors %}<div style="color:#ff6b6b;font-size:12px;margin-top:6px;">{{ form.guests.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="field">
+          <label for="f-headsets">Headsets Needed</label>
+          <input id="f-headsets" name="headsets" type="number" min="1" required placeholder="e.g. 200" value="{{ form.headsets.value|default_if_none:'' }}">
+          {% if form.headsets.errors %}<div style="color:#ff6b6b;font-size:12px;margin-top:6px;">{{ form.headsets.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="field">
+          <label for="f-duration">Duration (hours)</label>
+          <input id="f-duration" name="duration" type="number" min="1" required placeholder="e.g. 6" value="{{ form.duration.value|default_if_none:'' }}">
+          {% if form.duration.errors %}<div style="color:#ff6b6b;font-size:12px;margin-top:6px;">{{ form.duration.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="field full">
+          <label for="f-notes">Additional Notes</label>
+          <textarea id="f-notes" name="message" rows="4" placeholder="Any special requirements, DJ info, venue details...">{{ form.message.value|default_if_none:'' }}</textarea>
+        </div>
+        <div class="field full" style="text-align:center;">
+          <button type="submit" class="btn btn-wa" style="margin:0 auto;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.438 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            Send Booking
+          </button>
+          <p style="font-size:12.5px;color:var(--on-surface-variant);margin-top:16px;line-height:1.6;">
+            By submitting, you agree to our <a href="{% url 'terms' %}" style="color:var(--primary);text-decoration:underline;">Terms &amp; Conditions</a>, including registration requirements and refund policy.
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="alt-bg">
+  <div class="wrap" style="max-width:720px;">
+    <div class="section-head center mx-auto reveal">
+      <div class="eyebrow eyebrow-tertiary">FAQ</div>
+      <h2>Questions? We Have Answers.</h2>
+    </div>
+    <div class="faq-list reveal">
+      <details class="faq-details glass-card">
+        <summary>How many channels are available?<span class="material-symbols-outlined chev">expand_more</span></summary>
+        <div class="faq-body">Every rental includes 3 independent audio channels. Each channel broadcasts a different DJ or playlist — guests switch between them with one button press. LEDs glow red, green or blue to show which channel they're on.</div>
+      </details>
+      <details class="faq-details glass-card">
+        <summary>Do I need to be in Lagos?<span class="material-symbols-outlined chev">expand_more</span></summary>
+        <div class="faq-body">Not at all. We deliver nationwide. Standard pricing (shown in the calculator above) applies within Lagos state and includes an ₦80,000 service charge for transport and logistics. Outside Lagos state, pricing is different — message us with your headset count and location for a custom quote.</div>
+      </details>
+      <details class="faq-details glass-card">
+        <summary>What happens if equipment is damaged?<span class="material-symbols-outlined chev">expand_more</span></summary>
+        <div class="faq-body">Minor wear and tear is expected and covered. A lost or damaged headset or transmitter incurs a penalty of ₦67,000 per item, deducted from your refundable caution fee. The remaining deposit is sent back within 48 hours once all equipment is confirmed complete and undamaged.</div>
+      </details>
+      <details class="faq-details glass-card">
+        <summary>How far in advance do I need to book?<span class="material-symbols-outlined chev">expand_more</span></summary>
+        <div class="faq-body">We recommend at least 7 days for standard events and 14+ days for large festivals (150+ headsets). That said, message us even for last-minute requests — if the fleet is available, we'll make it work.</div>
+      </details>
+      <details class="faq-details glass-card">
+        <summary>Is setup and a technician included?<span class="material-symbols-outlined chev">expand_more</span></summary>
+        <div class="faq-body">Always. Delivery, on-site setup, a dedicated technician for the full event duration and post-event pickup are included in every single rental. There is no separate setup fee.</div>
+      </details>
+      <details class="faq-details glass-card">
+        <summary>Can I connect my own DJ or playlist?<span class="material-symbols-outlined chev">expand_more</span></summary>
+        <div class="faq-body">Yes — our transmitters accept any standard DJ mixer, laptop or phone output. Your DJ plugs straight into one of the three channels. We can also help configure the audio routing before the event starts.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section>
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <h2>Ready to start the pulse?</h2>
+      <p>Lock in your date today and give your guests an experience they'll never forget.</p>
+      <div class="cta-row">
+        <a href="{% url 'booking' %}#booking" class="btn btn-surface">Fill Booking Form</a>
+        <a href="#" data-wa-link class="btn btn-wa">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.438 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          Chat on WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot-grid">
+    <div class="foot-col">
+      <div class="foot-logo">
+        <img src="{% static 'images/logo-badge.png' %}" alt="Decisive Sound NG" class="logo-mark">Decisive Sound NG
+      </div>
+      <p class="brand-desc" style="color:var(--on-surface-variant);font-size:14px;line-height:1.65;">Creating silent memories across Nigeria. Premium audio experiences for events that speak volumes.</p>
+      <div class="social-row">
+        <a href="https://www.instagram.com/decisivesoundng" target="_blank" rel="noopener" aria-label="Instagram" class="social-ig"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="5.5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4.1" stroke="currentColor" stroke-width="1.6"/><circle cx="17.15" cy="6.85" r="1.05" fill="currentColor"/></svg></a>
+        <a href="#" data-wa-link aria-label="WhatsApp" class="social-wa"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.77.47 3.45 1.35 4.95L2 22l5.28-1.38a9.9 9.9 0 0 0 4.76 1.21h.01c5.46 0 9.9-4.45 9.9-9.92 0-2.65-1.03-5.14-2.9-7.01A9.83 9.83 0 0 0 12.04 2zm5.78 14.02c-.24.68-1.4 1.32-1.95 1.4-.5.08-1.12.11-1.81-.11-.42-.13-.95-.31-1.64-.61-2.88-1.25-4.76-4.16-4.9-4.35-.15-.2-1.17-1.55-1.17-2.96 0-1.41.74-2.1 1-2.39.26-.29.58-.36.77-.36.2 0 .39 0 .56.01.18.01.42-.07.65.5.24.58.83 2.02.9 2.17.08.14.13.32.03.51-.1.2-.15.31-.29.48-.15.17-.3.37-.43.5-.15.15-.3.3-.13.59.17.29.75 1.22 1.6 1.98 1.1.98 2.03 1.28 2.32 1.42.29.15.46.13.63-.07.18-.2.73-.85.93-1.14.19-.29.39-.24.65-.15.27.1 1.7.8 1.99.95.29.14.49.21.56.33.08.13.08.7-.16 1.38z"/></svg></a>
+        <a href="https://www.tiktok.com/@decisivesound?_r=1&_t=ZS-97od0ZSG3NM" target="_blank" rel="noopener" aria-label="TikTok" class="social-tt"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16.6 2.02c.32 2.15 1.7 3.63 3.73 3.9v2.79c-1.31.03-2.63-.37-3.73-1.09v6.53c0 3.2-2.6 5.83-5.8 5.83S5 16.35 5 13.15c0-3.19 2.6-5.83 5.8-5.83.28 0 .55.02.82.06v2.93a2.9 2.9 0 1 0 2.11 2.79V2.02h2.87z"/></svg></a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h5>Company</h5>
+      <a href="{% url 'about' %}">About</a><a href="{% url 'services' %}">Services</a>
+      <a href="{% url 'equipment' %}">Equipment</a><a href="{% url 'gallery' %}">Gallery</a><a href="{% url 'contact' %}">Contact</a>
+    </div>
+    <div class="foot-col">
+      <h5>Contact</h5>
+      <span><span class="material-symbols-outlined" style="font-size:15px !important;">call</span> +234 803 380 7067</span>
+      <span><span class="material-symbols-outlined" style="font-size:15px !important;">mail</span> decisivesound8@gmail.com</span>
+      <span><span class="material-symbols-outlined" style="font-size:15px !important;">schedule</span> Mon–Sun, 9am–11pm</span>
+    </div>
+    <div class="foot-col">
+      <h5>Areas</h5>
+      <span>Lagos Island</span><span>Lekki &amp; Ajah</span>
+      <span>Abuja · Port Harcourt</span><span>Nationwide delivery</span>
+    </div>
+    <div class="foot-col">
+      <h5>Legal</h5>
+      <a href="{% url 'terms' %}">Privacy Policy</a><a href="{% url 'terms' %}">Terms of Service</a><a href="{% url 'terms' %}">Rental Agreement</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span data-year>2026</span> Decisive Sound NG. All rights reserved.</span>
+    <div class="foot-status"><span class="status-dot"></span> System Status: Online</div>
+  </div>
+</footer>
+
+<div class="float-stack">
+  <div class="wa-tooltip">💬 Need a quote? Chat instantly.</div>
+  <a href="#" data-wa-link class="wa-float" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.438 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+  </a>
+</div>
+
+<script src="{% static 'js/whatsapp.js' %}"></script>
+<script src="{% static 'js/navbar.js' %}"></script>
+<script src="{% static 'js/scroll.js' %}"></script>
+<script src="{% static 'js/booking.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+  // Re-select the state the user picked if the form is being re-rendered
+  // after a Django validation error (native <select> can't take a
+  // server-rendered "selected" attribute per-option without a big
+  // template loop, so it's restored here instead).
+  document.addEventListener("DOMContentLoaded", () => {
+    const stateSelect = document.querySelector("#f-state");
+    if (stateSelect && stateSelect.dataset.selected) {
+      stateSelect.value = stateSelect.dataset.selected;
+      stateSelect.dispatchEvent(new Event("change"));
+    }
+  });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r158/three.min.js"></script>
+<script src="{% static 'js/magic-rings.js' %}"></script>
+<script src="{% static 'js/rings-init.js' %}"></script>
+<script src="{% static 'js/enhance.js' %}"></script>
+</body>
+</html>

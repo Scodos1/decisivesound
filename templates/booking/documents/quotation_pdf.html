@@ -1,0 +1,88 @@
+{% load static %}<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  {% include "booking/documents/_pdf_styles.css" %}
+</style>
+</head>
+<body>
+  <table class="head-table">
+    <tr>
+      <td class="logo-cell">
+        <img src="{% static 'images/logo-badge.png' %}" class="logo" />
+        <div class="brand-name">{{ company_name }}</div>
+        <div class="brand-tagline">{{ company_tagline }}</div>
+      </td>
+      <td class="meta-cell">
+        <div class="doc-title">QUOTATION</div>
+        <div class="meta-line"><strong>Quotation #:</strong> {{ booking.quotation_number|default:"—" }}</div>
+        <div class="meta-line"><strong>Booking #:</strong> {{ booking.id }}</div>
+        <div class="meta-line"><strong>Issued:</strong> {{ booking.quotation_generated_at|date:"d M Y"|default:"—" }}</div>
+        <div class="meta-line"><strong>Valid until:</strong> {{ booking.quotation_expiry_date|date:"d M Y"|default:"—" }}</div>
+      </td>
+    </tr>
+  </table>
+
+  <table class="two-col">
+    <tr>
+      <td class="col">
+        <div class="block-label">Prepared For</div>
+        <div class="block-value">
+          {{ booking.name }}<br/>
+          {{ booking.phone }}{% if booking.email %}<br/>{{ booking.email }}{% endif %}
+        </div>
+      </td>
+      <td class="col">
+        <div class="block-label">Event Details</div>
+        <div class="block-value">
+          Event type: {{ booking.event_type }}<br/>
+          Event date: {{ booking.event_date|date:"d M Y" }}<br/>
+          State: {{ booking.state }}<br/>
+          Venue: {{ booking.address }}<br/>
+          Headsets: {{ booking.headsets }}<br/>
+          Duration: {{ booking.duration }} hrs
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <table class="pricing-table">
+    <thead>
+      <tr><th>Description</th><th class="amount">Amount</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Headset rental &mdash; {{ booking.headsets }} unit{{ booking.headsets|pluralize }} &times; {{ rate_per_headset|floatformat:0 }}</td>
+        <td class="amount">&#8358;{{ rental|floatformat:0 }}</td>
+      </tr>
+      <tr>
+        <td>Service charge</td>
+        <td class="amount">{% if service_charge != None %}&#8358;{{ service_charge|floatformat:0 }}{% else %}To be confirmed{% endif %}</td>
+      </tr>
+      <tr>
+        <td>Caution fee (refundable)</td>
+        <td class="amount">&#8358;{{ caution_fee|floatformat:0 }}</td>
+      </tr>
+      <tr>
+        <td>Taxes</td>
+        <td class="amount">{% if tax_amount %}&#8358;{{ tax_amount|floatformat:0 }}{% else %}N/A{% endif %}</td>
+      </tr>
+      <tr class="total-row">
+        <td>Grand Total{% if total == None %} (estimated){% endif %}</td>
+        <td class="amount">{% if total != None %}&#8358;{{ total|floatformat:0 }}{% else %}To be confirmed{% endif %}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="block-label">Payment Instructions</div>
+  <p class="fine-print">{{ payment_instructions }}</p>
+
+  <div class="foot-note">
+    This quotation was issued for booking #{{ booking.id }} and is valid until
+    {{ booking.quotation_expiry_date|date:"d M Y"|default:"the date shown above" }}.
+    {% if not is_lagos %}The service charge and grand total for bookings outside Lagos are confirmed by our team before final invoicing.{% endif %}
+    For questions, contact {{ company_name }} at {{ company_email }}.
+  </div>
+</body>
+</html>

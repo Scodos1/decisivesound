@@ -1,0 +1,24 @@
+{% if img.is_video %}
+<div class="gallery-item gallery-item-video reveal"
+     data-media-type="video"
+     data-src="{{ img.video.url }}"
+     {% if img.video_poster %}data-poster="{{ img.video_poster.url }}"{% endif %}
+     data-caption="{{ img.display_caption }}"
+     tabindex="0" role="button" aria-label="Play video: {{ img.display_caption }}">
+  <video src="{{ img.video.url }}#t=0.1" {% if img.video_poster %}poster="{{ img.video_poster.url }}"{% endif %}
+         muted loop playsinline preload="metadata"></video>
+  <span class="gallery-play-badge" aria-hidden="true">
+    <span class="material-symbols-outlined">play_arrow</span>
+  </span>
+  {% if img.caption %}<span class="gallery-caption">{{ img.caption }}</span>{% endif %}
+</div>
+{% else %}
+<div class="gallery-item reveal"
+     data-media-type="image"
+     data-src="{{ img.image.url }}"
+     data-caption="{{ img.display_caption }}"
+     tabindex="0" role="button" aria-label="View photo: {{ img.display_caption }}">
+  <img src="{{ img.image.url }}" alt="{{ img.display_caption }}" loading="lazy">
+  {% if img.caption %}<span class="gallery-caption">{{ img.caption }}</span>{% endif %}
+</div>
+{% endif %}

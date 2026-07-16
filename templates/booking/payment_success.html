@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Successful — Decisive Sound NG</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/variables.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/animations.css' %}">
+<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+<link rel="stylesheet" href="{% static 'css/enhance.css' %}">
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" id="main-nav">
+  <div class="nav-inner">
+    <a href="{% url 'home' %}" class="logo">
+      <img src="{% static 'images/logo-badge.png' %}" alt="Decisive Sound NG" class="logo-mark" onerror="this.style.display='none'"><span class="eq" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      Decisive Sound NG
+    </a>
+    <nav class="nav-links">
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'services' %}">Services</a>
+      <a href="{% url 'equipment' %}">Equipment</a>
+      <a href="{% url 'gallery' %}">Gallery</a>
+      <a href="{% url 'contact' %}">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="{% url 'booking' %}" class="btn btn-solid btn-sm">Book Now</a>
+    </div>
+    <button class="nav-toggle" aria-label="Menu"><span class="material-symbols-outlined">menu</span></button>
+  </div>
+  <div class="nav-mobile">
+    <a href="{% url 'home' %}">Home</a><a href="{% url 'about' %}">About</a>
+    <a href="{% url 'services' %}">Services</a><a href="{% url 'equipment' %}">Equipment</a>
+    <a href="{% url 'gallery' %}">Gallery</a><a href="{% url 'contact' %}">Contact</a>
+    <a href="{% url 'booking' %}" class="btn btn-solid btn-sm" style="width:fit-content;">Book Now</a>
+  </div>
+</header>
+
+<!-- SUCCESS -->
+<section id="payment-success" style="padding-top:160px;padding-bottom:120px;">
+  <div class="wrap" style="max-width:560px;">
+    <div class="glass-card card-pad" style="text-align:center;">
+      <div class="check material-symbols-outlined" style="font-size:56px !important;color:var(--tertiary);">check_circle</div>
+      <h1 style="font-family:var(--font-heading);font-size:26px;margin:14px 0 10px;">Payment received, {{ booking.name }}!</h1>
+      <p style="color:var(--on-surface-variant);font-size:15px;max-width:420px;margin:0 auto;line-height:1.6;">
+        Thanks — we've received your payment for
+        <strong style="color:var(--on-surface);">{{ booking.event_type }}</strong> on
+        <strong style="color:var(--on-surface);">{{ booking.event_date }}</strong>.
+      </p>
+
+      {% if transaction %}
+        <div style="margin-top:26px;text-align:left;background:rgba(255,255,255,0.04);border-radius:12px;padding:18px 20px;font-size:13.5px;line-height:2;">
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--on-surface-variant);">Amount paid</span><strong>₦{{ transaction.amount|floatformat:0 }}</strong></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--on-surface-variant);">Type</span><strong>{{ transaction.get_payment_type_display }}</strong></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--on-surface-variant);">Reference</span><strong>{{ transaction.reference }}</strong></div>
+        </div>
+      {% endif %}
+
+      <p style="color:var(--on-surface-variant);font-size:13px;margin-top:22px;">
+        A receipt has been sent to your email. Our team will be in touch with next steps.
+      </p>
+
+      <div style="margin-top:24px;">
+        <a href="{% url 'home' %}" class="btn btn-outline btn-sm">Back to homepage</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot-grid">
+    <div class="foot-col">
+      <div class="foot-logo">
+        <img src="{% static 'images/logo-badge.png' %}" alt="Decisive Sound NG" class="logo-mark">Decisive Sound NG
+      </div>
+      <p class="brand-desc" style="color:var(--on-surface-variant);font-size:14px;line-height:1.65;">Creating silent memories across Nigeria. Premium audio experiences for events that speak volumes.</p>
+    </div>
+    <div class="foot-col">
+      <h5>Company</h5>
+      <a href="{% url 'about' %}">About</a><a href="{% url 'services' %}">Services</a>
+      <a href="{% url 'equipment' %}">Equipment</a><a href="{% url 'gallery' %}">Gallery</a><a href="{% url 'contact' %}">Contact</a>
+    </div>
+    <div class="foot-col">
+      <h5>Contact</h5>
+      <span><span class="material-symbols-outlined" style="font-size:15px !important;">call</span> +234 803 380 7067</span>
+      <span><span class="material-symbols-outlined" style="font-size:15px !important;">mail</span> decisivesound8@gmail.com</span>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span data-year>2026</span> Decisive Sound NG. All rights reserved.</span>
+  </div>
+</footer>
+
+<script src="{% static 'js/navbar.js' %}"></script>
+</body>
+</html>

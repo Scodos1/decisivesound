@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking #{{ booking.id }} — Decisive Sound NG</title>
+<meta name="robots" content="noindex">
+{% include "booking/portal/_head.html" %}
+<style>
+  .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 10px; }
+  .detail-item .label { font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--on-surface-variant); margin-bottom: 4px; }
+  .detail-item .value { font-size: 15px; font-weight: 500; }
+  .status-pill { font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: 999px; color: #fff; display: inline-block; }
+  .doc-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .doc-row:last-child { border-bottom: none; }
+  .action-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+</style>
+</head>
+<body>
+
+{% include "booking/portal/_nav.html" %}
+
+<section class="page-hero">
+  <div class="wrap">
+    <div class="eyebrow eyebrow-primary"><a href="{% url 'portal_dashboard' %}" style="color:inherit;text-decoration:none;">← My Account</a></div>
+    <h1>Booking #{{ booking.id }} — {{ booking.event_type }}</h1>
+    <p>Submitted {{ booking.created_at|date:"d M Y" }}</p>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="wrap" style="max-width:900px;">
+    {% include "booking/portal/_messages.html" %}
+
+    <div class="glass-card card-pad" style="margin-bottom:22px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;">
+        <div>
+          <span class="status-pill" style="background:{{ status_color }};">{{ booking.status }}</span>
+          <span class="status-pill" style="background:#333;margin-left:8px;">{{ payment_status }}</span>
+        </div>
+        <a href="{{ whatsapp_url }}" target="_blank" rel="noopener" class="btn btn-wa btn-sm">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.438 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+          Contact Support
+        </a>
+      </div>
+
+      <div class="detail-grid">
+        <div class="detail-item"><div class="label">Booking Reference</div><div class="value">#{{ booking.id }}</div></div>
+        <div class="detail-item"><div class="label">Event Type</div><div class="value">{{ booking.event_type }}</div></div>
+        <div class="detail-item"><div class="label">Event Date</div><div class="value">{{ booking.event_date }}</div></div>
+        <div class="detail-item"><div class="label">State</div><div class="value">{{ booking.state }}</div></div>
+        <div class="detail-item"><div class="label">Venue / Address</div><div class="value">{{ booking.address }}</div></div>
+        <div class="detail-item"><div class="label">Headsets Reserved</div><div class="value">{{ booking.headsets }}</div></div>
+        <div class="detail-item"><div class="label">Duration</div><div class="value">{{ booking.duration }} hrs</div></div>
+        <div class="detail-item"><div class="label">Guests</div><div class="value">{{ booking.guests }}</div></div>
+        <div class="detail-item"><div class="label">Amount Paid</div><div class="value">₦{{ booking.amount_paid|floatformat:0 }}</div></div>
+        <div class="detail-item"><div class="label">Estimated Total</div><div class="value">{% if booking.full_price_known %}₦{{ booking.estimated_total|floatformat:0 }}{% else %}To be confirmed{% endif %}</div></div>
+      </div>
+
+    </div>
+
+    <div class="glass-card card-pad" style="margin-bottom:22px;">
+      <h3 style="font-size:15.5px;margin-bottom:6px;">Documents</h3>
+      <div class="doc-row">
+        <div>
+          <div style="font-weight:500;font-size:14.5px;">Quotation</div>
+          <div style="font-size:12.5px;color:var(--on-surface-variant);">
+            {% if booking.quotation_number %}#{{ booking.quotation_number }} · {{ booking.quotation_status }}{% else %}Not yet generated{% endif %}
+          </div>
+        </div>
+        {% if booking.quotation_number %}
+        <a href="{% url 'portal_quotation_pdf' booking.id %}" class="btn btn-outline btn-sm">Download</a>
+        {% else %}
+        <span class="btn btn-outline btn-sm" style="opacity:.4;pointer-events:none;">Not Ready</span>
+        {% endif %}
+      </div>
+      <div class="doc-row">
+        <div>
+          <div style="font-weight:500;font-size:14.5px;">Invoice</div>
+          <div style="font-size:12.5px;color:var(--on-surface-variant);">
+            {% if booking.invoice_number %}#{{ booking.invoice_number }} · {{ booking.invoice_status }}{% else %}Generated automatically once a payment is received{% endif %}
+          </div>
+        </div>
+        {% if booking.invoice_number %}
+        <a href="{% url 'portal_invoice_pdf' booking.id %}" class="btn btn-outline btn-sm">Download</a>
+        {% else %}
+        <span class="btn btn-outline btn-sm" style="opacity:.4;pointer-events:none;">Not Ready</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="glass-card card-pad">
+      <h3 style="font-size:15.5px;margin-bottom:10px;">Cancellation</h3>
+      {% if pending_cancellation %}
+        <p style="font-size:13.5px;color:var(--on-surface-variant);">
+          Your cancellation request from {{ pending_cancellation.requested_at|date:"d M Y" }} is <strong style="color:#e0ac3f;">pending review</strong>. We'll notify you once it's been decided.
+        </p>
+      {% elif can_request_cancellation %}
+        <p style="font-size:13.5px;color:var(--on-surface-variant);margin-bottom:14px;">
+          Need to cancel this booking? Submit a request below - our team will review and confirm.
+        </p>
+        <form method="post" action="{% url 'portal_request_cancellation' booking.id %}">
+          {% csrf_token %}
+          <div class="field">
+            <label for="id_reason">Reason (optional)</label>
+            {{ cancellation_form.reason }}
+          </div>
+          <button type="submit" class="btn btn-outline btn-sm" style="margin-top:12px;" onclick="return confirm('Submit a cancellation request for this booking?');">Request Cancellation</button>
+        </form>
+      {% else %}
+        <p style="font-size:13.5px;color:var(--on-surface-variant);">This booking can no longer be cancelled from the portal.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% include "booking/portal/_footer.html" %}
+</body>
+</html>

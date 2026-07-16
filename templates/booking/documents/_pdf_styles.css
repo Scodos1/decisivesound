@@ -1,0 +1,31 @@
+/* xhtml2pdf only understands a limited CSS2.1-ish subset - no flexbox,
+   no grid, no @media. Keep everything table/block based. */
+@page { size: A4; margin: 2cm 1.8cm; }
+body { font-family: Helvetica, Arial, sans-serif; font-size: 10.5pt; color: #1a1a1a; }
+
+.head-table { width: 100%; border-bottom: 2px solid #1a1a1a; padding-bottom: 12px; margin-bottom: 18px; }
+.logo-cell { width: 60%; vertical-align: top; }
+.meta-cell { width: 40%; vertical-align: top; text-align: right; }
+.logo { height: 42px; margin-bottom: 4px; }
+.brand-name { font-size: 15pt; font-weight: bold; }
+.brand-tagline { font-size: 9pt; color: #666666; }
+.doc-title { font-size: 13pt; font-weight: bold; letter-spacing: 1px; margin-bottom: 6px; }
+.meta-line { font-size: 9.5pt; color: #444444; }
+
+.two-col { width: 100%; margin-bottom: 18px; }
+.col { width: 50%; vertical-align: top; padding-right: 10px; }
+.block-label { font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.5px; color: #666666; margin-bottom: 4px; }
+.block-value { font-size: 10pt; line-height: 1.5; }
+
+.pricing-table { width: 100%; border-collapse: collapse; margin-bottom: 18px; }
+.pricing-table th { text-align: left; font-size: 9pt; text-transform: uppercase; color: #666666; border-bottom: 1px solid #cccccc; padding: 6px 4px; }
+.pricing-table td { padding: 7px 4px; border-bottom: 1px solid #dddddd; font-size: 10pt; }
+.pricing-table .amount { text-align: right; }
+.pricing-table .total-row td { border-top: 2px solid #1a1a1a; border-bottom: none; font-weight: bold; font-size: 11.5pt; padding-top: 10px; }
+
+.status-table { width: 100%; margin-bottom: 18px; }
+.status-table td { padding: 6px 4px; font-size: 10pt; }
+.status-badge { color: #ffffff; padding: 3px 10px; font-size: 9pt; font-weight: bold; }
+
+.fine-print { font-size: 9.5pt; color: #333333; line-height: 1.5; }
+.foot-note { font-size: 8.5pt; color: #777777; border-top: 1px solid #dddddd; padding-top: 10px; margin-top: 14px; }

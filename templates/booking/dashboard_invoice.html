@@ -1,0 +1,173 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice {{ booking.invoice_number|default:"(not generated)" }} — Decisive Sound NG</title>
+<meta name="robots" content="noindex">
+<style>
+  :root { --text:#12151a; --muted:#6b7280; --border:#d8dce2; --accent:#6c4dff; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:#f4f5f7; color:var(--text); font-family:-apple-system,"Segoe UI",Inter,Roboto,sans-serif; padding:32px 16px; }
+  .sheet { max-width:680px; margin:0 auto; background:#fff; border:1px solid var(--border); border-radius:14px; padding:38px 42px; }
+  .no-print { max-width:680px; margin:0 auto 16px; display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap; }
+  .btn {
+    background: var(--accent); border:none; color:#fff; font-size:13.5px; font-weight:600;
+    padding:9px 16px; border-radius:8px; cursor:pointer; text-decoration:none; display:inline-block;
+  }
+  .btn.ghost { background:#fff; border:1px solid var(--border); color:var(--text); }
+  .messages { max-width:680px; margin:0 auto 16px; }
+  .messages li { list-style:none; padding:10px 14px; border-radius:8px; font-size:13.5px; margin-bottom:8px; }
+  .messages .success { background:#e6f6ea; color:#1a7f37; }
+  .messages .error { background:#fdecea; color:#cf222e; }
+  .messages .warning { background:#fff6e0; color:#9a6700; }
+
+  .inv-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:26px; border-bottom:2px solid var(--text); padding-bottom:18px; }
+  .brand { font-size:19px; font-weight:800; }
+  .brand span { color: var(--accent); }
+  .inv-meta { text-align:right; font-size:13px; color:var(--muted); }
+  .inv-meta strong { color:var(--text); font-size:15px; }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:26px; }
+  .block-label { font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin-bottom:6px; }
+  .block-value { font-size:14px; line-height:1.6; }
+
+  table { width:100%; border-collapse:collapse; font-size:13.5px; margin-bottom:22px; }
+  th, td { text-align:left; padding:10px 4px; border-bottom:1px solid var(--border); }
+  th { color:var(--muted); font-weight:600; font-size:11.5px; text-transform:uppercase; }
+  td.amount, th.amount { text-align:right; }
+  tr.total td { border-top:2px solid var(--text); border-bottom:none; font-weight:700; font-size:15px; padding-top:14px; }
+
+  .status-line { display:flex; gap:10px; margin-bottom:26px; flex-wrap:wrap; }
+  .pill { font-size:11.5px; font-weight:700; padding:4px 12px; border-radius:999px; color:#fff; }
+  .foot-note { font-size:12px; color:var(--muted); border-top:1px solid var(--border); padding-top:16px; margin-top:6px; }
+
+  @media print {
+    body { background:#fff; padding:0; }
+    .no-print, .messages { display:none; }
+    .sheet { border:none; border-radius:0; padding:0; max-width:none; }
+  }
+</style>
+</head>
+<body>
+
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}
+</ul>
+{% endif %}
+
+<div class="no-print">
+  <a class="btn ghost" href="{% url 'dashboard_quotation' booking.id %}">View Quotation</a>
+  <a class="btn ghost" href="{% url 'dashboard_calendar' %}">← Back</a>
+  <form method="post" action="{% url 'dashboard_generate_invoice' booking.id %}" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class="btn ghost">{% if booking.invoice_number %}Regenerate{% else %}Generate Invoice{% endif %}</button>
+  </form>
+  {% if booking.email %}
+  <form method="post" action="{% url 'dashboard_email_invoice' booking.id %}" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class="btn ghost">✉️ Email Invoice</button>
+  </form>
+  {% endif %}
+  <a class="btn ghost" href="{% url 'dashboard_invoice_pdf' booking.id %}">⬇️ Download PDF</a>
+  <button class="btn" onclick="window.print();">🖨️ Print</button>
+</div>
+
+<div class="sheet">
+  <div class="inv-head">
+    <div class="brand">🎧 Decisive Sound <span>NG</span></div>
+    <div class="inv-meta">
+      <strong>Invoice {{ booking.invoice_number|default:"(not yet generated)" }}</strong><br>
+      Booking #{{ booking.id }} · Event date: {{ booking.event_date|date:"d M Y" }}<br>
+      Issued: {{ booking.invoice_generated_at|date:"d M Y"|default:"—" }}
+    </div>
+  </div>
+
+  <div class="status-line">
+    <span class="pill" style="background:{{ status_color }};">{{ booking.status }}</span>
+    <span class="pill" style="background:#333;">{{ payment_status_label }}</span>
+    <span class="pill" style="background:#555;">Invoice: {{ booking.invoice_status }}</span>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <div class="block-label">Billed To</div>
+      <div class="block-value">
+        {{ booking.name }}<br>
+        {{ booking.phone }}{% if booking.email %}<br>{{ booking.email }}{% endif %}
+      </div>
+    </div>
+    <div>
+      <div class="block-label">Event Details</div>
+      <div class="block-value">
+        {{ booking.event_type }}<br>
+        {{ booking.state }}<br>
+        {{ booking.address }}<br>
+        {{ booking.headsets }} headset{{ booking.headsets|pluralize }} · {{ booking.duration }} hrs
+      </div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Description</th><th class="amount">Amount</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Headset rental — {{ booking.headsets }} unit{{ booking.headsets|pluralize }} × ₦{{ rate_per_headset|floatformat:0 }}</td>
+        <td class="amount">₦{{ rental|floatformat:0 }}</td>
+      </tr>
+      <tr>
+        <td>Service charge</td>
+        <td class="amount">{% if service_charge != None %}₦{{ service_charge|floatformat:0 }}{% else %}To be confirmed{% endif %}</td>
+      </tr>
+      <tr>
+        <td>Caution fee (refundable)</td>
+        <td class="amount">₦{{ caution_fee|floatformat:0 }}</td>
+      </tr>
+      <tr>
+        <td>Taxes</td>
+        <td class="amount">{% if tax_amount %}₦{{ tax_amount|floatformat:0 }}{% else %}N/A{% endif %}</td>
+      </tr>
+      <tr class="total">
+        <td>Grand Total{% if total == None %} (estimated){% endif %}</td>
+        <td class="amount">{% if total != None %}₦{{ total|floatformat:0 }}{% else %}To be confirmed{% endif %}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table>
+    <thead>
+      <tr><th>Payment Date</th><th>Payment Method</th><th>Payment Reference</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ booking.payment_date|date:"d M Y, H:i"|default:"—" }}</td>
+        <td>{{ booking.payment_method|default:"—" }}</td>
+        <td>{{ booking.payment_reference|default:"—" }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="grid-2" style="margin-bottom:0;">
+    <div>
+      <div class="block-label">Amount Paid</div>
+      <div class="block-value">₦{{ booking.amount_paid|floatformat:0 }}</div>
+    </div>
+    <div>
+      <div class="block-label">Outstanding Balance</div>
+      <div class="block-value">{% if outstanding_balance != None %}₦{{ outstanding_balance|floatformat:0 }}{% else %}To be confirmed{% endif %}</div>
+    </div>
+  </div>
+
+  <div class="foot-note" style="margin-top:22px;">
+    This invoice reflects the payment on file for booking #{{ booking.id }}{% if booking.invoice_generated_at %} as of {{ booking.invoice_generated_at|date:"d M Y, H:i" }}{% endif %}.
+    {% if not is_lagos %}The service charge and grand total for bookings outside Lagos are confirmed by staff before final invoicing.{% endif %}
+    For questions about this invoice, contact Decisive Sound NG directly.
+  </div>
+</div>
+
+</body>
+</html>

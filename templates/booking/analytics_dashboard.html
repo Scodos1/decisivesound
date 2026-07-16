@@ -1,0 +1,459 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytics — Decisive Sound NG Admin</title>
+<meta name="robots" content="noindex">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0e1116;
+    --panel: #161b22;
+    --panel-2: #1c2229;
+    --border: #2a3038;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #6c4dff;
+    --green: #1a7f37;
+    --gold: #b8860b;
+    --blue: #1f6feb;
+    --red: #cf222e;
+    --sidebar-w: 220px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", Inter, Roboto, sans-serif;
+  }
+  a { color: inherit; }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    padding: 22px 16px;
+    overflow-y: auto;
+    z-index: 40;
+    transition: transform .2s ease;
+  }
+  .sidebar-brand { font-weight: 700; font-size: 16px; margin-bottom: 26px; padding-left: 6px; }
+  .sidebar-brand span { color: var(--accent); }
+  .sidebar nav a {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--muted);
+    font-size: 13.5px; font-weight: 500;
+    padding: 10px 10px; border-radius: 8px; margin-bottom: 2px;
+  }
+  .sidebar nav a:hover { background: var(--panel-2); color: var(--text); }
+  .sidebar nav a.active { background: rgba(108,77,255,0.15); color: var(--text); }
+  .sidebar-divider { border-top: 1px solid var(--border); margin: 14px 0; }
+
+  .backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 39; }
+  .content { margin-left: var(--sidebar-w); padding: 28px 26px 80px; }
+  .mobile-topbar { display: none; }
+
+  @media (max-width: 880px) {
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.open { transform: translateX(0); }
+    .content { margin-left: 0; padding: 20px 16px 70px; }
+    .mobile-topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .backdrop.open { display: block; }
+  }
+
+  .hamburger {
+    background: var(--panel); border: 1px solid var(--border); color: var(--text);
+    border-radius: 8px; padding: 8px 11px; font-size: 16px; cursor: pointer;
+  }
+
+  .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 12px; }
+  h1 { font-size: 21px; margin: 0; }
+  .back-link { color: var(--muted); text-decoration: none; font-size: 13.5px; border: 1px solid var(--border); padding: 7px 14px; border-radius: 8px; }
+  .back-link:hover { color: var(--text); border-color: var(--muted); }
+  .live-note { color: var(--muted); font-size: 12px; margin-bottom: 22px; display:flex; align-items:center; gap:6px; }
+  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); display:inline-block; }
+
+  .section-title { font-size: 12.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 26px 0 12px; }
+  .section-title:first-of-type { margin-top: 0; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; }
+  .stat-card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
+  .stat-card .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 8px; }
+  .stat-card .value { font-size: 24px; font-weight: 700; }
+  .stat-card .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .stat-card.accent-red .value { color: #ff8080; }
+  .stat-card.accent-gold .value { color: #e0ac3f; }
+  .stat-card.accent-green .value { color: #6bd48a; }
+  .stat-card.accent-blue .value { color: #5b9dff; }
+
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 22px; }
+  .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+  .chart-box { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+  .chart-box h3 { margin: 0 0 12px; font-size: 13.5px; color: var(--text); font-weight: 600; }
+  .chart-box canvas { max-height: 260px; }
+  .chart-empty { color: var(--muted); font-size: 13px; padding: 40px 0; text-align: center; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th, td { text-align: left; padding: 9px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th { color: var(--muted); font-weight: 500; font-size: 11.5px; text-transform: uppercase; }
+  tr:last-child td { border-bottom: none; }
+  .table-scroll { overflow-x: auto; }
+  .empty { color: var(--muted); font-size: 13.5px; padding: 10px 0; }
+
+  .pill { font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 999px; color: #fff; display: inline-block; }
+  .pill.ongoing { background: var(--gold); }
+  .pill.resolved { background: var(--green); }
+
+  .filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 16px; }
+  .filters input, .filters select { width: 100%; background: var(--panel-2); border: 1px solid var(--border); color: var(--text); border-radius: 8px; padding: 9px 10px; font-size: 13px; }
+  .filters label { font-size: 11.5px; color: var(--muted); display:block; margin-bottom: 4px; }
+
+  .export-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+  .btn-small { background: var(--accent); border: none; color: #fff; font-size: 13px; font-weight: 600; padding: 9px 16px; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; }
+  .btn-small.ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+  .btn-small:hover { opacity: .9; }
+
+  .date-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .date-chip { background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 12.5px; }
+  .date-chip.conflict { border-color: rgba(207,34,34,.5); color: #ff8080; }
+</style>
+</head>
+<body>
+
+<div class="backdrop" id="backdrop"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">🎧 Decisive Sound <span>NG</span></div>
+  <nav>
+    <a href="{% url 'admin_dashboard' %}">📊 Dashboard</a>
+    <a href="{% url 'analytics_dashboard' %}" class="active">📈 Analytics</a>
+    <a href="{% url 'admin:booking_booking_changelist' %}">📋 All Bookings (Admin)</a>
+    <a href="{% url 'dashboard_calendar' %}">🗓️ Calendar</a>
+    <a href="{% url 'admin:booking_equipmentinventory_changelist' %}">📦 Inventory</a>
+    <a href="{% url 'dashboard_send_email' %}">✉️ Send Email</a>
+    <a href="{% url 'dashboard_report' %}">⬇️ Export Report</a>
+    <div class="sidebar-divider"></div>
+    <a href="{% url 'booking' %}">➕ New Booking</a>
+    <a href="{% url 'home' %}">🌐 View Site</a>
+    <a href="{% url 'admin:logout' %}">🚪 Log Out</a>
+  </nav>
+</aside>
+
+<div class="content">
+
+  <div class="mobile-topbar">
+    <button class="hamburger" id="hamburger" aria-label="Open menu">☰</button>
+    <strong>Analytics</strong>
+  </div>
+
+  <div class="top-bar">
+    <h1>📈 Analytics &amp; Reporting</h1>
+    <a class="back-link" href="{% url 'admin_dashboard' %}">← Business Dashboard</a>
+  </div>
+  <div class="live-note"><span class="live-dot" id="liveDot"></span> <span id="liveNote">Live — refreshes automatically every 30s</span></div>
+
+  <div class="section-title">Key Performance Indicators</div>
+  <div class="stat-grid" id="kpiGrid">
+    <div class="stat-card"><div class="label">Total Bookings</div><div class="value" data-kpi="total_bookings">{{ kpis.total_bookings }}</div></div>
+    <div class="stat-card accent-green"><div class="label">Confirmed Bookings</div><div class="value" data-kpi="confirmed_bookings">{{ kpis.confirmed_bookings }}</div></div>
+    <div class="stat-card accent-gold"><div class="label">Pending Bookings</div><div class="value" data-kpi="pending_bookings">{{ kpis.pending_bookings }}</div></div>
+    <div class="stat-card accent-blue"><div class="label">Completed Events</div><div class="value" data-kpi="completed_events">{{ kpis.completed_events }}</div></div>
+    <div class="stat-card accent-red"><div class="label">Cancelled Bookings</div><div class="value" data-kpi="cancelled_bookings">{{ kpis.cancelled_bookings }}</div></div>
+    <div class="stat-card accent-green"><div class="label">Total Revenue</div><div class="value" data-kpi="total_revenue">₦{{ kpis.total_revenue|floatformat:0 }}</div></div>
+    <div class="stat-card accent-red"><div class="label">Outstanding Payments</div><div class="value" data-kpi="outstanding_payments">₦{{ kpis.outstanding_payments|floatformat:0 }}</div></div>
+    <div class="stat-card"><div class="label">Available Headsets</div><div class="value" data-kpi="available_headsets">{{ kpis.available_headsets }}</div></div>
+    <div class="stat-card"><div class="label">Reserved Headsets</div><div class="value" data-kpi="reserved_headsets">{{ kpis.reserved_headsets }}</div></div>
+  </div>
+
+  <div class="section-title">Revenue Analytics</div>
+  <div class="stat-grid">
+    <div class="stat-card accent-green"><div class="label">Today</div><div class="value" data-rev="today">₦{{ revenue.today|floatformat:0 }}</div></div>
+    <div class="stat-card accent-green"><div class="label">This Week</div><div class="value" data-rev="this_week">₦{{ revenue.this_week|floatformat:0 }}</div></div>
+    <div class="stat-card accent-green"><div class="label">This Month</div><div class="value" data-rev="this_month">₦{{ revenue.this_month|floatformat:0 }}</div></div>
+    <div class="stat-card accent-green"><div class="label">This Year</div><div class="value" data-rev="this_year">₦{{ revenue.this_year|floatformat:0 }}</div></div>
+  </div>
+  <div class="chart-box" style="margin-top:14px;">
+    <h3>Revenue Over Time (last 12 months)</h3>
+    <canvas id="revenueChart"></canvas>
+  </div>
+
+  <div class="section-title">Booking Analytics</div>
+  <div class="chart-grid">
+    <div class="chart-box"><h3>Bookings by Event Type</h3><canvas id="eventTypeChart"></canvas></div>
+    <div class="chart-box"><h3>Bookings by State (top 10)</h3><canvas id="stateChart"></canvas></div>
+    <div class="chart-box"><h3>Booking Trends by Month</h3><canvas id="bookingTrendChart"></canvas></div>
+    <div class="chart-box"><h3>Peak Booking Periods (by day of week)</h3><canvas id="peakChart"></canvas></div>
+  </div>
+
+  <div class="section-title">Payment Analytics</div>
+  <div class="stat-grid">
+    <div class="stat-card accent-green"><div class="label">Fully Paid Bookings</div><div class="value" data-pay="fully_paid">{{ payments.fully_paid }}</div></div>
+    <div class="stat-card accent-gold"><div class="label">Partially Paid Bookings</div><div class="value" data-pay="partially_paid">{{ payments.partially_paid }}</div></div>
+    <div class="stat-card"><div class="label">Pending Payments</div><div class="value" data-pay="pending_payment">{{ payments.pending_payment }}</div></div>
+    <div class="stat-card accent-red"><div class="label">Failed Payments</div><div class="value" data-pay="failed_payments">{{ payments.failed_payments }}</div></div>
+  </div>
+
+  <div class="section-title">Equipment Analytics</div>
+  <div class="stat-grid">
+    <div class="stat-card accent-blue">
+      <div class="label">Headset Utilization Rate</div>
+      <div class="value" data-eq="utilization_rate">{% if equipment.utilization_rate != None %}{{ equipment.utilization_rate }}%{% else %}—{% endif %}</div>
+      <div class="sub">Month-to-date, headset-days booked ÷ available</div>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:14px;">
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Equipment</th><th>Total</th><th>Reserved Today</th><th>Available Today</th><th>Maintenance</th></tr></thead>
+        <tbody>
+          {% for row in equipment.most_frequently_rented %}
+          <tr>
+            <td>{{ row.name }}</td>
+            <td>{{ row.total }}</td>
+            <td>{{ row.reserved_today }}</td>
+            <td>{{ row.available_today }}</td>
+            <td>{{ row.maintenance }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="5" class="empty">No equipment configured yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="panel">
+    <h3 style="margin:0 0 12px;font-size:13.5px;">Maintenance History</h3>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Equipment</th><th>Qty</th><th>Started</th><th>Resolved</th><th>Status</th><th>Reason</th></tr></thead>
+        <tbody>
+          {% for log in equipment.maintenance_history %}
+          <tr>
+            <td>{{ log.equipment.name }}</td>
+            <td>{{ log.quantity }}</td>
+            <td>{{ log.started_at }}</td>
+            <td>{{ log.resolved_at|default:"—" }}</td>
+            <td>{% if log.is_ongoing %}<span class="pill ongoing">Ongoing</span>{% else %}<span class="pill resolved">Resolved</span>{% endif %}</td>
+            <td>{{ log.reason|default:"—" }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="6" class="empty">No maintenance logged yet. Add entries in <a href="{% url 'admin:booking_equipmentmaintenancelog_add' %}" style="color:var(--accent);">Admin</a>.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-title">Calendar Insights</div>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="label">Today's Events</div><div class="value" data-cal="todays_events">{{ calendar.todays_events }}</div></div>
+    <div class="stat-card"><div class="label">Upcoming This Week</div><div class="value" data-cal="upcoming_this_week">{{ calendar.upcoming_this_week }}</div></div>
+    <div class="stat-card"><div class="label">Busy Dates <span style="font-weight:400;">(next 90 days)</span></div><div class="value" data-cal="busy_dates_count">{{ calendar.busy_dates|length }}</div></div>
+    <div class="stat-card accent-red"><div class="label">Inventory Conflict Dates</div><div class="value" data-cal="conflict_dates_count">{{ calendar.conflict_dates|length }}</div></div>
+  </div>
+  <div class="panel" style="margin-top:14px;">
+    <div class="label" style="font-size:12px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;">Busy Dates <span style="text-transform:none;">— 2+ bookings on the same day</span></div>
+    <div class="date-list">
+      {% for d in calendar.busy_dates %}<span class="date-chip">{{ d }}</span>{% empty %}<span class="empty">None in the next 90 days.</span>{% endfor %}
+    </div>
+  </div>
+  <div class="panel">
+    <div class="label" style="font-size:12px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;">Inventory Conflict Dates <span style="text-transform:none;">— demand exceeds headset capacity</span></div>
+    <div class="date-list">
+      {% for d in calendar.conflict_dates %}<span class="date-chip conflict">{{ d }}</span>{% empty %}<span class="empty">None in the next 90 days.</span>{% endfor %}
+    </div>
+    <div style="margin-top:12px;"><a href="{% url 'dashboard_calendar' %}" style="color:var(--accent);text-decoration:none;font-size:13px;">Open full calendar →</a></div>
+  </div>
+
+  <div class="section-title">Reports</div>
+  <div class="panel">
+    <form method="get" action="{% url 'analytics_report' %}" class="filters" id="reportForm">
+      <div><label>Event date from</label><input type="date" name="date_from"></div>
+      <div><label>Event date to</label><input type="date" name="date_to"></div>
+      <div>
+        <label>Booking status</label>
+        <select name="status">
+          <option value="">All statuses</option>
+          {% for value, label in status_choices %}<option value="{{ value }}">{{ label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div>
+        <label>Event type</label>
+        <select name="event_type">
+          <option value="">All event types</option>
+          {% for value, label in event_type_choices %}<option value="{{ value }}">{{ label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div>
+        <label>State</label>
+        <select name="state">
+          <option value="">All states</option>
+          {% for st in state_choices %}<option value="{{ st }}">{{ st }}</option>{% endfor %}
+        </select>
+      </div>
+      <div>
+        <label>Payment status</label>
+        <select name="payment_status">
+          <option value="">All payment statuses</option>
+          {% for label in payment_status_choices %}<option value="{{ label }}">{{ label }}</option>{% endfor %}
+        </select>
+      </div>
+    </form>
+    <div class="export-row">
+      <button type="button" class="btn-small" onclick="submitReport('csv')">⬇️ Export CSV</button>
+      <button type="button" class="btn-small" onclick="submitReport('xlsx')">⬇️ Export Excel</button>
+      <button type="button" class="btn-small" onclick="submitReport('pdf')">⬇️ Export PDF</button>
+      <button type="button" class="btn-small ghost" onclick="document.getElementById('reportForm').reset();">Clear Filters</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  var sidebar = document.getElementById('sidebar');
+  var backdrop = document.getElementById('backdrop');
+  var hamburger = document.getElementById('hamburger');
+  function closeSidebar() { sidebar.classList.remove('open'); backdrop.classList.remove('open'); }
+  if (hamburger) {
+    hamburger.addEventListener('click', function () {
+      sidebar.classList.toggle('open');
+      backdrop.classList.toggle('open');
+    });
+  }
+  backdrop.addEventListener('click', closeSidebar);
+
+  function submitReport(format) {
+    var form = document.getElementById('reportForm');
+    var params = new URLSearchParams(new FormData(form));
+    params.set('format', format);
+    window.location.href = "{% url 'analytics_report' %}?" + params.toString();
+  }
+
+  // ---------------- Chart.js setup ----------------
+  var CHART_TEXT = '#8b949e';
+  var CHART_GRID = '#2a3038';
+  Chart.defaults.color = CHART_TEXT;
+  Chart.defaults.borderColor = CHART_GRID;
+  Chart.defaults.font.size = 11.5;
+
+  var revenueTrend = {{ revenue_trend_json|safe }};
+  var bookingTrend = {{ booking_trend_json|safe }};
+  var byEventType = {{ booking_by_event_type_json|safe }};
+  var byState = {{ booking_by_state_json|safe }};
+  var peakPeriods = {{ peak_periods_json|safe }};
+
+  var revenueChart = new Chart(document.getElementById('revenueChart'), {
+    type: 'line',
+    data: { labels: revenueTrend.labels, datasets: [{ label: 'Revenue (₦)', data: revenueTrend.values, borderColor: '#6c4dff', backgroundColor: 'rgba(108,77,255,0.15)', fill: true, tension: 0.3 }] },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } },
+  });
+
+  var eventTypeChart = new Chart(document.getElementById('eventTypeChart'), {
+    type: 'bar',
+    data: { labels: byEventType.labels, datasets: [{ label: 'Bookings', data: byEventType.values, backgroundColor: '#6c4dff' }] },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
+  });
+
+  var stateChart = new Chart(document.getElementById('stateChart'), {
+    type: 'bar',
+    data: { labels: byState.labels, datasets: [{ label: 'Bookings', data: byState.values, backgroundColor: '#1f6feb' }] },
+    options: { plugins: { legend: { display: false } }, indexAxis: 'y', scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } },
+  });
+
+  var bookingTrendChart = new Chart(document.getElementById('bookingTrendChart'), {
+    type: 'line',
+    data: { labels: bookingTrend.labels, datasets: [{ label: 'Bookings', data: bookingTrend.values, borderColor: '#6bd48a', backgroundColor: 'rgba(107,212,138,0.15)', fill: true, tension: 0.3 }] },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
+  });
+
+  var peakChart = new Chart(document.getElementById('peakChart'), {
+    type: 'bar',
+    data: { labels: peakPeriods.labels, datasets: [{ label: 'Events', data: peakPeriods.values, backgroundColor: '#e0ac3f' }] },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
+  });
+
+  // ---------------- Auto-refresh (polling) ----------------
+  var REFRESH_MS = 30000;
+  function formatNaira(n) { return '₦' + Math.round(n).toLocaleString('en-NG'); }
+
+  function applyKpi(selector, value, isNaira) {
+    var el = document.querySelector(selector);
+    if (el) el.textContent = isNaira ? formatNaira(value) : value;
+  }
+
+  function refreshDashboard() {
+    fetch("{% url 'analytics_data' %}", { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+      .then(function (r) { if (!r.ok) throw new Error('bad response'); return r.json(); })
+      .then(function (data) {
+        var k = data.kpis;
+        applyKpi('[data-kpi="total_bookings"]', k.total_bookings, false);
+        applyKpi('[data-kpi="confirmed_bookings"]', k.confirmed_bookings, false);
+        applyKpi('[data-kpi="pending_bookings"]', k.pending_bookings, false);
+        applyKpi('[data-kpi="completed_events"]', k.completed_events, false);
+        applyKpi('[data-kpi="cancelled_bookings"]', k.cancelled_bookings, false);
+        applyKpi('[data-kpi="total_revenue"]', k.total_revenue, true);
+        applyKpi('[data-kpi="outstanding_payments"]', k.outstanding_payments, true);
+        applyKpi('[data-kpi="available_headsets"]', k.available_headsets, false);
+        applyKpi('[data-kpi="reserved_headsets"]', k.reserved_headsets, false);
+
+        var r = data.revenue;
+        applyKpi('[data-rev="today"]', r.today, true);
+        applyKpi('[data-rev="this_week"]', r.this_week, true);
+        applyKpi('[data-rev="this_month"]', r.this_month, true);
+        applyKpi('[data-rev="this_year"]', r.this_year, true);
+
+        var p = data.payments;
+        applyKpi('[data-pay="fully_paid"]', p.fully_paid, false);
+        applyKpi('[data-pay="partially_paid"]', p.partially_paid, false);
+        applyKpi('[data-pay="pending_payment"]', p.pending_payment, false);
+        applyKpi('[data-pay="failed_payments"]', p.failed_payments, false);
+
+        var eqEl = document.querySelector('[data-eq="utilization_rate"]');
+        if (eqEl) eqEl.textContent = (data.equipment_utilization_rate != null) ? (data.equipment_utilization_rate + '%') : '—';
+
+        applyKpi('[data-cal="todays_events"]', data.calendar.todays_events, false);
+        applyKpi('[data-cal="upcoming_this_week"]', data.calendar.upcoming_this_week, false);
+        applyKpi('[data-cal="busy_dates_count"]', data.calendar.busy_dates_count, false);
+        applyKpi('[data-cal="conflict_dates_count"]', data.calendar.conflict_dates_count, false);
+
+        revenueChart.data.labels = data.revenue_trend.labels;
+        revenueChart.data.datasets[0].data = data.revenue_trend.values;
+        revenueChart.update();
+
+        bookingTrendChart.data.labels = data.booking_trend.labels;
+        bookingTrendChart.data.datasets[0].data = data.booking_trend.values;
+        bookingTrendChart.update();
+
+        eventTypeChart.data.labels = data.booking_by_event_type.labels;
+        eventTypeChart.data.datasets[0].data = data.booking_by_event_type.values;
+        eventTypeChart.update();
+
+        stateChart.data.labels = data.booking_by_state.labels;
+        stateChart.data.datasets[0].data = data.booking_by_state.values;
+        stateChart.update();
+
+        peakChart.data.labels = data.peak_periods.labels;
+        peakChart.data.datasets[0].data = data.peak_periods.values;
+        peakChart.update();
+
+        var note = document.getElementById('liveNote');
+        if (note) {
+          var t = new Date(data.generated_at);
+          note.textContent = 'Live — last updated ' + t.toLocaleTimeString();
+        }
+      })
+      .catch(function () {
+        var dot = document.getElementById('liveDot');
+        if (dot) dot.style.background = 'var(--red)';
+      });
+  }
+
+  setInterval(refreshDashboard, REFRESH_MS);
+</script>
+</body>
+</html>

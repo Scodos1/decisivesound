@@ -1,0 +1,38 @@
+{% load static %}
+<header class="nav" id="main-nav">
+  <div class="nav-inner">
+    <a href="{% url 'home' %}" class="logo">
+      <img src="{% static 'images/logo-badge.png' %}" alt="Decisive Sound NG" class="logo-mark" onerror="this.style.display='none'"><span class="eq" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      Decisive Sound NG
+    </a>
+    <nav class="nav-links">
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'services' %}">Services</a>
+      <a href="{% url 'equipment' %}">Equipment</a>
+      <a href="{% url 'gallery' %}">Gallery</a>
+      <a href="{% url 'contact' %}">Contact</a>
+      {% if user.is_authenticated %}<a href="{% url 'portal_dashboard' %}" class="active">My Account</a>{% endif %}
+    </nav>
+    <div class="nav-cta">
+      {% if user.is_authenticated %}
+        <a href="{% url 'portal_dashboard' %}" class="btn btn-outline btn-sm">Dashboard</a>
+      {% else %}
+        <a href="{% url 'portal_login' %}" class="btn btn-outline btn-sm">Log In</a>
+        <a href="{% url 'booking' %}" class="btn btn-solid btn-sm">Book Now</a>
+      {% endif %}
+    </div>
+    <button class="nav-toggle" aria-label="Menu"><span class="material-symbols-outlined">menu</span></button>
+  </div>
+  <div class="nav-mobile">
+    <a href="{% url 'home' %}">Home</a><a href="{% url 'about' %}">About</a>
+    <a href="{% url 'services' %}">Services</a><a href="{% url 'equipment' %}">Equipment</a>
+    <a href="{% url 'gallery' %}">Gallery</a><a href="{% url 'contact' %}">Contact</a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'portal_dashboard' %}">My Account</a>
+    {% else %}
+      <a href="{% url 'portal_login' %}">Log In</a>
+    {% endif %}
+    <a href="{% url 'booking' %}" class="btn btn-solid btn-sm" style="width:fit-content;">Book Now</a>
+  </div>
+</header>

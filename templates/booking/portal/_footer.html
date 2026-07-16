@@ -1,0 +1,25 @@
+{% load static %}
+<footer>
+  <div class="wrap foot-grid">
+    <div class="foot-col">
+      <div class="foot-logo">
+        <img src="{% static 'images/logo-badge.png' %}" alt="Decisive Sound NG" class="logo-mark">Decisive Sound NG
+      </div>
+      <p class="brand-desc" style="color:var(--on-surface-variant);font-size:14px;line-height:1.65;">Creating silent memories across Nigeria. Premium audio experiences for events that speak volumes.</p>
+    </div>
+    <div class="foot-col">
+      <h5>Company</h5>
+      <a href="{% url 'about' %}">About</a><a href="{% url 'services' %}">Services</a>
+      <a href="{% url 'equipment' %}">Equipment</a><a href="{% url 'gallery' %}">Gallery</a><a href="{% url 'contact' %}">Contact</a>
+    </div>
+    <div class="foot-col">
+      <h5>Contact</h5>
+      <span><span class="material-symbols-outlined" style="font-size:15px !important;">call</span> +234 803 380 7067</span>
+      <span><span class="material-symbols-outlined" style="font-size:15px !important;">mail</span> decisivesound8@gmail.com</span>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span data-year>2026</span> Decisive Sound NG. All rights reserved.</span>
+  </div>
+</footer>
+<script src="{% static 'js/navbar.js' %}"></script>

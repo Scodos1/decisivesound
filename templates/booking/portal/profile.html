@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile — Decisive Sound NG</title>
+<meta name="robots" content="noindex">
+{% include "booking/portal/_head.html" %}
+</head>
+<body>
+
+{% include "booking/portal/_nav.html" %}
+
+<section class="page-hero">
+  <div class="wrap">
+    <div class="eyebrow eyebrow-primary"><a href="{% url 'portal_dashboard' %}" style="color:inherit;text-decoration:none;">← My Account</a></div>
+    <h1>Profile settings</h1>
+    <p>Keep your contact details up to date and manage your password.</p>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="wrap" style="max-width:640px;">
+    {% include "booking/portal/_messages.html" %}
+
+    <div class="glass-card card-pad" style="margin-bottom:22px;">
+      <h3 style="font-size:15.5px;margin-bottom:16px;">Personal Information</h3>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="form_name" value="profile">
+        <div class="form-grid" style="grid-template-columns:1fr;">
+          <div class="field">
+            <label for="id_first_name">Full name</label>
+            {{ profile_form.first_name }}
+            {% if profile_form.first_name.errors %}<div style="color:#ff8080;font-size:12.5px;">{{ profile_form.first_name.errors|join:", " }}</div>{% endif %}
+          </div>
+          <div class="field">
+            <label for="id_email">Email</label>
+            {{ profile_form.email }}
+            {% if profile_form.email.errors %}<div style="color:#ff8080;font-size:12.5px;">{{ profile_form.email.errors|join:", " }}</div>{% endif %}
+          </div>
+          <div class="field">
+            <label for="id_phone">Phone number</label>
+            {{ profile_form.phone }}
+            {% if profile_form.phone.errors %}<div style="color:#ff8080;font-size:12.5px;">{{ profile_form.phone.errors|join:", " }}</div>{% endif %}
+          </div>
+        </div>
+        <button type="submit" class="btn btn-solid btn-sm" style="margin-top:16px;">Save Changes</button>
+      </form>
+    </div>
+
+    <div class="glass-card card-pad">
+      <h3 style="font-size:15.5px;margin-bottom:16px;">Change Password</h3>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="form_name" value="password">
+        <div class="form-grid" style="grid-template-columns:1fr;">
+          <div class="field">
+            <label for="id_old_password">Current password</label>
+            {{ password_form.old_password }}
+            {% if password_form.old_password.errors %}<div style="color:#ff8080;font-size:12.5px;">{{ password_form.old_password.errors|join:", " }}</div>{% endif %}
+          </div>
+          <div class="field">
+            <label for="id_new_password1">New password</label>
+            {{ password_form.new_password1 }}
+            {% if password_form.new_password1.errors %}<div style="color:#ff8080;font-size:12.5px;">{{ password_form.new_password1.errors|join:", " }}</div>{% endif %}
+          </div>
+          <div class="field">
+            <label for="id_new_password2">Confirm new password</label>
+            {{ password_form.new_password2 }}
+            {% if password_form.new_password2.errors %}<div style="color:#ff8080;font-size:12.5px;">{{ password_form.new_password2.errors|join:", " }}</div>{% endif %}
+          </div>
+        </div>
+        <button type="submit" class="btn btn-outline btn-sm" style="margin-top:16px;">Change Password</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% include "booking/portal/_footer.html" %}
+</body>
+</html>

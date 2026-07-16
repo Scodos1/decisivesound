@@ -1,0 +1,17 @@
+# Environment variables / secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Django
+db.sqlite3
+*.log
+media/
+
+# OS
+.DS_Store
+Thumbs.db

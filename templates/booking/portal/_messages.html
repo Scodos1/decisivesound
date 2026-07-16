@@ -1,0 +1,7 @@
+{% if messages %}
+<div class="portal-messages">
+  {% for message in messages %}
+  <div class="portal-message {{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}

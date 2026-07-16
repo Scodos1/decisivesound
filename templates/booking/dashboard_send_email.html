@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Send Email — Decisive Sound NG Admin</title>
+<meta name="robots" content="noindex">
+<style>
+  :root {
+    --bg: #0e1116; --panel: #161b22; --panel-2: #1c2229; --border: #2a3038;
+    --text: #e6edf3; --muted: #8b949e; --accent: #6c4dff;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,"Segoe UI",Inter,Roboto,sans-serif; padding:32px 20px 80px; }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  .top-bar { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px; }
+  h1 { font-size:21px; margin:0; }
+  .back-link { color:var(--muted); text-decoration:none; font-size:13.5px; border:1px solid var(--border); padding:7px 14px; border-radius:8px; }
+  .back-link:hover { color:var(--text); border-color:var(--muted); }
+  .panel { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:22px; margin-bottom:20px; }
+  .flash { padding: 11px 16px; border-radius: 9px; font-size: 13.5px; margin-bottom: 16px; }
+  .flash.success { background: rgba(26,127,55,0.15); border: 1px solid rgba(26,127,55,0.4); color: #6bd48a; }
+  .flash.error { background: rgba(207,34,34,0.13); border: 1px solid rgba(207,34,34,0.4); color: #ff8080; }
+  label { display:block; font-size:12.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin-bottom:6px; margin-top:16px; }
+  label:first-child { margin-top: 0; }
+  input[type=text], textarea {
+    width:100%; background:var(--panel-2); border:1px solid var(--border); color:var(--text);
+    border-radius:8px; padding:10px 12px; font-size:14px; font-family:inherit;
+  }
+  textarea { min-height: 160px; resize: vertical; }
+  .btn { background:var(--accent); border:none; color:#fff; font-size:14px; font-weight:600; padding:11px 20px; border-radius:9px; cursor:pointer; margin-top:18px; }
+  .btn.secondary { background:transparent; border:1px solid var(--border); color:var(--text); }
+  .result-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border); gap: 10px; flex-wrap: wrap; }
+  .result-row:last-child { border-bottom:none; }
+  .result-name { font-weight:600; font-size:13.5px; }
+  .result-sub { color:var(--muted); font-size:12px; }
+  .selected-card { background: rgba(108,77,255,0.12); border:1px solid var(--accent); border-radius:10px; padding:14px 16px; margin-bottom:18px; }
+  .no-email { color:#ff8080; font-size:12.5px; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top-bar">
+    <h1>✉️ Send Customer Email</h1>
+    <a class="back-link" href="{% url 'admin_dashboard' %}">← Back to Dashboard</a>
+  </div>
+
+  {% for message in messages %}
+    <div class="flash {{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+
+  {% if booking_obj %}
+    <div class="selected-card">
+      Sending to <strong>{{ booking_obj.name }}</strong> (#{{ booking_obj.id }}) — {{ booking_obj.event_type }}, {{ booking_obj.event_date }}
+      {% if booking_obj.email %}
+        <div class="result-sub">{{ booking_obj.email }}</div>
+      {% else %}
+        <div class="no-email">This booking has no email address on file — you won't be able to send until one is added in Django Admin.</div>
+      {% endif %}
+    </div>
+
+    <div class="panel">
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="booking_id" value="{{ booking_obj.id }}">
+        <label>Subject</label>
+        <input type="text" name="subject" required>
+        <label>Message</label>
+        <textarea name="body" required></textarea>
+        <button type="submit" class="btn">Send Email</button>
+      </form>
+    </div>
+    <a class="back-link" href="{% url 'dashboard_send_email' %}">← Choose a different booking</a>
+
+  {% else %}
+    <div class="panel">
+      <form method="get">
+        <label>Find a booking (name, phone, or booking ID)</label>
+        <input type="text" name="q" value="{{ q }}" placeholder="Search..." autofocus>
+        <button type="submit" class="btn secondary">Search</button>
+      </form>
+
+      {% if q %}
+        <div style="margin-top:20px;">
+          {% if results %}
+            {% for r in results %}
+            <div class="result-row">
+              <div>
+                <div class="result-name">{{ r.name }} — #{{ r.id }}</div>
+                <div class="result-sub">{{ r.phone }} · {{ r.event_type }} · {{ r.event_date }} · {{ r.email|default:"no email on file" }}</div>
+              </div>
+              <a class="btn" style="margin-top:0;padding:8px 14px;font-size:13px;" href="?booking_id={{ r.id }}">Select</a>
+            </div>
+            {% endfor %}
+          {% else %}
+            <div class="result-sub">No bookings found for "{{ q }}".</div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+</body>
+</html>

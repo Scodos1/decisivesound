@@ -1,0 +1,10 @@
+<div class="booking-row">
+  <div>
+    <h4><a href="{% url 'portal_booking_detail' row.booking.id %}" style="color:var(--on-surface);text-decoration:none;">#{{ row.booking.id }} — {{ row.booking.event_type }}</a></h4>
+    <div class="meta">{{ row.booking.event_date }} · {{ row.booking.state }} · {{ row.booking.headsets }} headset{{ row.booking.headsets|pluralize }}</div>
+  </div>
+  <div style="text-align:right;">
+    <span class="status-pill" style="background:{{ row.status_color }};">{{ row.booking.status }}</span>
+    <div class="meta" style="margin-top:6px;">{{ row.payment_status }}</div>
+  </div>
+</div>

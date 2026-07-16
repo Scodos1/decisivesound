@@ -1,0 +1,388 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decisive Sound NG — Nigeria's Premium Silent Headset Rental Service</title>
+<meta name="description" content="Nigeria's premium silent disco headset rental for weddings, birthdays, corporate events, beach parties, school events and festivals. Silent disco rental Lagos — book instantly.">
+<meta name="keywords" content="silent disco rental Lagos, wireless headset rental Nigeria, silent party headphones, silent disco Nigeria, event headset rental">
+<link rel="canonical" href="https://decisivesoundng.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Decisive Sound NG — Nigeria's Premium Silent Headset Rental">
+<meta property="og:description" content="Transform weddings, birthdays, corporate events and festivals with crystal-clear wireless audio. Silent disco headset rental across Nigeria.">
+<meta property="og:image" content="images/hero.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/variables.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/animations.css' %}">
+<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+<link rel="stylesheet" href="{% static 'css/enhance.css' %}">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LocalBusiness","name":"Decisive Sound NG","description":"Nigeria's premium silent disco headset rental service.","areaServed":["Lagos","Abuja","Port Harcourt","Nigeria"],"telephone":"+234-000-000-0000","url":"https://decisivesoundng.com/","sameAs":["https://www.instagram.com/decisivesoundng"]}
+</script>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" id="main-nav">
+  <div class="nav-inner">
+    <a href="{% url 'home' %}" class="logo">
+      <img src="{% static 'images/logo-badge.png' %}" alt="Decisive Sound NG" class="logo-mark" onerror="this.style.display='none'"><span class="eq" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      Decisive Sound NG
+    </a>
+    <nav class="nav-links">
+      <a href="{% url 'home' %}" class="active">Home</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'services' %}">Services</a>
+      <a href="{% url 'equipment' %}">Equipment</a>
+      <a href="{% url 'gallery' %}">Gallery</a>
+      <a href="{% url 'contact' %}">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="{% url 'booking' %}" class="btn btn-solid btn-sm">Book Now</a>
+    </div>
+    <button class="nav-toggle" aria-label="Menu">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+  </div>
+  <div class="nav-mobile">
+    <a href="{% url 'home' %}">Home</a><a href="{% url 'about' %}">About</a>
+    <a href="{% url 'services' %}">Services</a><a href="{% url 'equipment' %}">Equipment</a>
+    <a href="{% url 'gallery' %}">Gallery</a><a href="{% url 'contact' %}">Contact</a>
+    <a href="{% url 'booking' %}" class="btn btn-solid btn-sm" style="width:fit-content;">Book Now</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-media">
+    <video autoplay loop muted playsinline poster="{% static 'images/hero.jpg' %}">
+      <source src="{% static 'videos/hero.mp4' %}" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+  </div>
+  <div class="hero-ambient" aria-hidden="true"></div>
+  <div id="hero-rings" class="hero-rings" aria-hidden="true"></div>
+  <div class="hero-content">
+    <div class="hero-anim-1 eyebrow eyebrow-tertiary">
+      <span class="material-symbols-outlined" style="font-size:14px;">graphic_eq</span>
+      Premium Silent Disco · Nigeria
+    </div>
+    <h1 class="hero-anim-2">
+      The World Is Quiet.<br>
+      <span class="gradient-text">Your Party Isn't.</span>
+    </h1>
+    <p class="hero-anim-3 lede">Experience crystal-clear wireless audio without the noise complaints. Premium 3-channel silent disco headset rentals for weddings, festivals, corporate events and more — delivered across Nigeria.</p>
+    <div class="hero-anim-4 hero-ctas">
+      <a href="{% url 'booking' %}" class="btn btn-primary btn-lg pulse-ring">Rent Now</a>
+      <a href="{% url 'about' %}" class="btn btn-outline btn-lg">Learn More</a>
+    </div>
+    <div class="eq-lg hero-anim-4" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section style="padding: var(--sp-xl) 0;">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="glass-card stat-cell stat-primary reveal">
+        <div class="num" style="color:var(--primary);" data-counter="500" data-suffix="+">0</div>
+        <div class="label">Events</div>
+      </div>
+      <div class="glass-card stat-cell stat-secondary reveal d1">
+        <div class="num" style="color:var(--secondary);" data-counter="2000" data-suffix="+">0</div>
+        <div class="label">Happy Guests</div>
+      </div>
+      <div class="glass-card stat-cell stat-tertiary reveal d2">
+        <div class="num" style="color:var(--tertiary);" data-counter="99" data-suffix="%">0</div>
+        <div class="label">Happy Clients</div>
+      </div>
+      <div class="glass-card stat-cell stat-neutral reveal d3">
+        <div class="num" style="color:var(--on-surface);">24/7</div>
+        <div class="label">Support</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT TEASER -->
+<section>
+  <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-xl);align-items:center;">
+    <div class="reveal">
+      <div class="relative" style="position:relative;">
+        <div class="ambient-blob" style="position:absolute;inset:-20px;background:rgba(139,42,130,0.18);filter:blur(48px);border-radius:50%;pointer-events:none;"></div>
+        <div class="media-frame" style="aspect-ratio:1/1;position:relative;border-radius:50%;overflow:hidden;">
+          <img src="{% static 'images/logo-badge.png' %}" alt="Decisive Sound NG" style="width:100%;height:100%;object-fit:cover;object-position:center;">
+        </div>
+      </div>
+    </div>
+    <div class="reveal d1" style="padding-left:8px;">
+      <div class="eyebrow eyebrow-primary">About us</div>
+      <h2 style="font-size:clamp(26px,3.5vw,38px);margin-top:12px;">Redefining Sound Experience in Nigeria</h2>
+      <p style="color:var(--on-surface-variant);margin-top:16px;font-size:17px;line-height:1.7;">Decisive Sound NG was built on a simple truth — the best parties shouldn't be shut down by noise complaints or curfews. We provide premium wireless headsets so every guest controls their own world.</p>
+      <p style="color:var(--on-surface-variant);margin-top:14px;font-size:15px;line-height:1.7;">Whether it's a rooftop gala or a beach countdown, our 3-channel system lets three DJs run simultaneously — guests just turn the dial.</p>
+      <div style="margin-top:28px;">
+        <a href="{% url 'about' %}" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:8px;">
+          Our Story <span class="material-symbols-outlined" style="font-size:18px !important;">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="alt-bg">
+  <div class="wrap">
+    <div class="section-head center mx-auto reveal">
+      <div class="eyebrow eyebrow-secondary">Services</div>
+      <h2>Any Venue. Any Vibe.</h2>
+      <p>We scale with your vision, providing tailored silent disco solutions for every gathering.</p>
+    </div>
+    <div class="grid grid-3">
+      <div class="glass-card service-card reveal d1">
+        <div class="icon-badge" style="background:rgba(240,168,217,0.12);">
+          <span class="material-symbols-outlined" style="color:var(--primary);">home_work</span>
+        </div>
+        <h3>Private Parties</h3>
+        <p style="color:var(--on-surface-variant);">From backyard birthdays to exclusive house parties — keep the neighbours happy while you rave till dawn.</p>
+        <div class="service-foot"><span class="price-tag">₦1,500 per headset</span><a href="{% url 'services' %}" class="service-link">Book →</a></div>
+      </div>
+      <div class="glass-card service-card reveal d2">
+        <div class="icon-badge" style="background:rgba(255,201,139,0.12);">
+          <span class="material-symbols-outlined" style="color:var(--secondary);">groups</span>
+        </div>
+        <h3>Corporate Events</h3>
+        <p style="color:var(--on-surface-variant);">Interactive entertainment for conferences, networking nights and company celebrations.</p>
+        <div class="service-foot"><span class="price-tag">Request Quote</span><a href="{% url 'services' %}" class="service-link">Book →</a></div>
+      </div>
+      <div class="glass-card service-card reveal d3">
+        <div class="icon-badge" style="background:rgba(255,203,77,0.12);">
+          <span class="material-symbols-outlined" style="color:var(--tertiary);">festival</span>
+        </div>
+        <h3>Festivals</h3>
+        <p style="color:var(--on-surface-variant);">Large-scale multi-zone activations with 100+ headsets, backup units and on-site technicians.</p>
+        <div class="service-foot"><span class="price-tag">Request Quote</span><a href="{% url 'services' %}" class="service-link">Book →</a></div>
+      </div>
+      <div class="glass-card service-card reveal d4">
+        <div class="icon-badge" style="background:rgba(240,168,217,0.12);">
+          <span class="material-symbols-outlined" style="color:var(--primary);">favorite</span>
+        </div>
+        <h3>Weddings</h3>
+        <p style="color:var(--on-surface-variant);">Premium silent receptions and after-parties that keep dancing past venue curfew.</p>
+        <div class="service-foot"><span class="price-tag">₦1,500 per headset</span><a href="{% url 'services' %}" class="service-link">Book →</a></div>
+      </div>
+      <div class="glass-card service-card reveal d5">
+        <div class="icon-badge" style="background:rgba(255,201,139,0.12);">
+          <span class="material-symbols-outlined" style="color:var(--secondary);">beach_access</span>
+        </div>
+        <h3>Beach Parties</h3>
+        <p style="color:var(--on-surface-variant);">Wireless entertainment by the waterfront without disturbing surrounding guests.</p>
+        <div class="service-foot"><span class="price-tag">₦1,500 per headset</span><a href="{% url 'services' %}" class="service-link">Book →</a></div>
+      </div>
+      <div class="glass-card service-card reveal">
+        <div class="icon-badge" style="background:rgba(255,203,77,0.12);">
+          <span class="material-symbols-outlined" style="color:var(--tertiary);">school</span>
+        </div>
+        <h3>School Events</h3>
+        <p style="color:var(--on-surface-variant);">Graduations, campus festivals and student celebrations with safe volume limits.</p>
+        <div class="service-foot"><span class="price-tag">Request Quote</span><a href="{% url 'services' %}" class="service-link">Book →</a></div>
+      </div>
+    </div>
+    <div class="center-text" style="margin-top:40px;">
+      <a href="{% url 'services' %}" class="btn btn-outline">View All Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section>
+  <div class="wrap">
+    <div class="section-head center mx-auto reveal">
+      <div class="eyebrow eyebrow-primary">How it works</div>
+      <h2>Your Journey to the Pulse</h2>
+    </div>
+    <div class="steps">
+      <div class="glass-card step reveal d1"><div class="step-num">1</div><h4>Pick a Date</h4><p>Check availability for your event using our booking portal.</p></div>
+      <div class="step-arrow"><span class="material-symbols-outlined">arrow_forward</span></div>
+      <div class="glass-card step reveal d2"><div class="step-num">2</div><h4>Choose Package</h4><p>Select headset count and duration tailored to your guest list.</p></div>
+      <div class="step-arrow"><span class="material-symbols-outlined">arrow_forward</span></div>
+      <div class="glass-card step reveal d3"><div class="step-num">3</div><h4>We Deliver</h4><p>Professional delivery and setup by our expert technicians on-site.</p></div>
+      <div class="step-arrow"><span class="material-symbols-outlined">arrow_forward</span></div>
+      <div class="glass-card step reveal d4"><div class="step-num">4</div><h4>Let's Party</h4><p>The technician stays all night. You focus on the fun.</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- GALLERY PREVIEW -->
+<section class="alt-bg">
+  <div class="wrap">
+    <div class="section-head center mx-auto reveal">
+      <div class="eyebrow eyebrow-secondary">Gallery</div>
+      <h2>Moments Frozen in Sound</h2>
+      <p>A taste of past activations — see the full archive on our gallery page.</p>
+    </div>
+    <div class="gallery-grid">
+      {% for img in gallery_images %}
+      {% include "booking/_gallery_item.html" %}
+      {% empty %}
+      <p style="color:var(--on-surface-variant);grid-column:1/-1;">
+        Photos from real events are on their way — check back soon, or follow along on
+        <a href="https://www.instagram.com/decisivesoundng" target="_blank" style="color:var(--secondary);">Instagram</a> in the meantime.
+      </p>
+      {% endfor %}
+    </div>
+    <div class="center-text" style="margin-top:36px;">
+      <a href="{% url 'gallery' %}" class="btn btn-outline">View Full Gallery</a>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE / AFTER -->
+<section>
+  <div class="wrap">
+    <div class="section-head center mx-auto reveal">
+      <div class="eyebrow eyebrow-tertiary">The difference</div>
+      <h2>Normal Party vs. Silent Party</h2>
+    </div>
+    <div class="grid grid-2">
+      <div class="glass-card compare-card reveal" style="border-color:rgba(240,146,58,0.25);">
+        <h3><span class="material-symbols-outlined" style="color:#c9327d;">speaker</span> Normal Party</h3>
+        <ul class="compare-list compare-no">
+          <li><span class="material-symbols-outlined ico">close</span>One loudspeaker, one playlist for everyone</li>
+          <li><span class="material-symbols-outlined ico">close</span>Noise complaints &amp; curfew restrictions</li>
+          <li><span class="material-symbols-outlined ico">close</span>Sound bleeds between event zones</li>
+          <li><span class="material-symbols-outlined ico">close</span>No personal volume control</li>
+        </ul>
+      </div>
+      <div class="glass-card compare-card reveal d2" style="border-color:rgba(255,203,77,0.30);">
+        <h3><span class="material-symbols-outlined" style="color:var(--tertiary);">headphones</span> Silent Party</h3>
+        <ul class="compare-list compare-yes">
+          <li><span class="material-symbols-outlined ico">check_circle</span>3 DJs / playlists running simultaneously</li>
+          <li><span class="material-symbols-outlined ico">check_circle</span>No loudspeakers, no curfew issues</li>
+          <li><span class="material-symbols-outlined ico">check_circle</span>Estate &amp; noise-friendly anywhere</li>
+          <li><span class="material-symbols-outlined ico">check_circle</span>Personalised listening + glowing LED headsets</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section>
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <div class="eyebrow eyebrow-secondary" style="justify-content:center;">Ready when you are</div>
+      <h2 style="margin-top:18px;">Ready to start the pulse?</h2>
+      <p>Lock in your date today and give your guests an experience they'll never forget.</p>
+      <div class="cta-row">
+        <a href="{% url 'booking' %}" class="btn btn-surface">Get a Free Quote</a>
+        <a href="#" data-wa-link class="btn btn-wa">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.438 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          Chat on WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot-grid">
+    <div class="foot-col">
+      <div class="foot-logo">
+        <img src="{% static 'images/logo-badge.png' %}" alt="Decisive Sound NG" class="logo-mark">Decisive Sound NG
+      </div>
+      <p class="brand-desc" style="color:var(--on-surface-variant);font-size:14px;line-height:1.65;">Creating silent memories across Nigeria. Premium audio experiences for events that speak volumes.</p>
+      <div class="social-row">
+        <a href="https://www.instagram.com/decisivesoundng"
+   target="_blank"
+   rel="noopener"
+   aria-label="Instagram"
+   class="social-ig">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="3" width="18" height="18" rx="5.5" stroke="currentColor" stroke-width="1.6"/>
+        <circle cx="12" cy="12" r="4.1" stroke="currentColor" stroke-width="1.6"/>
+        <circle cx="17.15" cy="6.85" r="1.05" fill="currentColor"/>
+    </svg>
+</a>
+
+<a href="#" data-wa-link aria-label="WhatsApp" class="social-wa">
+    <svg xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 24 24"
+         fill="currentColor">
+        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.77.47 3.45 1.35 4.95L2 22l5.28-1.38a9.9 9.9 0 0 0 4.76 1.21h.01c5.46 0 9.9-4.45 9.9-9.92 0-2.65-1.03-5.14-2.9-7.01A9.83 9.83 0 0 0 12.04 2zm0 18.02h-.01a8.1 8.1 0 0 1-4.12-1.13l-.29-.17-3.13.82.84-3.05-.19-.31a8.08 8.08 0 0 1-1.24-4.27c0-4.47 3.64-8.11 8.12-8.11 2.16 0 4.19.84 5.72 2.37a8.04 8.04 0 0 1 2.38 5.74c0 4.47-3.64 8.11-8.08 8.11z"/>
+    </svg>
+</a>
+
+<a href="https://www.tiktok.com/@decisivesound?_r=1&_t=ZS-97od0ZSG3NM"
+   target="_blank"
+   rel="noopener"
+   aria-label="TikTok"
+   class="social-tt">
+    <svg xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 24 24"
+         fill="currentColor">
+        <path d="M16.6 2h-2.3v13.2a2.29 2.29 0 1 1-2.29-2.29c.2 0 .39.03.57.08V10.7a5.13 5.13 0 0 0-.57-.03A4.58 4.58 0 1 0 16.6 15V8.3a6.5 6.5 0 0 0 3.8 1.2V7.2a4.24 4.24 0 0 1-3.8-4.2Z"/>
+    </svg>
+</a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h5>Company</h5>
+      <a href="{% url 'about' %}">About</a><a href="{% url 'services' %}">Services</a>
+      <a href="{% url 'equipment' %}">Equipment</a><a href="{% url 'gallery' %}">Gallery</a><a href="{% url 'contact' %}">Contact</a>
+    </div>
+    <div class="foot-col">
+      <h5>Contact</h5>
+      <span><span class="material-symbols-outlined" style="font-size:16px !important;">call</span> +234 803 380 7067</span>
+      <span><span class="material-symbols-outlined" style="font-size:16px !important;">mail</span> decisivesound8@gmail.com</span>
+      <span><span class="material-symbols-outlined" style="font-size:16px !important;">schedule</span> Mon–Sun, 9am–11pm</span>
+    </div>
+    <div class="foot-col">
+      <h5>Areas</h5>
+      <span>Lagos Island</span><span>Lekki &amp; Ajah</span>
+      <span>Abuja · Port Harcourt</span><span>Nationwide delivery</span>
+    </div>
+    <div class="foot-col">
+      <h5>Legal</h5>
+      <a href="{% url 'terms' %}">Privacy Policy</a><a href="{% url 'terms' %}">Terms of Service</a><a href="{% url 'terms' %}">Rental Agreement</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span data-year>2026</span> Decisive Sound NG. All rights reserved.</span>
+    <div class="foot-status"><span class="status-dot"></span> System Status: Online</div>
+  </div>
+</footer>
+
+<!-- STICKY BOOK + FLOATING WA -->
+<div class="sticky-book"><a href="{% url 'booking' %}" class="btn btn-solid">
+  <span class="material-symbols-outlined" style="font-size:17px !important;">event</span> Book Now
+</a></div>
+<div class="float-stack">
+  <div class="wa-tooltip">💬 Need a quote? Chat instantly.</div>
+  <a href="#" data-wa-link class="wa-float" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.438 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+  </a>
+</div>
+
+<script src="{% static 'js/whatsapp.js' %}"></script>
+<script src="{% static 'js/navbar.js' %}"></script>
+<script src="{% static 'js/scroll.js' %}"></script>
+<script src="{% static 'js/animation.js' %}"></script>
+<script src="{% static 'js/counter.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r158/three.min.js"></script>
+<script src="{% static 'js/magic-rings.js' %}"></script>
+<script src="{% static 'js/rings-init.js' %}"></script>
+<script src="{% static 'js/gallery.js' %}"></script>
+<script src="{% static 'js/enhance.js' %}"></script>
+</body>
+</html>

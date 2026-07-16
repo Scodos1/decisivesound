@@ -1,0 +1,10 @@
+django==6.0.7
+python-dotenv==1.0.1
+psycopg2-binary==2.9.12
+dj-database-url==2.2.0
+requests==2.32.3
+xhtml2pdf==0.2.16
+openpyxl==3.1.5
+Pillow==12.3.0
+gunicorn==23.0.0
+whitenoise==6.8.2

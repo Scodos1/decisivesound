@@ -1,0 +1,249 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Decisive Sound NG</title>
+<meta name="description" content="Get in touch with Decisive Sound NG for silent disco headset rental in Lagos, Abuja, Port Harcourt and nationwide across Nigeria.">
+<link rel="canonical" href="https://decisivesoundng.com/contact.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Contact — Decisive Sound NG">
+<meta property="og:description" content="Reach Decisive Sound NG by phone, WhatsApp or email — fastest response via WhatsApp.">
+<meta property="og:image" content="images/hero.jpg">
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/variables.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/animations.css' %}">
+<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+<link rel="stylesheet" href="{% static 'css/enhance.css' %}">
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" id="main-nav">
+  <div class="nav-inner">
+    <a href="{% url 'home' %}" class="logo">
+      <img src="{% static 'images/logo-badge.png' %}" alt="Decisive Sound NG" class="logo-mark" onerror="this.style.display='none'"><span class="eq" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      Decisive Sound NG
+    </a>
+    <nav class="nav-links">
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'services' %}">Services</a>
+      <a href="{% url 'equipment' %}">Equipment</a>
+      <a href="{% url 'gallery' %}">Gallery</a>
+      <a href="{% url 'contact' %}" class="active">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="{% url 'booking' %}" class="btn btn-solid btn-sm">Book Now</a>
+    </div>
+    <button class="nav-toggle" aria-label="Menu"><span class="material-symbols-outlined">menu</span></button>
+  </div>
+  <div class="nav-mobile">
+    <a href="{% url 'home' %}">Home</a><a href="{% url 'about' %}">About</a>
+    <a href="{% url 'services' %}">Services</a><a href="{% url 'equipment' %}">Equipment</a>
+    <a href="{% url 'gallery' %}">Gallery</a><a href="{% url 'contact' %}">Contact</a>
+    <a href="{% url 'booking' %}" class="btn btn-solid btn-sm" style="width:fit-content;">Book Now</a>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-hero-rings" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="eyebrow eyebrow-secondary">Contact</div>
+    <h1>Get in Touch</h1>
+    <p>Have a custom request or want to learn more about our services? Send a message and our team will get back to you within the hour.</p>
+  </div>
+</section>
+
+<!-- CONTACT GRID -->
+<section>
+  <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-xl);">
+
+    <!-- Left: contact info + quick form -->
+    <div>
+      <div class="reveal" style="margin-bottom:40px;">
+        <h2 class="headline-sm" style="margin-bottom:28px;">Reach us directly</h2>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+
+          <a href="#" data-wa-link class="glass-card contact-item" style="padding:20px 22px;gap:16px;border-color:rgba(255,203,77,0.25);">
+            <div class="contact-icon" style="background:rgba(255,203,77,0.1);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="var(--tertiary)"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.438 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            </div>
+            <div>
+              <div class="label" style="font-family:var(--font-heading);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--on-surface-variant);margin-bottom:4px;">WhatsApp — Fastest</div>
+              <div style="font-family:var(--font-heading);font-weight:600;font-size:15px;">Chat with us instantly</div>
+            </div>
+          </a>
+
+          <a href="tel:+2348033807067" class="glass-card contact-item" style="padding:20px 22px;gap:16px;">
+            <div class="contact-icon" style="background:rgba(240,168,217,0.1);">
+              <span class="material-symbols-outlined" style="color:var(--primary);">call</span>
+            </div>
+            <div>
+              <div class="label" style="font-family:var(--font-heading);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--on-surface-variant);margin-bottom:4px;">Phone</div>
+              <div style="font-family:var(--font-heading);font-weight:600;font-size:15px;">+234 803 380 7067</div>
+            </div>
+          </a>
+
+          <a href="mailto:decisivesound8@gmail.com" class="glass-card contact-item" style="padding:20px 22px;gap:16px;">
+            <div class="contact-icon" style="background:rgba(255,201,139,0.1);">
+              <span class="material-symbols-outlined" style="color:var(--secondary);">mail</span>
+            </div>
+            <div>
+              <div class="label" style="font-family:var(--font-heading);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--on-surface-variant);margin-bottom:4px;">Email</div>
+              <div style="font-family:var(--font-heading);font-weight:600;font-size:15px;">decisivesound8@gmail.com</div>
+            </div>
+          </a>
+
+          <a href="https://www.instagram.com/decisivesoundng" target="_blank" rel="noreferrer" class="glass-card contact-item" style="padding:20px 22px;gap:16px;">
+            <div class="contact-icon" style="background:rgba(240,146,58,0.1);">
+              <span class="material-symbols-outlined" style="color:#c9327d;">photo_camera</span>
+            </div>
+            <div>
+              <div class="label" style="font-family:var(--font-heading);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--on-surface-variant);margin-bottom:4px;">Instagram</div>
+              <div style="font-family:var(--font-heading);font-weight:600;font-size:15px;">@decisivesoundng</div>
+            </div>
+          </a>
+
+          <div class="glass-card contact-item" style="padding:20px 22px;gap:16px;">
+            <div class="contact-icon" style="background:rgba(255,203,77,0.08);">
+              <span class="material-symbols-outlined" style="color:var(--tertiary);">schedule</span>
+            </div>
+            <div>
+              <div class="label" style="font-family:var(--font-heading);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--on-surface-variant);margin-bottom:4px;">Business Hours</div>
+              <div style="font-family:var(--font-heading);font-weight:600;font-size:15px;">Monday – Sunday, 9am – 11pm</div>
+            </div>
+          </div>
+
+          <div class="glass-card contact-item" style="padding:20px 22px;gap:16px;">
+            <div class="contact-icon" style="background:rgba(240,168,217,0.08);">
+              <span class="material-symbols-outlined" style="color:var(--primary);">local_shipping</span>
+            </div>
+            <div>
+              <div class="label" style="font-family:var(--font-heading);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--on-surface-variant);margin-bottom:4px;">Service Areas</div>
+              <div style="font-family:var(--font-heading);font-weight:600;font-size:15px;">Lagos · Abuja · PH · Nationwide</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: form + map -->
+    <div class="reveal d1">
+      <h2 class="headline-sm" style="margin-bottom:28px;">Send a message</h2>
+      <div class="glass-card" style="padding:36px;margin-bottom:24px;">
+        <form onsubmit="event.preventDefault(); const n=this.querySelector('[name=name]').value; const m=this.querySelector('[name=message]').value; window.open('mailto:decisivesound8@gmail.com?subject=' + encodeURIComponent('Website enquiry from ' + (n||'a visitor')) + '&body=' + encodeURIComponent(m||''), '_blank');">
+          <div class="form-grid" style="grid-template-columns:1fr;">
+            <div class="field"><label>Name</label><input name="name" type="text" required placeholder="Your full name"></div>
+            <div class="field"><label>Email</label><input name="email" type="email" required placeholder="your@email.com"></div>
+            <div class="field"><label>Subject</label><input name="subject" type="text" placeholder="e.g. Corporate event quote — 200 guests"></div>
+            <div class="field"><label>Message</label><textarea name="message" rows="5" required placeholder="Tell us about your event, date, location and any questions..."></textarea></div>
+            <div class="field" style="text-align:center;">
+              <button type="submit" class="btn btn-primary">
+                <span class="material-symbols-outlined" style="font-size:18px !important;">send</span> Send Message
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Google Map -->
+      <div class="map-frame" style="height:280px;">
+        <iframe src="https://maps.google.com/maps?q=6.635175,3.516336&t=&z=16&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy" title="Decisive Sound NG location"></iframe>
+      </div>
+      <div style="margin-top:14px;">
+        <a href="https://maps.app.goo.gl/LPNZwLQV3t1qxhrk9" target="_blank" rel="noreferrer" class="btn btn-outline btn-sm">
+          <span class="material-symbols-outlined" style="font-size:16px !important;">open_in_new</span> Open in Google Maps
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="alt-bg">
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <h2>Ready to start the pulse?</h2>
+      <p>Lock in your date today and give your guests an experience they'll never forget.</p>
+      <div class="cta-row">
+        <a href="{% url 'booking' %}" class="btn btn-surface">
+          <span class="material-symbols-outlined" style="font-size:18px !important;">event</span> Book Your Event
+        </a>
+        <a href="#" data-wa-link class="btn btn-wa">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.438 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          Chat on WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot-grid">
+    <div class="foot-col">
+      <div class="foot-logo">
+        <img src="{% static 'images/logo-badge.png' %}" alt="Decisive Sound NG" class="logo-mark">Decisive Sound NG
+      </div>
+      <p class="brand-desc" style="color:var(--on-surface-variant);font-size:14px;line-height:1.65;">Creating silent memories across Nigeria. Premium audio experiences for events that speak volumes.</p>
+      <div class="social-row">
+        <a href="https://www.instagram.com/decisivesoundng" target="_blank" rel="noopener" aria-label="Instagram" class="social-ig"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="5.5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4.1" stroke="currentColor" stroke-width="1.6"/><circle cx="17.15" cy="6.85" r="1.05" fill="currentColor"/></svg></a>
+        <a href="#" data-wa-link aria-label="WhatsApp" class="social-wa"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.77.47 3.45 1.35 4.95L2 22l5.28-1.38a9.9 9.9 0 0 0 4.76 1.21h.01c5.46 0 9.9-4.45 9.9-9.92 0-2.65-1.03-5.14-2.9-7.01A9.83 9.83 0 0 0 12.04 2zm5.78 14.02c-.24.68-1.4 1.32-1.95 1.4-.5.08-1.12.11-1.81-.11-.42-.13-.95-.31-1.64-.61-2.88-1.25-4.76-4.16-4.9-4.35-.15-.2-1.17-1.55-1.17-2.96 0-1.41.74-2.1 1-2.39.26-.29.58-.36.77-.36.2 0 .39 0 .56.01.18.01.42-.07.65.5.24.58.83 2.02.9 2.17.08.14.13.32.03.51-.1.2-.15.31-.29.48-.15.17-.3.37-.43.5-.15.15-.3.3-.13.59.17.29.75 1.22 1.6 1.98 1.1.98 2.03 1.28 2.32 1.42.29.15.46.13.63-.07.18-.2.73-.85.93-1.14.19-.29.39-.24.65-.15.27.1 1.7.8 1.99.95.29.14.49.21.56.33.08.13.08.7-.16 1.38z"/></svg></a>
+        <a href="https://www.tiktok.com/@decisivesound?_r=1&_t=ZS-97od0ZSG3NM" target="_blank" rel="noopener" aria-label="TikTok" class="social-tt"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16.6 2.02c.32 2.15 1.7 3.63 3.73 3.9v2.79c-1.31.03-2.63-.37-3.73-1.09v6.53c0 3.2-2.6 5.83-5.8 5.83S5 16.35 5 13.15c0-3.19 2.6-5.83 5.8-5.83.28 0 .55.02.82.06v2.93a2.9 2.9 0 1 0 2.11 2.79V2.02h2.87z"/></svg></a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h5>Company</h5>
+      <a href="{% url 'about' %}">About</a><a href="{% url 'services' %}">Services</a>
+      <a href="{% url 'equipment' %}">Equipment</a><a href="{% url 'gallery' %}">Gallery</a><a href="{% url 'contact' %}">Contact</a>
+    </div>
+    <div class="foot-col">
+      <h5>Contact</h5>
+      <span><span class="material-symbols-outlined" style="font-size:15px !important;">call</span> +234 803 380 7067</span>
+      <span><span class="material-symbols-outlined" style="font-size:15px !important;">mail</span> decisivesound8@gmail.com</span>
+      <span><span class="material-symbols-outlined" style="font-size:15px !important;">schedule</span> Mon–Sun, 9am–11pm</span>
+    </div>
+    <div class="foot-col">
+      <h5>Areas</h5>
+      <span>Lagos Island</span><span>Lekki &amp; Ajah</span>
+      <span>Abuja · Port Harcourt</span><span>Nationwide delivery</span>
+    </div>
+    <div class="foot-col">
+      <h5>Legal</h5>
+      <a href="#">Privacy Policy</a><a href="{% url 'terms' %}">Terms of Service</a><a href="{% url 'terms' %}">Rental Agreement</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span data-year>2026</span> Decisive Sound NG. All rights reserved.</span>
+    <div class="foot-status"><span class="status-dot"></span> System Status: Online</div>
+  </div>
+</footer>
+
+<div class="sticky-book"><a href="{% url 'booking' %}" class="btn btn-solid">
+  <span class="material-symbols-outlined" style="font-size:17px !important;">event</span> Book Now
+</a></div>
+<div class="float-stack">
+  <div class="wa-tooltip">💬 Need a quote? Chat instantly.</div>
+  <a href="#" data-wa-link class="wa-float" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.438 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+  </a>
+</div>
+
+<script src="{% static 'js/whatsapp.js' %}"></script>
+<script src="{% static 'js/navbar.js' %}"></script>
+<script src="{% static 'js/scroll.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r158/three.min.js"></script>
+<script src="{% static 'js/magic-rings.js' %}"></script>
+<script src="{% static 'js/rings-init.js' %}"></script>
+<script src="{% static 'js/enhance.js' %}"></script>
+</body>
+</html>

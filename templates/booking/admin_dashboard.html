@@ -1,0 +1,474 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Decisive Sound NG Admin</title>
+<meta name="robots" content="noindex">
+<style>
+  :root {
+    --bg: #0e1116;
+    --panel: #161b22;
+    --panel-2: #1c2229;
+    --border: #2a3038;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #6c4dff;
+    --green: #1a7f37;
+    --gold: #b8860b;
+    --blue: #1f6feb;
+    --red: #cf222e;
+    --sidebar-w: 220px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", Inter, Roboto, sans-serif;
+  }
+  a { color: inherit; }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    padding: 22px 16px;
+    overflow-y: auto;
+    z-index: 40;
+    transition: transform .2s ease;
+  }
+  .sidebar-brand { font-weight: 700; font-size: 16px; margin-bottom: 26px; padding-left: 6px; }
+  .sidebar-brand span { color: var(--accent); }
+  .sidebar nav a {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--muted);
+    font-size: 13.5px; font-weight: 500;
+    padding: 10px 10px; border-radius: 8px; margin-bottom: 2px;
+  }
+  .sidebar nav a:hover { background: var(--panel-2); color: var(--text); }
+  .sidebar nav a.active { background: rgba(108,77,255,0.15); color: var(--text); }
+  .sidebar-divider { border-top: 1px solid var(--border); margin: 14px 0; }
+
+  .backdrop {
+    display: none;
+    position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 39;
+  }
+
+  .content { margin-left: var(--sidebar-w); padding: 28px 26px 80px; }
+
+  .mobile-topbar { display: none; }
+
+  @media (max-width: 880px) {
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.open { transform: translateX(0); }
+    .content { margin-left: 0; padding: 20px 16px 70px; }
+    .mobile-topbar {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px;
+    }
+    .backdrop.open { display: block; }
+  }
+
+  .hamburger {
+    background: var(--panel); border: 1px solid var(--border); color: var(--text);
+    border-radius: 8px; padding: 8px 11px; font-size: 16px; cursor: pointer;
+  }
+
+  /* ---------- Top bar / messages ---------- */
+  .top-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 22px; flex-wrap: wrap; gap: 12px;
+  }
+  h1 { font-size: 21px; margin: 0; }
+  .back-link {
+    color: var(--muted); text-decoration: none; font-size: 13.5px;
+    border: 1px solid var(--border); padding: 7px 14px; border-radius: 8px;
+  }
+  .back-link:hover { color: var(--text); border-color: var(--muted); }
+
+  .flash { padding: 11px 16px; border-radius: 9px; font-size: 13.5px; margin-bottom: 16px; }
+  .flash.success { background: rgba(26,127,55,0.15); border: 1px solid rgba(26,127,55,0.4); color: #6bd48a; }
+  .flash.error { background: rgba(207,34,34,0.13); border: 1px solid rgba(207,34,34,0.4); color: #ff8080; }
+
+  /* ---------- Notifications ---------- */
+  .notif-bar {
+    background: rgba(184,134,11,0.10); border: 1px solid rgba(184,134,11,0.35);
+    border-radius: 10px; padding: 12px 16px; margin-bottom: 22px;
+    font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center;
+  }
+  .notif-bar strong { color: var(--gold); }
+  .notif-bar .notif-item { display: flex; align-items: center; gap: 6px; }
+  .notif-item::before { content: "•"; color: var(--gold); }
+
+  /* ---------- Stat cards ---------- */
+  .section-title {
+    font-size: 12.5px; text-transform: uppercase; letter-spacing: .05em;
+    color: var(--muted); margin: 26px 0 12px;
+  }
+  .section-title:first-of-type { margin-top: 0; }
+  .stat-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+  }
+  .stat-card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px 18px;
+  }
+  .stat-card .label {
+    font-size: 12px; color: var(--muted); text-transform: uppercase;
+    letter-spacing: .04em; margin-bottom: 8px;
+  }
+  .stat-card .value { font-size: 24px; font-weight: 700; }
+  .stat-card .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .stat-card.accent-red .value { color: #ff8080; }
+  .stat-card.accent-gold .value { color: #e0ac3f; }
+  .stat-card.accent-green .value { color: #6bd48a; }
+
+  /* ---------- Quick actions ---------- */
+  .quick-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .qa-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--panel); border: 1px solid var(--border); color: var(--text);
+    text-decoration: none; font-size: 13.5px; font-weight: 500;
+    padding: 11px 16px; border-radius: 10px; cursor: pointer;
+  }
+  .qa-btn:hover { border-color: var(--accent); }
+  .qa-btn.primary { background: var(--accent); border-color: var(--accent); }
+  .qa-btn.primary:hover { opacity: .9; }
+
+  /* ---------- Panels / tables ---------- */
+  .panel {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px; margin-bottom: 22px;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th, td { text-align: left; padding: 9px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th { color: var(--muted); font-weight: 500; font-size: 11.5px; text-transform: uppercase; }
+  tr:last-child td { border-bottom: none; }
+  .table-scroll { overflow-x: auto; }
+  .empty { color: var(--muted); font-size: 13.5px; padding: 10px 0; }
+
+  .pill {
+    font-size: 11.5px; font-weight: 600; padding: 3px 10px;
+    border-radius: 999px; color: #fff; display: inline-block;
+  }
+  .pay-pill { font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 999px; display:inline-block; }
+  .pay-Unpaid { background: rgba(139,148,158,.2); color: var(--muted); }
+  .pay-DepositPaid { background: rgba(184,134,11,.2); color: var(--gold); }
+  .pay-FullyPaid { background: rgba(31,111,235,.2); color: #5b9dff; }
+  .pay-Cancelled { background: rgba(207,34,34,.2); color: #ff8080; }
+
+  .row-actions { display: flex; gap: 6px; flex-wrap: nowrap; }
+  .mini-btn {
+    font-size: 11.5px; font-weight: 600; padding: 5px 9px; border-radius: 6px;
+    border: 1px solid var(--border); background: var(--panel-2); color: var(--text);
+    text-decoration: none; cursor: pointer;
+  }
+  .mini-btn:hover { border-color: var(--muted); }
+  .mini-btn.confirm { border-color: rgba(26,127,55,.5); color: #6bd48a; }
+  .mini-btn.cancel { border-color: rgba(207,34,34,.5); color: #ff8080; }
+  .mini-form { display: inline; }
+
+  /* ---------- Filters ---------- */
+  .filters {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px; margin-bottom: 16px;
+  }
+  .filters input, .filters select {
+    width: 100%; background: var(--panel-2); border: 1px solid var(--border);
+    color: var(--text); border-radius: 8px; padding: 9px 10px; font-size: 13px;
+  }
+  .filters-row-actions { display: flex; gap: 10px; margin-top: 2px; grid-column: 1 / -1; }
+  .btn-small {
+    background: var(--accent); border: none; color: #fff; font-size: 13px;
+    font-weight: 600; padding: 9px 16px; border-radius: 8px; cursor: pointer;
+  }
+  .btn-small.ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+
+  .pagination { display: flex; gap: 10px; align-items: center; margin-top: 14px; font-size: 13px; color: var(--muted); }
+  .pagination a { color: var(--text); text-decoration: none; border: 1px solid var(--border); padding: 6px 12px; border-radius: 7px; }
+  .pagination a.disabled { opacity: .35; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<div class="backdrop" id="backdrop"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">🎧 Decisive Sound <span>NG</span></div>
+  <nav>
+    <a href="{% url 'admin_dashboard' %}" class="active">📊 Dashboard</a>
+    <a href="{% url 'analytics_dashboard' %}">📈 Analytics</a>
+    <a href="{% url 'admin:booking_booking_changelist' %}">📋 All Bookings (Admin)</a>
+    <a href="{% url 'dashboard_calendar' %}">🗓️ Calendar</a>
+    <a href="{% url 'admin:booking_equipmentinventory_changelist' %}">📦 Inventory</a>
+    <a href="{% url 'admin:booking_galleryimage_changelist' %}">🖼️ Gallery</a>
+    <a href="{% url 'dashboard_send_email' %}">✉️ Send Email</a>
+    <a href="{% url 'dashboard_report' %}?{{ filters_querystring }}">⬇️ Export Report</a>
+    <div class="sidebar-divider"></div>
+    <a href="{% url 'booking' %}">➕ New Booking</a>
+    <a href="{% url 'home' %}">🌐 View Site</a>
+    <a href="{% url 'admin:logout' %}">🚪 Log Out</a>
+  </nav>
+</aside>
+
+<div class="content">
+
+  <div class="mobile-topbar">
+    <button class="hamburger" id="hamburger" aria-label="Open menu">☰</button>
+    <strong>Dashboard</strong>
+  </div>
+
+  <div class="top-bar">
+    <h1>📊 Business Dashboard</h1>
+    <a class="back-link" href="{% url 'admin:booking_booking_changelist' %}">Django Admin →</a>
+  </div>
+
+  {% for message in messages %}
+    <div class="flash {{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+
+  {% if notification_items %}
+  <div class="notif-bar">
+    <strong>🔔 Notifications</strong>
+    {% for item in notification_items %}
+      <span class="notif-item">{{ item }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="section-title">Bookings Overview</div>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="label">Total Bookings</div>
+      <div class="value">{{ total_bookings }}</div>
+    </div>
+    {% for row in status_breakdown %}
+    <div class="stat-card">
+      <div class="label">{{ row.label }}</div>
+      <div class="value" style="color:{{ row.color }};">{{ row.count }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="section-title">Calendar Overview <span style="text-transform:none;color:var(--muted);">— <a href="{% url 'dashboard_calendar' %}" style="color:var(--accent);">open full calendar →</a></span></div>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="label">Today's Events</div>
+      <div class="value">{{ todays_events_count }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Upcoming This Week</div>
+      <div class="value">{{ upcoming_this_week_count }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Bookings This Month</div>
+      <div class="value">{{ bookings_this_month_count }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Busy Days</div>
+      <div class="value">{{ busy_days_this_month_count }}</div>
+      <div class="sub">Days this month with 2+ events</div>
+    </div>
+  </div>
+
+  <div class="section-title">Revenue Summary</div>
+  <div class="stat-grid">
+    <div class="stat-card accent-green">
+      <div class="label">Revenue This Month</div>
+      <div class="value">₦{{ revenue_this_month|floatformat:0 }}</div>
+      <div class="sub">Verified payments received this month</div>
+    </div>
+    <div class="stat-card accent-red">
+      <div class="label">Outstanding Payments</div>
+      <div class="value">₦{{ outstanding_payments|floatformat:0 }}</div>
+      <div class="sub">Balance due on active bookings</div>
+    </div>
+    <div class="stat-card accent-gold">
+      <div class="label">Deposits Received</div>
+      <div class="value">₦{{ deposits_received|floatformat:0 }}</div>
+      <div class="sub">All-time, verified deposits</div>
+    </div>
+  </div>
+
+  <div class="section-title">Inventory Summary <span style="text-transform:none;color:var(--muted);">— Headsets, today</span></div>
+  {% if not inventory_configured %}
+  <div class="notif-bar" style="background:rgba(207,34,34,0.10);border-color:rgba(207,34,34,0.35);">
+    <span>⚠️ No headset inventory has been set up yet. <a href="{% url 'admin:booking_equipmentinventory_add' %}" style="color:#ff8080;text-decoration:underline;">Add one in Admin</a> so bookings can't be confirmed past your actual stock.</span>
+  </div>
+  {% endif %}
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="label">Total Headsets</div>
+      <div class="value">{{ inventory_total }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Reserved</div>
+      <div class="value">{{ inventory_reserved }}</div>
+      <div class="sub">Confirmed/paid bookings, today's date</div>
+    </div>
+    <div class="stat-card accent-green">
+      <div class="label">Available</div>
+      <div class="value">{{ inventory_available }}</div>
+    </div>
+    <div class="stat-card accent-gold">
+      <div class="label">Maintenance</div>
+      <div class="value">{{ inventory_maintenance }}</div>
+    </div>
+  </div>
+
+  <div class="section-title">Quick Actions</div>
+  <div class="quick-actions">
+    <a class="qa-btn primary" href="{% url 'booking' %}">➕ New Booking</a>
+    <a class="qa-btn" href="{% url 'analytics_dashboard' %}">📈 View Analytics</a>
+    <a class="qa-btn" href="{% url 'dashboard_calendar' %}">🗓️ View Calendar</a>
+    <a class="qa-btn" href="{% url 'admin:booking_equipmentinventory_changelist' %}">📦 Manage Inventory</a>
+    <a class="qa-btn" href="{% url 'admin:booking_galleryimage_add' %}">🖼️ Add Gallery Photo/Video</a>
+    <a class="qa-btn" href="{% url 'dashboard_report' %}?{{ filters_querystring }}">⬇️ Generate Report</a>
+    <a class="qa-btn" href="{% url 'dashboard_send_email' %}">✉️ Send Customer Email</a>
+  </div>
+
+  <div class="section-title">Upcoming Events</div>
+  <div class="panel">
+    <div class="table-scroll">
+    {% if upcoming_events %}
+    <table>
+      <thead><tr><th>Date</th><th>Customer</th><th>Event</th><th>State</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for b in upcoming_events %}
+        <tr>
+          <td>{{ b.event_date }}</td>
+          <td>{{ b.name }}</td>
+          <td>{{ b.event_type }}</td>
+          <td>{{ b.state }}</td>
+          <td>
+            {% for row in status_breakdown %}{% if row.label == b.status %}<span class="pill" style="background:{{ row.color }};">{{ b.status }}</span>{% endif %}{% endfor %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty">No upcoming events yet.</div>
+    {% endif %}
+    </div>
+  </div>
+
+  <div class="section-title">Bookings — Search &amp; Filter</div>
+  <div class="panel">
+    <form method="get" class="filters">
+      <input type="text" name="q" value="{{ q }}" placeholder="Name, phone, or booking ID">
+      <select name="status">
+        <option value="">All statuses</option>
+        {% for value, label in status_choices %}
+        <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      <select name="payment_status">
+        <option value="">All payment statuses</option>
+        {% for label in payment_status_choices %}
+        <option value="{{ label }}" {% if payment_status_filter == label %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      <select name="event_type">
+        <option value="">All event types</option>
+        {% for value, label in event_type_choices %}
+        <option value="{{ value }}" {% if event_type_filter == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      <select name="state">
+        <option value="">All states</option>
+        {% for st in state_choices %}
+        <option value="{{ st }}" {% if state_filter == st %}selected{% endif %}>{{ st }}</option>
+        {% endfor %}
+      </select>
+      <input type="date" name="event_date" value="{{ date_filter }}">
+      <div class="filters-row-actions">
+        <button type="submit" class="btn-small">Apply Filters</button>
+        <a href="{% url 'admin_dashboard' %}" class="btn-small ghost" style="text-decoration:none;display:inline-block;">Clear</a>
+      </div>
+    </form>
+
+    <div class="table-scroll">
+    {% if bookings %}
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th><th>Customer</th><th>Event</th><th>Date</th><th>State</th>
+          <th>Payment</th><th>Status</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in bookings %}
+        <tr>
+          <td>#{{ b.id }}</td>
+          <td>{{ b.name }}<br><span style="color:var(--muted);font-size:11.5px;">{{ b.phone }}</span></td>
+          <td>{{ b.event_type }}</td>
+          <td>{{ b.event_date }}</td>
+          <td>{{ b.state }}</td>
+          <td><span class="pay-pill pay-{{ b.payment_status_label|cut:" " }}">{{ b.payment_status_label }}</span></td>
+          <td>
+            {% for row in status_breakdown %}{% if row.label == b.status %}<span class="pill" style="background:{{ row.color }};">{{ b.status }}</span>{% endif %}{% endfor %}
+          </td>
+          <td>
+            <div class="row-actions">
+              <a class="mini-btn" href="{% url 'admin:booking_booking_change' b.id %}">View</a>
+              <a class="mini-btn" href="{% url 'admin:booking_booking_change' b.id %}">Edit</a>
+              <a class="mini-btn" href="{% url 'dashboard_quotation' b.id %}" target="_blank" rel="noopener">Quote</a>
+              <a class="mini-btn" href="{% url 'dashboard_invoice' b.id %}" target="_blank" rel="noopener">Invoice</a>
+              {% if b.status == "Pending" %}
+              <form class="mini-form" method="post" action="{% url 'dashboard_booking_action' b.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="confirm">
+                <input type="hidden" name="next" value="{% url 'admin_dashboard' %}?{{ filters_querystring }}">
+                <button type="submit" class="mini-btn confirm">Confirm</button>
+              </form>
+              {% endif %}
+              {% if b.status != "Cancelled" and b.status != "Completed" %}
+              <form class="mini-form" method="post" action="{% url 'dashboard_booking_action' b.id %}" onsubmit="return confirm('Cancel booking #{{ b.id }} ({{ b.name }})?');">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="cancel">
+                <input type="hidden" name="next" value="{% url 'admin_dashboard' %}?{{ filters_querystring }}">
+                <button type="submit" class="mini-btn cancel">Cancel</button>
+              </form>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty">No bookings match these filters.</div>
+    {% endif %}
+    </div>
+
+    <div class="pagination">
+      <a class="{% if not has_prev_page %}disabled{% endif %}" href="?{{ filters_querystring }}&page={{ page_number|add:"-1" }}">← Prev</a>
+      <span>Page {{ page_number }} · {{ filtered_count }} booking{{ filtered_count|pluralize }}</span>
+      <a class="{% if not has_next_page %}disabled{% endif %}" href="?{{ filters_querystring }}&page={{ page_number|add:"1" }}">Next →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  var sidebar = document.getElementById('sidebar');
+  var backdrop = document.getElementById('backdrop');
+  var hamburger = document.getElementById('hamburger');
+  function closeSidebar() { sidebar.classList.remove('open'); backdrop.classList.remove('open'); }
+  if (hamburger) {
+    hamburger.addEventListener('click', function () {
+      sidebar.classList.toggle('open');
+      backdrop.classList.toggle('open');
+    });
+  }
+  backdrop.addEventListener('click', closeSidebar);
+</script>
+</body>
+</html>

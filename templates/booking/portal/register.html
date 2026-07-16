@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Your Account — Decisive Sound NG</title>
+<meta name="robots" content="noindex">
+{% include "booking/portal/_head.html" %}
+</head>
+<body>
+
+{% include "booking/portal/_nav.html" %}
+
+<section class="page-hero">
+  <div class="wrap">
+    <div class="eyebrow eyebrow-primary">Customer Portal</div>
+    <h1>Create your account</h1>
+    <p>Track your bookings, download quotations and invoices, and manage everything in one place.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    {% include "booking/portal/_messages.html" %}
+    <div class="glass-card card-pad auth-card">
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-grid" style="grid-template-columns:1fr;">
+          <div class="field">
+            <label for="id_first_name">Full name</label>
+            {{ form.first_name }}
+            {% if form.first_name.errors %}<div style="color:#ff8080;font-size:12.5px;">{{ form.first_name.errors|join:", " }}</div>{% endif %}
+          </div>
+          <div class="field">
+            <label for="id_email">Email</label>
+            {{ form.email }}
+            {% if form.email.errors %}<div style="color:#ff8080;font-size:12.5px;">{{ form.email.errors|join:", " }}</div>{% endif %}
+          </div>
+          <div class="field">
+            <label for="id_phone">Phone number</label>
+            {{ form.phone }}
+            {% if form.phone.errors %}<div style="color:#ff8080;font-size:12.5px;">{{ form.phone.errors|join:", " }}</div>{% endif %}
+          </div>
+          <div class="field">
+            <label for="id_password1">Password</label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}<div style="color:#ff8080;font-size:12.5px;">{{ form.password1.errors|join:", " }}</div>{% endif %}
+          </div>
+          <div class="field">
+            <label for="id_password2">Confirm password</label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}<div style="color:#ff8080;font-size:12.5px;">{{ form.password2.errors|join:", " }}</div>{% endif %}
+          </div>
+        </div>
+        {% if form.non_field_errors %}<div style="color:#ff8080;font-size:13px;margin-top:10px;">{{ form.non_field_errors|join:", " }}</div>{% endif %}
+        <button type="submit" class="btn btn-solid" style="width:100%;margin-top:22px;">Create Account</button>
+      </form>
+      <p class="helper-link">Already have an account? <a href="{% url 'portal_login' %}">Log in</a></p>
+    </div>
+  </div>
+</section>
+
+{% include "booking/portal/_footer.html" %}
+</body>
+</html>

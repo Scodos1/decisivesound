@@ -1,0 +1,11 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+
+{% block object-tools-items %}
+  <li>
+    <a href="{% url 'admin_dashboard' %}" class="button" style="background:#1f6feb;">
+      📊 View Dashboard
+    </a>
+  </li>
+  {{ block.super }}
+{% endblock %}
