@@ -216,3 +216,30 @@ EMAIL_TIMEOUT = int(os.environ.get('EMAIL_TIMEOUT', '10'))
 # initialize/verify transactions and check webhook signatures. Never
 # commit a real key here; set it via the environment / .env file.
 PAYSTACK_SECRET_KEY = os.environ.get('PAYSTACK_SECRET_KEY', '')
+
+# Without this, Django's default behaviour when DEBUG=False is to email
+# ADMINS about unhandled server errors (500s) and otherwise print nothing
+# at all - since ADMINS/email alerting isn't set up here, errors would be
+# completely invisible in production. This sends them to the console
+# instead, which Render (and most hosts) capture as regular log output,
+# so a 500 shows its full traceback right there in the Logs tab.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+}
