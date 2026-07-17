@@ -216,4 +216,3 @@ EMAIL_TIMEOUT = int(os.environ.get('EMAIL_TIMEOUT', '10'))
 # initialize/verify transactions and check webhook signatures. Never
 # commit a real key here; set it via the environment / .env file.
 PAYSTACK_SECRET_KEY = os.environ.get('PAYSTACK_SECRET_KEY', '')
-
