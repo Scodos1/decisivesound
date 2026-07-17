@@ -56,12 +56,14 @@ CSRF_TRUSTED_ORIGINS = [f'https://{h}' for h in ALLOWED_HOSTS if h not in ('loca
 INSTALLED_APPS = [
     'booking',
 
+    'cloudinary_storage',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -162,23 +164,32 @@ STATICFILES_DIRS = [
 # (see build.sh). Not used in local dev since STATICFILES_DIRS covers that.
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# Admin-uploaded content (Gallery photos & videos, Booking documents, etc. -
+# anything using an ImageField/FileField). Separate from STATIC_* above,
+# which is for the site's own bundled CSS/JS/images, not user uploads.
+#
+# Local disk storage doesn't survive in most hosting setups (e.g. Render's
+# web services wipe their filesystem on every restart/redeploy), so
+# uploads go to Cloudinary instead whenever CLOUDINARY_URL is set - see
+# .env.example for where to get that value. Falls back to local disk if
+# it isn't set, which is what local development uses.
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+USE_CLOUDINARY = bool(os.environ.get('CLOUDINARY_URL'))
+
 STORAGES = {
     'default': {
-        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+        'BACKEND': (
+            'cloudinary_storage.storage.MediaCloudinaryStorage'
+            if USE_CLOUDINARY
+            else 'django.core.files.storage.FileSystemStorage'
+        ),
     },
     'staticfiles': {
         'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
     },
 }
-
-# Admin-uploaded content (currently just Gallery images - see
-# booking/models.py's GalleryImage). Separate from STATIC_* above, which
-# is for the site's own bundled CSS/JS/images, not user uploads.
-# In production, point these at proper file storage (e.g. S3) rather than
-# local disk - the dev server here only serves MEDIA_URL when DEBUG=True
-# (see decisivesounds/urls.py).
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media'
 
 # Email — used to notify the business of new bookings (booking/views.py).
 # Defaults to printing emails to the console so nothing breaks out of the
