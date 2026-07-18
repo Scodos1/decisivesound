@@ -58,6 +58,31 @@
       if (e.key === "ArrowLeft") show(currentIndex - 1);
       if (e.key === "ArrowRight") show(currentIndex + 1);
     });
+
+    // Swipe left/right to move between items, so mobile visitors can
+    // browse the lightbox naturally instead of only tapping the arrows.
+    var stageEl = lightbox.querySelector(".gallery-lightbox-stage");
+    var touchStartX = 0, touchStartY = 0;
+    var SWIPE_THRESHOLD = 40; // px - low enough to feel responsive, high enough to ignore taps/scroll jitter
+
+    stageEl.addEventListener("touchstart", function (e) {
+      var t = e.changedTouches[0];
+      touchStartX = t.clientX;
+      touchStartY = t.clientY;
+    }, { passive: true });
+
+    stageEl.addEventListener("touchend", function (e) {
+      var t = e.changedTouches[0];
+      var deltaX = t.clientX - touchStartX;
+      var deltaY = t.clientY - touchStartY;
+      // Only treat it as a swipe if the motion is mostly horizontal -
+      // otherwise a vertical swipe (e.g. scrubbing a video, or an
+      // incidental vertical drag) would incorrectly change the item.
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > SWIPE_THRESHOLD) {
+        if (deltaX < 0) show(currentIndex + 1);
+        else show(currentIndex - 1);
+      }
+    }, { passive: true });
   }
 
   function toggleFullscreen() {

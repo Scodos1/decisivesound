@@ -317,7 +317,7 @@
   }
 
   /* Gallery */
-  .gallery-grid { column-count: 2; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
   .insta-grid   { grid-template-columns: repeat(2,1fr); }
 
   /* Reviews horizontal scroll */
@@ -389,8 +389,7 @@
   .cta-row .btn { width: 100%; max-width: 320px; }
 
   /* Gallery */
-  .gallery-grid { column-count: unset; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .gallery-item { margin-bottom: 0; min-height: 110px; }
+  .gallery-grid { gap: 10px; }
   .gallery-caption { font-size: 11px; padding: 8px 8px 6px; }
   .gallery-play-badge .material-symbols-outlined { font-size: 32px !important; padding: 6px; }
 
