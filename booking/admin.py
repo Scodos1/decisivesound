@@ -70,6 +70,7 @@ class BookingAdmin(admin.ModelAdmin):
     actions = [
         "mark_pending", "mark_confirmed", "mark_deposit_paid",
         "mark_fully_paid", "mark_completed", "mark_cancelled",
+        "delete_selected",
     ]
     inlines = [PaymentTransactionInline]
 
@@ -346,6 +347,15 @@ class PaymentTransactionAdmin(admin.ModelAdmin):
     handling requirement ("log the failed verification for administrative
     review"). System-managed: nothing here should be manually created or
     edited, only viewed.
+
+    Deletion is deliberately NOT blocked here (only add/change are): Django's
+    admin checks this same has_delete_permission when cascade-deleting a
+    booking's related records, so unconditionally returning False would
+    make it impossible to ever delete a Booking once it had any payment on
+    file - not just directly deleting a transaction from this list. Falling
+    through to Django's normal permission check means superusers can delete
+    (transactions and, via cascade, bookings), while other staff need the
+    standard "delete_paymenttransaction" permission, same as any other model.
     """
     list_display = ("reference", "booking_link", "payment_type", "amount", "status_badge", "created_at", "verified_at")
     list_filter = ("status", "payment_type")
@@ -357,9 +367,6 @@ class PaymentTransactionAdmin(admin.ModelAdmin):
         return False
 
     def has_change_permission(self, request, obj=None):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
         return False
 
     def booking_link(self, obj):
