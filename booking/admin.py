@@ -1,4 +1,5 @@
 from django.contrib import admin, messages
+from django.db import IntegrityError
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.html import format_html
@@ -73,7 +74,6 @@ class BookingAdmin(admin.ModelAdmin):
     inlines = [PaymentTransactionInline]
 
     readonly_fields = (
-        "payment_reference", "amount_paid", "payment_date", "payment_method",
         "outstanding_balance", "payment_link",
         "quotation_number", "quotation_generated_at", "quotation_expiry_date",
         "quotation_status", "quotation_link",
@@ -97,10 +97,18 @@ class BookingAdmin(admin.ModelAdmin):
                 "payment_method", "outstanding_balance", "payment_link",
             ),
             "description": (
-                "These fields are system-managed — they only ever update "
-                "automatically after a verified Paystack payment. Use "
-                "\"Payment link\" below to send the customer a link to pay "
-                "online once the booking is Confirmed."
+                "These normally update automatically after a verified "
+                "Paystack payment. Paystack checkout is currently disabled, "
+                "so you can also set them here yourself after an offline "
+                "payment (e.g. bank transfer) — increasing \"Amount paid\" "
+                "and saving automatically logs a matching payment record "
+                "(so it's correctly counted in the dashboard's revenue "
+                "figures) and refreshes the invoice. Leave \"Payment date\" "
+                "blank to use right now, and \"Payment method\" blank to "
+                "default to \"Manual (offline)\". Remember to also update "
+                "\"Booking status\" below (Deposit Paid / Fully Paid) to "
+                "match — it's tracked separately and won't change on its "
+                "own."
             ),
         }),
         ("Quotation", {
@@ -128,6 +136,74 @@ class BookingAdmin(admin.ModelAdmin):
             ),
         }),
     )
+
+    def save_model(self, request, obj, form, change):
+        # Was amount_paid raised by this save? If so, it's staff manually
+        # recording an offline payment (Paystack checkout is currently
+        # disabled, so this is the only path payments come in through
+        # right now). Compare against the pre-save DB value, not the
+        # in-memory old object, since ModelAdmin doesn't give us that.
+        old_amount_paid = 0
+        if change and obj.pk:
+            old_amount_paid = (
+                Booking.objects.filter(pk=obj.pk).values_list("amount_paid", flat=True).first() or 0
+            )
+        increase = obj.amount_paid - old_amount_paid
+
+        if increase > 0 and not obj.payment_date:
+            obj.payment_date = timezone.now()
+
+        super().save_model(request, obj, form, change)
+
+        if increase > 0:
+            self._record_offline_payment(request, obj, increase)
+
+    def _record_offline_payment(self, request, obj, increase):
+        """Logs a PaymentTransaction for a manually-recorded offline
+        payment (Paystack checkout is currently disabled) and refreshes
+        the invoice, so it's correctly counted in the dashboard's revenue
+        figures. Shared by save_model (single-booking edits) and
+        _bulk_set_status's "Mark Fully Paid" action - without this being
+        pulled out into its own method, bulk actions would silently skip
+        it, since ModelAdmin.save_model() is only ever called for
+        single-record form submissions, never for bulk actions."""
+        if not obj.payment_method:
+            obj.payment_method = "Manual (offline)"
+            obj.save(update_fields=["payment_method"])
+
+        payment_type = (
+            Booking.PAYMENT_FULL if obj.status == Booking.STATUS_FULLY_PAID
+            else Booking.PAYMENT_DEPOSIT
+        )
+        reference = obj.payment_reference or f"MANUAL-{obj.pk}-{timezone.now():%Y%m%d%H%M%S}"
+        tx_kwargs = dict(
+            booking=obj,
+            payment_type=payment_type,
+            amount=increase,
+            status=PaymentTransaction.STATUS_SUCCESS,
+            verified_at=obj.payment_date or timezone.now(),
+            gateway_response=(
+                "Manually recorded by staff via admin (offline payment) - "
+                "Paystack checkout is currently disabled."
+            ),
+        )
+        try:
+            PaymentTransaction.objects.create(reference=reference, **tx_kwargs)
+        except IntegrityError:
+            # The reference staff typed in (or a coincidental clash on
+            # the auto-generated one) already belongs to another
+            # transaction - fall back to a guaranteed-unique one so
+            # the payment still gets logged instead of silently
+            # failing.
+            reference = f"MANUAL-{obj.pk}-{timezone.now():%Y%m%d%H%M%S%f}"
+            PaymentTransaction.objects.create(reference=reference, **tx_kwargs)
+
+        obj.generate_invoice()  # keeps the invoice's amount-paid snapshot in sync
+        messages.success(
+            request,
+            f"Logged a ₦{increase:,} payment for {obj.name} (reference: {reference}) — "
+            f"this will now be counted in the dashboard's revenue figures.",
+        )
 
     def status_badge(self, obj):
         color = STATUS_COLORS.get(obj.status, "#666")
@@ -204,6 +280,7 @@ class BookingAdmin(admin.ModelAdmin):
         # only runs through the single-record admin change form), so the
         # headset-inventory check has to be done explicitly here too.
         blocked = []
+        unrecorded = []
         updated = 0
         for obj in queryset:
             if new_status in Booking.RESERVING_STATUSES:
@@ -212,9 +289,36 @@ class BookingAdmin(admin.ModelAdmin):
                 if reason:
                     blocked.append(f"#{obj.id} {obj.name}: {reason}")
                     continue
+
+            # "Mark Fully Paid" only changed the status label until now -
+            # amount_paid was left untouched, and ModelAdmin.save_model()
+            # (where offline payments normally get logged - see
+            # _record_offline_payment) never runs for bulk actions, so
+            # revenue was silently never recorded for bookings marked
+            # paid this way. Top up amount_paid to the booking's known
+            # total here too, for parity with editing a single booking's
+            # form and typing the amount in by hand.
+            increase = 0
+            if new_status == Booking.STATUS_FULLY_PAID:
+                if obj.full_price_known:
+                    target = obj.estimated_total()
+                    increase = max(0, target - obj.amount_paid)
+                    if increase > 0:
+                        obj.amount_paid = target
+                        if not obj.payment_date:
+                            obj.payment_date = timezone.now()
+                else:
+                    # Can't auto-compute a total (e.g. price depends on
+                    # something not yet filled in) - status still gets
+                    # updated below, but flag it so staff know to record
+                    # the payment manually via the single-record form.
+                    unrecorded.append(f"#{obj.id} {obj.name}")
+
             obj.status = new_status
             obj.save()
             updated += 1
+            if increase > 0:
+                self._record_offline_payment(request, obj, increase)
 
         if updated:
             self.message_user(request, f"Updated {updated} booking(s) to {new_status}.")
@@ -223,6 +327,14 @@ class BookingAdmin(admin.ModelAdmin):
                 request,
                 f"{len(blocked)} booking(s) could NOT be set to {new_status} - "
                 f"insufficient headset inventory: " + "; ".join(blocked),
+                level=messages.WARNING,
+            )
+        if unrecorded:
+            self.message_user(
+                request,
+                f"{len(unrecorded)} booking(s) were marked Fully Paid but their total isn't "
+                f"known yet, so no payment was recorded - please add the amount manually on "
+                f"each booking's page: " + "; ".join(unrecorded),
                 level=messages.WARNING,
             )
 
