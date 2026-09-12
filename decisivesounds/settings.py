@@ -47,6 +47,9 @@ if _render_host and _render_host not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append(_render_host)
 if not ALLOWED_HOSTS and DEBUG:
     ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+if not ALLOWED_HOSTS and not DEBUG:
+    # Allow Render's health checks / any host until ALLOWED_HOSTS is configured
+    ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [f'https://{h}' for h in ALLOWED_HOSTS if h not in ('localhost', '127.0.0.1')]
 
@@ -99,25 +102,91 @@ WSGI_APPLICATION = 'decisivesounds.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'decisivesounds'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
-    }
-}
-
-# Optional: if DATABASE_URL is set (common with managed Postgres hosts like
-# Railway, Render, Heroku, Supabase, ElephantSQL), it overrides the
-# individual DB_* settings above. Requires `pip install dj-database-url`.
+#
+# Local dev uses SQLite by default so `python manage.py migrate` works
+# without needing a local Postgres install. Set DATABASE_URL or
+# USE_POSTGRES=True to force Postgres (e.g. in production on Render).
 _database_url = os.environ.get('DATABASE_URL')
+_use_postgres = os.environ.get('USE_POSTGRES', '').lower() in ('1', 'true', 'yes')
+
 if _database_url:
     import dj_database_url
-    DATABASES['default'] = dj_database_url.parse(_database_url, conn_max_age=600)
+    DATABASES = {'default': dj_database_url.parse(_database_url, conn_max_age=600)}
+elif _use_postgres:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('DB_NAME', 'decisivesounds'),
+            'USER': os.environ.get('DB_USER', 'postgres'),
+            'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+            'HOST': os.environ.get('DB_HOST', 'localhost'),
+            'PORT': os.environ.get('DB_PORT', '5432'),
+        }
+    }
+elif DEBUG:
+    # SQLite fallback for local development - zero setup
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+    # If DB_* vars look like they want Postgres, try to use it if reachable
+    # so existing .env files with Postgres creds keep working when Postgres is running.
+    _pg_host = os.environ.get('DB_HOST', '')
+    _pg_port = os.environ.get('DB_PORT', '5432')
+    if _pg_host in ('localhost', '127.0.0.1'):
+        try:
+            import socket
+            with socket.create_connection((_pg_host, int(_pg_port)), timeout=1.0):
+                pass
+            # Postgres is reachable - switch to it
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.postgresql',
+                    'NAME': os.environ.get('DB_NAME', 'decisivesounds'),
+                    'USER': os.environ.get('DB_USER', 'postgres'),
+                    'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+                    'HOST': _pg_host,
+                    'PORT': _pg_port,
+                }
+            }
+        except Exception:
+            pass  # keep SQLite
+else:
+    # Production without DATABASE_URL / USE_POSTGRES — try Postgres, fallback to SQLite
+    # so the build doesn't crash if the external DB isn't provisioned yet (Render
+    # will still use Postgres once DATABASE_URL is set).
+    _pg_host = os.environ.get('DB_HOST', 'localhost')
+    _pg_port = os.environ.get('DB_PORT', '5432')
+    _pg_reachable = False
+    if _pg_host in ('localhost', '127.0.0.1'):
+        try:
+            import socket
+            with socket.create_connection((_pg_host, int(_pg_port)), timeout=1.0):
+                _pg_reachable = True
+        except Exception:
+            _pg_reachable = False
+    else:
+        _pg_reachable = True  # non-local host assumed reachable / managed DB
+    if _pg_reachable:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': os.environ.get('DB_NAME', 'decisivesounds'),
+                'USER': os.environ.get('DB_USER', 'postgres'),
+                'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+                'HOST': _pg_host,
+                'PORT': _pg_port,
+            }
+        }
+    else:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
 
 
 # Password validation
@@ -151,10 +220,18 @@ USE_I18N = True
 USE_TZ = True
 
 
+# Auth - Customer Portal
+LOGIN_URL = 'portal_login'
+LOGIN_REDIRECT_URL = 'portal_dashboard'
+LOGOUT_REDIRECT_URL = 'portal_login'
+
+# Business config
+WHATSAPP_NUMBER = '2348033807067'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
@@ -173,7 +250,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # uploads go to Cloudinary instead whenever CLOUDINARY_URL is set - see
 # .env.example for where to get that value. Falls back to local disk if
 # it isn't set, which is what local development uses.
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 USE_CLOUDINARY = bool(os.environ.get('CLOUDINARY_URL'))

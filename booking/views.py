@@ -28,8 +28,9 @@ from .models import Booking, EQUIPMENT_HEADSET, EquipmentInventory, GalleryImage
 
 logger = logging.getLogger(__name__)
 
-# Same WhatsApp number the old client-side script used (js/booking.js -> WA_NUMBER).
-WHATSAPP_NUMBER = "2348033807067"
+# Centralised in decisivesounds/settings.py — fallback kept for test envs without settings loaded.
+from django.conf import settings as _dj_settings
+WHATSAPP_NUMBER = getattr(_dj_settings, "WHATSAPP_NUMBER", "2348033807067")
 
 # How long a duplicate (same phone + event_date + headsets) submission is
 # treated as a re-submit of the same booking rather than a new one.
@@ -47,6 +48,19 @@ DASHBOARD_BOOKINGS_PAGE_SIZE = 15
 _payment_status_for = payment_status_for
 
 
+def _check_public_booking_access(request, booking_obj):
+    """404 if this booking belongs to another customer (IDOR hardening).
+    Anonymous bookings (user=None) remain publicly reachable via the link
+    that was just generated, but bookings linked to a portal account are
+    only visible to their owner or staff."""
+    if booking_obj.user_id is not None:
+        if not request.user.is_authenticated or (
+            request.user.pk != booking_obj.user_id and not request.user.is_staff
+        ):
+            from django.http import Http404
+
+            raise Http404()
+    return booking_obj
 
 
 def home(request):
@@ -153,6 +167,7 @@ def _get_or_create_booking(form, user=None):
 
 def booking_success(request, booking_id):
     booking_obj = get_object_or_404(Booking, id=booking_id)
+    _check_public_booking_access(request, booking_obj)
 
     whatsapp_message = (
         "New booking request — Decisive Sound NG\n\n" + booking_obj.details_text()
@@ -804,6 +819,7 @@ def payment_page(request, booking_id):
     Deposit-only payment has been disabled - see Booking.can_pay_deposit.
     """
     booking_obj = get_object_or_404(Booking, id=booking_id)
+    _check_public_booking_access(request, booking_obj)
     error = request.GET.get("error")
 
     context = {
@@ -826,6 +842,7 @@ def payment_initiate(request, booking_id):
     accepted payment_type here (see Booking.can_pay_deposit).
     """
     booking_obj = get_object_or_404(Booking, id=booking_id)
+    _check_public_booking_access(request, booking_obj)
     payment_type = request.POST.get("payment_type")
 
     if payment_type != Booking.PAYMENT_FULL:
@@ -911,6 +928,7 @@ def payment_callback(request):
 
 def payment_success(request, booking_id):
     booking_obj = get_object_or_404(Booking, id=booking_id)
+    _check_public_booking_access(request, booking_obj)
     latest = booking_obj.payment_transactions.filter(
         status=PaymentTransaction.STATUS_SUCCESS
     ).first()

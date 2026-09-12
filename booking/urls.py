@@ -1,8 +1,66 @@
+from django.contrib.auth import views as auth_views
 from django.urls import path
 
+from . import portal_views
 from . import views
+from .forms import CustomerAuthenticationForm
 
 urlpatterns = [
+    # Customer Portal (auth + dashboard)
+    path("portal/register/", portal_views.register, name="portal_register"),
+    path(
+        "portal/login/",
+        auth_views.LoginView.as_view(
+            template_name="booking/portal/login.html",
+            authentication_form=CustomerAuthenticationForm,
+        ),
+        name="portal_login",
+    ),
+    path(
+        "portal/logout/",
+        auth_views.LogoutView.as_view(next_page="portal_login"),
+        name="portal_logout",
+    ),
+    path(
+        "portal/password-reset/",
+        auth_views.PasswordResetView.as_view(
+            template_name="booking/portal/password_reset.html",
+            email_template_name="booking/portal/password_reset_email.txt",
+            subject_template_name="booking/portal/password_reset_subject.txt",
+            success_url="/portal/password-reset/done/",
+        ),
+        name="portal_password_reset",
+    ),
+    path(
+        "portal/password-reset/done/",
+        auth_views.PasswordResetDoneView.as_view(
+            template_name="booking/portal/password_reset_done.html",
+        ),
+        name="portal_password_reset_done",
+    ),
+    path(
+        "portal/password-reset/confirm/<uidb64>/<token>/",
+        auth_views.PasswordResetConfirmView.as_view(
+            template_name="booking/portal/password_reset_confirm.html",
+            success_url="/portal/password-reset/complete/",
+        ),
+        name="portal_password_reset_confirm",
+    ),
+    path(
+        "portal/password-reset/complete/",
+        auth_views.PasswordResetCompleteView.as_view(
+            template_name="booking/portal/password_reset_complete.html",
+        ),
+        name="portal_password_reset_complete",
+    ),
+    path("portal/dashboard/", portal_views.dashboard, name="portal_dashboard"),
+    path("portal/notifications/read/", portal_views.mark_notifications_read, name="portal_mark_notifications_read"),
+    path("portal/booking/<int:booking_id>/", portal_views.booking_detail, name="portal_booking_detail"),
+    path("portal/booking/<int:booking_id>/quotation.pdf", portal_views.quotation_pdf, name="portal_quotation_pdf"),
+    path("portal/booking/<int:booking_id>/invoice.pdf", portal_views.invoice_pdf, name="portal_invoice_pdf"),
+    path("portal/booking/<int:booking_id>/request-cancellation/", portal_views.request_cancellation, name="portal_request_cancellation"),
+    path("portal/profile/", portal_views.profile, name="portal_profile"),
+
     path("", views.home, name="home"),
     path("about/", views.about, name="about"),
     path("services/", views.services, name="services"),

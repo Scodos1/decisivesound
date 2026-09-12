@@ -30,7 +30,8 @@ from .models import Booking, CancellationRequest, CustomerProfile
 
 logger = logging.getLogger(__name__)
 
-WHATSAPP_NUMBER = "2348033807067"
+from django.conf import settings as _dj_settings
+WHATSAPP_NUMBER = getattr(_dj_settings, "WHATSAPP_NUMBER", "2348033807067")
 
 
 # ---------------------------------------------------------------------

@@ -715,16 +715,36 @@ class GalleryImage(models.Model):
         untouched rather than blocking the save. Shared by the main photo
         field and the optional video poster field."""
         field_file = getattr(self, field_name)
-        if not field_file or not hasattr(field_file, "file"):
+        if not field_file:
             return
+        # Skip re-optimization if file already stored remotely (e.g. re-saving an existing
+        # Cloudinary-backed instance without a new upload) — field will lack a local file handle.
+        # For fresh uploads (InMemoryUploadedFile / TemporaryUploadedFile) we always optimize.
+        has_local_file = hasattr(field_file, "file") and field_file.file is not None
+        if not has_local_file:
+            # If backed by Cloudinary and this is an existing record (not a new upload), rely on
+            # Cloudinary's transformation pipeline instead of local Pillow re-encoding.
+            try:
+                # Fresh upload may not have .file but still be readable via .open()
+                field_file.open()
+                has_local_file = hasattr(field_file, "file") and field_file.file is not None
+                if not has_local_file:
+                    return
+            except Exception:
+                return
         try:
             from io import BytesIO
 
             from django.core.files.uploadedfile import InMemoryUploadedFile
             from PIL import Image, ImageOps
 
-            field_file.file.seek(0)
-            img = Image.open(field_file.file)
+            try:
+                field_file.file.seek(0)
+                file_obj = field_file.file
+            except Exception:
+                field_file.open()
+                file_obj = field_file.file
+            img = Image.open(file_obj)
             img = ImageOps.exif_transpose(img)  # respect phone camera orientation
             if img.mode != "RGB":
                 img = img.convert("RGB")
