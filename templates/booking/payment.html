@@ -65,7 +65,7 @@
           {% elif error == "not_eligible" %}
             That payment option isn't available for this booking right now.
           {% elif error == "no_email" %}
-            We need an email address on file to send your payment receipt — please contact us to add one before paying.
+            We need an email address on file to send your payment receipt, please contact us to add one before paying.
           {% elif error == "init_failed" %}
             We couldn't start the payment right now. Please try again in a moment, or contact us directly.
           {% elif error == "verify_failed" %}
@@ -100,7 +100,7 @@
             {% if booking.status == "Cancelled" %}
               This booking was cancelled, so no payment is due.
             {% elif booking.status == "Fully Paid" or booking.status == "Completed" %}
-              This booking is already fully paid — thank you!
+              This booking is already fully paid, thank you!
             {% else %}
               Pricing for this booking hasn't been finalized yet (this applies to bookings outside Lagos, where the service charge is confirmed by our team).
               Once it's confirmed on WhatsApp, come back to this page to pay.

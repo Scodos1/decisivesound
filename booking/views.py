@@ -89,6 +89,10 @@ def terms(request):
     return render(request, "booking/terms.html")
 
 
+def privacy(request):
+    return render(request, "booking/privacy.html")
+
+
 def contact(request):
     return render(request, "booking/contact.html")
 

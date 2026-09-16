@@ -86,6 +86,7 @@ urlpatterns = [
     path("dashboard/analytics/report/", views.analytics_report, name="analytics_report"),
     path("dashboard/email/", views.dashboard_send_email, name="dashboard_send_email"),
     path("terms/", views.terms, name="terms"),
+    path("privacy/", views.privacy, name="privacy"),
 
     # Payments (Paystack) — see booking/views.py "Payments" section.
     path("payment/<int:booking_id>/", views.payment_page, name="payment_page"),
