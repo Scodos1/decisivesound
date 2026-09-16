@@ -133,8 +133,8 @@
 .select-wrap:focus-within .select-face,
 .select-wrap:hover .select-face {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(184,184,200,0.12);
-  background: rgba(184,184,200,0.07);
+  box-shadow: 0 0 0 3px rgba(201,50,125,0.12);
+  background: rgba(201,50,125,0.07);
 }
 .select-face-text {
   font-family: var(--font-body);

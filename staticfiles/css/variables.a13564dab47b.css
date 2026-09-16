@@ -1,0 +1,84 @@
+/* ============================================================
+   Decisive Sound NG — Design Tokens
+   Source: Google Stitch export "Silent Pulse"
+   ============================================================ */
+:root {
+  /* Surface tonal stack */
+  --bg:                    #111319;
+  --surface:               #111319;
+  --surface-dim:           #111319;
+  --surface-low:           #191b22;
+  --surface-container:     #1e1f26;
+  --surface-high:          #282a30;
+  --surface-highest:       #33343b;
+  --surface-lowest:        #0c0e14;
+  --surface-bright:        #373940;
+
+  /* Brand palette — sampled from the Decisive Sound logo gradient */
+  --primary:               #f0a8d9;   /* Soft orchid pink — labels, text accents */
+  --primary-container:     #8b2a82;   /* Deep magenta/violet — CTA fills */
+  --on-primary:            #3a0e38;
+  --on-primary-container:  #fce9f8;
+  --primary-fixed:         #f5d9ef;
+
+  --secondary:             #ffc98b;   /* Warm peach — channel B accent */
+  --secondary-container:   #e8823c;   /* Vivid orange — gradient end */
+  --on-secondary:          #3a1d00;
+  --on-secondary-container: #4a2600;
+
+  --tertiary:              #ffcb4d;   /* Warm gold — channel C / highlights */
+  --tertiary-container:    #b8791a;
+  --on-tertiary:           #3a2400;
+  --on-tertiary-container: #fff3d6;
+
+  /* Text */
+  --on-surface:            #e2e2eb;
+  --on-surface-variant:    #c9c4d9;
+  --on-bg:                 #e2e2eb;
+  --text:                  #e2e2eb;
+  --muted:                 #c9c4d9;
+  --muted-2:               #928ea2;
+
+  /* Borders */
+  --outline:               #928ea2;
+  --outline-variant:       #474556;
+  --line:                  rgba(255,255,255,0.08);
+  --line-strong:           rgba(255,255,255,0.15);
+
+  /* Semantic */
+  --error:                 #ffb4ab;
+
+  /* WhatsApp */
+  --wa-green:              #25D366;
+  --wa-text:               #06210F;
+
+  /* Layout */
+  --nav-height:            72px;
+  --max-width:             1200px;
+  --gutter:                24px;
+
+  /* Radius (Stitch spec) */
+  --r-sm:   4px;
+  --r:      8px;
+  --r-md:   12px;
+  --r-lg:   16px;
+  --r-xl:   24px;
+  --r-full: 9999px;
+
+  /* Spacing (8px base) */
+  --sp-xs:  4px;
+  --sp-sm:  12px;
+  --sp-md:  24px;
+  --sp-lg:  48px;
+  --sp-xl:  80px;
+
+  /* Font families */
+  --font-heading: 'Poppins', sans-serif;
+  --font-body:    'Inter', sans-serif;
+
+  /* Glow shadows */
+  --glow-primary:   0 0 20px rgba(139,42,130,0.30);
+  --glow-secondary: 0 0 20px rgba(232,130,60,0.30);
+  --glow-tertiary:  0 0 20px rgba(255,203,77,0.30);
+  --glow-cta:       0 10px 40px -10px rgba(139,42,130,0.50);
+}

@@ -14,12 +14,12 @@
   --surface-lowest:        #0c0e14;
   --surface-bright:        #373940;
 
-  /* Brand palette — neutral accents, warm secondary/tertiary */
-  --primary:               #b8b8c8;   /* Cool gray — labels, text accents */
-  --primary-container:     #3a3c46;   /* Dark slate — CTA fills */
-  --on-primary:            #1a1b22;
-  --on-primary-container:  #e2e2eb;
-  --primary-fixed:         #c0c0cc;
+  /* Brand palette — sampled from the Decisive Sound logo gradient */
+  --primary:               #c9327d;   /* Magenta — labels, text accents */
+  --primary-container:     #8b2a82;   /* Deep purple — CTA fills */
+  --on-primary:            #ffffff;
+  --on-primary-container:  #fce9f8;
+  --primary-fixed:         #f5d9ef;
 
   --secondary:             #ffc98b;   /* Warm peach — channel B accent */
   --secondary-container:   #e8823c;   /* Vivid orange — gradient end */
@@ -77,8 +77,8 @@
   --font-body:    'Inter', sans-serif;
 
   /* Glow shadows */
-  --glow-primary:   0 0 20px rgba(58,60,70,0.25);
+  --glow-primary:   0 0 20px rgba(139,42,130,0.30);
   --glow-secondary: 0 0 20px rgba(232,130,60,0.30);
   --glow-tertiary:  0 0 20px rgba(255,203,77,0.30);
-  --glow-cta:       0 10px 40px -10px rgba(232,130,60,0.35);
+  --glow-cta:       0 10px 40px -10px rgba(139,42,130,0.45);
 }

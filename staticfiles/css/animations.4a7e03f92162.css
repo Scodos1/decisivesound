@@ -1,0 +1,40 @@
+/* ============ Keyframes ============ */
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-anim-1 { animation: heroFadeUp .75s ease both; }
+.hero-anim-2 { animation: heroFadeUp .75s ease .12s both; }
+.hero-anim-3 { animation: heroFadeUp .75s ease .24s both; }
+.hero-anim-4 { animation: heroFadeUp .75s ease .36s both; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+.animate-float { animation: float 6s ease-in-out infinite; }
+
+@keyframes pulseRing {
+  0%   { box-shadow: 0 0 0 0 rgba(139,42,130,0.45); }
+  70%  { box-shadow: 0 0 0 14px rgba(139,42,130,0); }
+  100% { box-shadow: 0 0 0 0 rgba(139,42,130,0); }
+}
+.pulse-ring { animation: pulseRing 2.2s ease-in-out infinite; }
+
+/* Reveal transition */
+.reveal {
+  transition: opacity .65s ease, transform .65s ease;
+}
+.reveal.d1 { transition-delay: .07s; }
+.reveal.d2 { transition-delay: .14s; }
+.reveal.d3 { transition-delay: .21s; }
+.reveal.d4 { transition-delay: .28s; }
+.reveal.d5 { transition-delay: .35s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
