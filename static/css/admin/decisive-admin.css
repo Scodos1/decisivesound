@@ -77,9 +77,13 @@ a:hover { color: var(--link-hover-color); }
 
 /* ---------- Header ---------- */
 #header {
-  background: #111319;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(17,19,25,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(255,255,255,0.08);
-  position: relative;
   padding: 12px 24px;
   display: flex;
   align-items: center;
@@ -120,6 +124,9 @@ a:hover { color: var(--link-hover-color); }
   height: 32px;
   width: auto;
   object-fit: contain;
+  /* White-boxed logo files blend into the dark header instead of
+     rendering as a white disc (also covers stale cached badges). */
+  mix-blend-mode: screen;
 }
 
 /* equalizer bars — same signature as site nav */
@@ -137,6 +144,29 @@ a:hover { color: var(--link-hover-color); }
 
 #user-tools, #user-tools a { color: #c9c4d9 !important; font-size: 12.5px; }
 #user-tools a:hover { color: #ffc98b !important; }
+
+/* No underlines anywhere in the header (Django underlines some of
+   these by default) — links read as quiet buttons instead. */
+#header a, #header a:link, #header a:visited,
+#header a:hover, #header a:focus { text-decoration: none !important; }
+
+#user-tools { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 10px; }
+#user-tools a, #logout-form button {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  background: transparent;
+  cursor: pointer;
+}
+#user-tools a:hover, #logout-form button:hover {
+  border-color: rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.05);
+  color: #fff !important;
+}
+#logout-form { display: inline; margin: 0; padding: 0; }
+#logout-form button { color: #c9c4d9; font-family: inherit; }
 
 /* quick links — lives in nav-global, not inside branding,
    so the narrow login header never overflows */
@@ -490,6 +520,7 @@ a.ds-kpi:hover .ds-kpi-go { color: #e8823c; transform: translate(2px, -2px); }
   .ds-cards { grid-template-columns: 1fr; }
   .ds-list-sub { flex-basis: 100%; }
   #header { padding: 10px 14px; }
+  #user-tools { flex-basis: 100%; }
   #site-name a { font-size: 15px; }
   .ds-brand img { height: 26px; width: 26px; }
   .breadcrumbs { font-size: 12px; }

@@ -31,6 +31,21 @@
 {% endif %}
 {% endblock %}
 
+{# Same links as stock Django, minus the light/dark theme toggle — the
+   Decisive theme is always dark, so the toggle is dead weight. #}
+{% block userlinks %}
+{% if site_url %}
+  <a href="{{ site_url }}">View site</a>
+{% endif %}
+{% if user.has_usable_password %}
+  <a href="{% url 'admin:password_change' %}">Change password</a>
+{% endif %}
+<form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+  {% csrf_token %}
+  <button type="submit">Log out</button>
+</form>
+{% endblock %}
+
 {% block footer %}
 <div id="footer">
   <p class="ds-footer"><strong>Decisive Sound NG</strong> — Nigeria's Premium Silent Headset Rental Service · Admin</p>
