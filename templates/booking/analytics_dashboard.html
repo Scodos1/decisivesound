@@ -7,15 +7,17 @@
 <title>Analytics — Decisive Sound NG Admin</title>
 <meta name="robots" content="noindex">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0e1116;
-    --panel: #161b22;
-    --panel-2: #1c2229;
-    --border: #2a3038;
-    --text: #e6edf3;
-    --muted: #8b949e;
-    --accent: #6c4dff;
+    --bg: #111319;
+    --panel: #1e1f26;
+    --panel-2: #191b22;
+    --border: rgba(255,255,255,0.08);
+    --text: #e2e2eb;
+    --muted: #c9c4d9;
+    --accent: #c9327d;
     --green: #1a7f37;
     --gold: #b8860b;
     --blue: #1f6feb;
@@ -27,8 +29,9 @@
     margin: 0;
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, "Segoe UI", Inter, Roboto, sans-serif;
+    font-family: 'Inter', -apple-system, "Segoe UI", Roboto, sans-serif;
   }
+  h1, h2, h3 { font-family: 'Poppins', 'Inter', sans-serif; }
   a { color: inherit; }
 
   /* ---------- Sidebar ---------- */
@@ -43,7 +46,12 @@
     z-index: 40;
     transition: transform .2s ease;
   }
-  .sidebar-brand { font-weight: 700; font-size: 16px; margin-bottom: 26px; padding-left: 6px; }
+  .sidebar-brand {
+    display: flex; align-items: center; gap: 9px;
+    font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 16px;
+    margin-bottom: 26px; padding-left: 6px;
+  }
+  .sidebar-brand img { height: 28px; width: auto; }
   .sidebar-brand span { color: var(--accent); }
   .sidebar nav a {
     display: flex; align-items: center; gap: 10px;
@@ -52,7 +60,7 @@
     padding: 10px 10px; border-radius: 8px; margin-bottom: 2px;
   }
   .sidebar nav a:hover { background: var(--panel-2); color: var(--text); }
-  .sidebar nav a.active { background: rgba(108,77,255,0.15); color: var(--text); }
+  .sidebar nav a.active { background: rgba(201,50,125,0.15); color: var(--text); box-shadow: inset 3px 0 0 var(--accent); }
   .sidebar-divider { border-top: 1px solid var(--border); margin: 14px 0; }
 
   .backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 39; }
@@ -114,7 +122,7 @@
   .filters label { font-size: 11.5px; color: var(--muted); display:block; margin-bottom: 4px; }
 
   .export-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
-  .btn-small { background: var(--accent); border: none; color: #fff; font-size: 13px; font-weight: 600; padding: 9px 16px; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; }
+  .btn-small { background: linear-gradient(135deg, #8b2a82 0%, #e8823c 100%); border: none; color: #fff; font-size: 13px; font-weight: 600; padding: 9px 16px; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; box-shadow: 0 10px 40px -10px rgba(139,42,130,0.45); }
   .btn-small.ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
   .btn-small:hover { opacity: .9; }
 
@@ -128,7 +136,7 @@
 <div class="backdrop" id="backdrop"></div>
 
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-brand">🎧 Decisive Sound <span>NG</span></div>
+  <div class="sidebar-brand"><img src="{% static 'images/logo.png' %}" alt="Decisive Sound NG">Decisive Sound <span>NG</span></div>
   <nav>
     <a href="{% url 'admin_dashboard' %}">📊 Dashboard</a>
     <a href="{% url 'analytics_dashboard' %}" class="active">📈 Analytics</a>
@@ -335,8 +343,8 @@
   }
 
   // ---------------- Chart.js setup ----------------
-  var CHART_TEXT = '#8b949e';
-  var CHART_GRID = '#2a3038';
+  var CHART_TEXT = '#c9c4d9';
+  var CHART_GRID = 'rgba(255,255,255,0.08)';
   Chart.defaults.color = CHART_TEXT;
   Chart.defaults.borderColor = CHART_GRID;
   Chart.defaults.font.size = 11.5;
@@ -349,13 +357,13 @@
 
   var revenueChart = new Chart(document.getElementById('revenueChart'), {
     type: 'line',
-    data: { labels: revenueTrend.labels, datasets: [{ label: 'Revenue (₦)', data: revenueTrend.values, borderColor: '#6c4dff', backgroundColor: 'rgba(108,77,255,0.15)', fill: true, tension: 0.3 }] },
+    data: { labels: revenueTrend.labels, datasets: [{ label: 'Revenue (₦)', data: revenueTrend.values, borderColor: '#c9327d', backgroundColor: 'rgba(201,50,125,0.15)', fill: true, tension: 0.3 }] },
     options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } },
   });
 
   var eventTypeChart = new Chart(document.getElementById('eventTypeChart'), {
     type: 'bar',
-    data: { labels: byEventType.labels, datasets: [{ label: 'Bookings', data: byEventType.values, backgroundColor: '#6c4dff' }] },
+    data: { labels: byEventType.labels, datasets: [{ label: 'Bookings', data: byEventType.values, backgroundColor: '#e8823c' }] },
     options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
   });
 

@@ -1,0 +1,159 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static log %}
+
+{# Modern Decisive Sound NG dashboard. Numbers come from
+   DecisiveAdminSite.index (booking/sites.py), which reuses
+   booking/analytics.py — the same source as the Analytics page. #}
+
+{% block coltype %}colM{% endblock %}
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+{% block content_title %}{% endblock %}
+{% block nav-sidebar %}{% endblock %}
+
+{% block content %}
+<div class="ds-dash">
+
+  <div class="ds-dash-head">
+    <div>
+      <span class="ds-eyebrow">Admin overview</span>
+      <h1>Good {{ greeting }}, {{ user.first_name|default:user.username }}</h1>
+      <p>{% now "l, j F Y" %} · Here&rsquo;s what&rsquo;s happening at Decisive Sound NG.</p>
+    </div>
+    <div class="ds-dash-cta">
+      <a href="{% url 'admin:booking_booking_add' %}" class="ds-btn ds-btn-primary">+ New booking</a>
+      <a href="{% url 'home' %}" target="_blank" class="ds-btn ds-btn-ghost">View site</a>
+    </div>
+  </div>
+
+  <div class="ds-kpi-grid">
+    <a class="ds-kpi" href="{% url 'admin:booking_booking_changelist' %}?status__exact=Pending">
+      <span class="ds-kpi-top">
+        <span class="ds-kpi-icon"><span class="material-symbols-outlined">hourglass_top</span></span>
+        <span class="ds-kpi-go material-symbols-outlined">arrow_outward</span>
+      </span>
+      <span class="ds-kpi-val">{{ dashboard_kpis.pending_bookings }}</span>
+      <span class="ds-kpi-label">Need confirmation</span>
+    </a>
+    <a class="ds-kpi" href="{% url 'admin:booking_paymenttransaction_changelist' %}">
+      <span class="ds-kpi-top">
+        <span class="ds-kpi-icon"><span class="material-symbols-outlined">payments</span></span>
+        <span class="ds-kpi-go material-symbols-outlined">arrow_outward</span>
+      </span>
+      <span class="ds-kpi-val">₦{{ dashboard_kpis.total_revenue }}</span>
+      <span class="ds-kpi-label">Collected · ₦{{ dashboard_revenue_month }} this month</span>
+    </a>
+    <a class="ds-kpi" href="{% url 'dashboard_calendar' %}">
+      <span class="ds-kpi-top">
+        <span class="ds-kpi-icon"><span class="material-symbols-outlined">calendar_month</span></span>
+        <span class="ds-kpi-go material-symbols-outlined">arrow_outward</span>
+      </span>
+      <span class="ds-kpi-val">{{ dashboard_upcoming|length }}</span>
+      <span class="ds-kpi-label">Upcoming events</span>
+    </a>
+    <a class="ds-kpi" href="{% url 'admin:booking_equipmentinventory_changelist' %}">
+      <span class="ds-kpi-top">
+        <span class="ds-kpi-icon"><span class="material-symbols-outlined">headphones</span></span>
+        <span class="ds-kpi-go material-symbols-outlined">arrow_outward</span>
+      </span>
+      <span class="ds-kpi-val">{{ dashboard_kpis.available_headsets }}</span>
+      <span class="ds-kpi-label">Headsets free today</span>
+    </a>
+  </div>
+
+  <div class="ds-dash-grid">
+    <div class="ds-panel">
+      <h2>Needs attention</h2>
+      {% if dashboard_pending or dashboard_cancellations %}
+        <ul class="ds-list">
+          {% for b in dashboard_pending %}
+            <li>
+              <a href="{% url 'admin:booking_booking_change' b.id %}" class="ds-list-main">{{ b.name }}</a>
+              <span class="ds-list-sub">{{ b.event_type }} · {{ b.event_date|date:"D, j M" }} · {{ b.headsets }} headsets</span>
+              <span class="ds-pill" style="background:{{ b.status_color }};">{{ b.status }}</span>
+            </li>
+          {% endfor %}
+          {% for c in dashboard_cancellations %}
+            <li>
+              <a href="{% url 'admin:booking_cancellationrequest_change' c.id %}" class="ds-list-main">Cancellation: {{ c.booking.name }}</a>
+              <span class="ds-list-sub">Requested by {{ c.requested_by }} · {{ c.requested_at|date:"D, j M" }}</span>
+              <span class="ds-pill" style="background:#b8860b;">Review</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="ds-empty"><span class="material-symbols-outlined">check_circle</span> All clear — nothing waiting on you.</p>
+      {% endif %}
+    </div>
+    <div class="ds-panel">
+      <h2>Upcoming events</h2>
+      {% if dashboard_upcoming %}
+        <ul class="ds-list">
+          {% for b in dashboard_upcoming %}
+            <li>
+              <a href="{% url 'admin:booking_booking_change' b.id %}" class="ds-list-main">{{ b.name }}</a>
+              <span class="ds-list-sub">{{ b.event_type }} · {{ b.event_date|date:"D, j M" }}</span>
+              <span class="ds-pill" style="background:{{ b.status_color }};">{{ b.status }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="ds-empty"><span class="material-symbols-outlined">event_busy</span> No confirmed events coming up.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <h2 class="ds-manage-title">Manage</h2>
+  {% if app_list %}
+    {% for app in app_list %}
+      {% for model in app.models %}
+        {% ifchanged model.section %}
+          {% if not forloop.first %}</div>{% endif %}
+          <h3 class="ds-sec"><span class="material-symbols-outlined">{{ model.section_icon }}</span>{{ model.section }}</h3>
+          <div class="ds-cards">
+        {% endifchanged %}
+        {% if model.admin_url or model.add_url %}
+          <div class="ds-card">
+            <span class="ds-card-icon"><span class="material-symbols-outlined">{{ model.icon }}</span></span>
+            <span class="ds-card-body">
+              <strong>{{ model.name }}</strong>
+              {% if model.blurb %}<small>{{ model.blurb }}</small>{% endif %}
+            </span>
+            <span class="ds-card-links">
+              {% if model.admin_url %}<a href="{{ model.admin_url }}">{% if model.view_only %}{% translate 'View' %}{% else %}{% translate 'Manage' %}{% endif %}</a>{% endif %}
+              {% if model.add_url %}<a href="{{ model.add_url }}" class="ds-add">{% translate 'Add' %}</a>{% endif %}
+            </span>
+          </div>
+        {% endif %}
+        {% if forloop.last %}</div>{% endif %}
+      {% endfor %}
+    {% endfor %}
+  {% else %}
+    <p>{% translate "You don't have permission to view or edit anything." %}</p>
+  {% endif %}
+
+  <div class="ds-panel ds-activity">
+    <h2>Your recent activity</h2>
+    {% get_admin_log 10 as admin_log for_user user %}
+    {% if not admin_log %}
+      <p class="ds-empty">Nothing yet — actions you take here will show up.</p>
+    {% else %}
+      <ul class="ds-list">
+        {% for entry in admin_log %}
+          <li>
+            {% if entry.is_deletion or not entry.get_admin_url %}
+              <span class="ds-list-main">{{ entry.object_repr }}</span>
+            {% else %}
+              <a href="{{ entry.get_admin_url }}" class="ds-list-main">{{ entry.object_repr }}</a>
+            {% endif %}
+            <span class="ds-list-sub">{% if entry.content_type %}{{ entry.content_type.name|capfirst }}{% else %}{% translate 'Unknown content' %}{% endif %}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}
+
+{% block sidebar %}{% endblock %}

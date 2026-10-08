@@ -6,13 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Send Email — Decisive Sound NG Admin</title>
 <meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0e1116; --panel: #161b22; --panel-2: #1c2229; --border: #2a3038;
-    --text: #e6edf3; --muted: #8b949e; --accent: #6c4dff;
+    --bg: #111319; --panel: #1e1f26; --panel-2: #191b22; --border: rgba(255,255,255,0.08);
+    --text: #e2e2eb; --muted: #c9c4d9; --accent: #c9327d;
   }
   * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,"Segoe UI",Inter,Roboto,sans-serif; padding:32px 20px 80px; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:'Inter',-apple-system,"Segoe UI",Roboto,sans-serif; padding:32px 20px 80px; }
+  h1 { font-family: 'Poppins', 'Inter', sans-serif; }
   .wrap { max-width: 640px; margin: 0 auto; }
   .top-bar { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px; }
   h1 { font-size:21px; margin:0; }
@@ -29,13 +32,13 @@
     border-radius:8px; padding:10px 12px; font-size:14px; font-family:inherit;
   }
   textarea { min-height: 160px; resize: vertical; }
-  .btn { background:var(--accent); border:none; color:#fff; font-size:14px; font-weight:600; padding:11px 20px; border-radius:9px; cursor:pointer; margin-top:18px; }
+  .btn { background:linear-gradient(135deg, #8b2a82 0%, #e8823c 100%); border:none; color:#fff; font-size:14px; font-weight:600; padding:11px 20px; border-radius:9px; cursor:pointer; margin-top:18px; }
   .btn.secondary { background:transparent; border:1px solid var(--border); color:var(--text); }
   .result-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border); gap: 10px; flex-wrap: wrap; }
   .result-row:last-child { border-bottom:none; }
   .result-name { font-weight:600; font-size:13.5px; }
   .result-sub { color:var(--muted); font-size:12px; }
-  .selected-card { background: rgba(108,77,255,0.12); border:1px solid var(--accent); border-radius:10px; padding:14px 16px; margin-bottom:18px; }
+  .selected-card { background: rgba(201,50,125,0.12); border:1px solid var(--accent); border-radius:10px; padding:14px 16px; margin-bottom:18px; }
   .no-email { color:#ff8080; font-size:12.5px; margin-top: 4px; }
 </style>
 </head>

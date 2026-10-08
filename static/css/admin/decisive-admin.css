@@ -118,10 +118,8 @@ a:hover { color: var(--link-hover-color); }
 
 .ds-brand img {
   height: 32px;
-  width: 32px;
+  width: auto;
   object-fit: contain;
-  border-radius: 8px;
-  background: rgba(255,255,255,0.06);
 }
 
 /* equalizer bars — same signature as site nav */
@@ -287,6 +285,217 @@ body.login .submit-row input[type=submit] { width: 100%; }
 #footer { color: #928ea2; }
 .ds-footer { font-size: 12px; color: #928ea2; }
 .ds-footer strong { color: #ffc98b; }
+
+/* ---------- Index sections ---------- */
+.ds-section { margin-bottom: 22px; }
+.ds-section caption span.section {
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.ds-blurb { display: block; font-weight: 400; margin-top: 2px; }
+
+/* ---------- Sidebar quick links ---------- */
+.ds-quicklinks { margin-bottom: 22px; }
+.ds-quicklinks ul { list-style: none; margin: 0; padding: 6px 0; }
+.ds-quicklinks li a {
+  display: block;
+  padding: 7px 14px;
+  font-weight: 500;
+}
+.ds-quicklinks li a:hover { background: rgba(201,50,125,0.1); }
+
+/* ---------- Modern dashboard (admin index) ---------- */
+/* Override Django's `.dashboard #content { width: 600px; }` — we want
+   a broad modern layout, not the narrow stock column. */
+.dashboard #content { width: auto; }
+.ds-dash { max-width: 1400px; margin: 0 auto; }
+/* !important: beats Django's `a:not(...)` underline rule, which carries
+   ID specificity via the IDs listed inside its :not(). */
+.ds-dash a, .ds-dash a:link, .ds-dash a:visited,
+.ds-dash a:hover, .ds-dash a:focus { text-decoration: none !important; }
+.ds-dash-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
+  background: rgba(26,29,36,0.7);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 22px;
+  position: relative;
+  overflow: hidden;
+}
+.ds-dash-head::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, #c9327d 0%, #8b2a82 45%, #e8823c 100%);
+}
+.ds-dash-head h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(24px, 3.4vw, 32px);
+  margin: 10px 0 6px;
+  color: #fff;
+}
+.ds-dash-head p { color: #928ea2; margin: 0; }
+.ds-eyebrow {
+  display: inline-block;
+  font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 8px;
+  background: rgba(255,201,139,0.12); color: #ffc98b;
+}
+.ds-dash-cta { display: flex; gap: 10px; flex-wrap: wrap; align-self: center; }
+.ds-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 12px 26px; border-radius: 8px;
+  font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 14px;
+  white-space: nowrap;
+}
+.ds-btn-primary {
+  background: linear-gradient(135deg, #8b2a82 0%, #e8823c 100%);
+  color: #fff !important;
+  box-shadow: 0 10px 40px -10px rgba(139,42,130,0.45);
+}
+.ds-btn-primary:hover { color: #fff !important; transform: translateY(-2px); }
+.ds-btn-ghost {
+  background: rgba(255,255,255,0.04);
+  border: 2px solid rgba(255,255,255,0.2);
+  color: #e2e2eb !important;
+}
+.ds-btn-ghost:hover { border-color: rgba(255,255,255,0.5); color: #fff !important; }
+
+.ds-kpi-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 14px; margin-bottom: 22px;
+}
+.ds-kpi {
+  display: flex; flex-direction: column; gap: 12px;
+  background: linear-gradient(180deg, #1e1f26 0%, #191b22 100%);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+}
+.ds-kpi::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+  background: linear-gradient(90deg, #c9327d, #e8823c);
+  opacity: 0; transition: opacity .2s;
+}
+a.ds-kpi:hover { border-color: rgba(232,130,60,0.45); transform: translateY(-3px); box-shadow: 0 12px 32px -12px rgba(139,42,130,0.5); }
+a.ds-kpi:hover::after { opacity: 1; }
+.ds-kpi-top { display: flex; align-items: center; justify-content: space-between; }
+.ds-kpi-icon {
+  width: 46px; height: 46px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, rgba(139,42,130,0.4), rgba(232,130,60,0.4));
+  color: #ffc98b;
+}
+.ds-kpi-icon .material-symbols-outlined { font-size: 24px; }
+.ds-kpi-go { color: #474556; font-size: 20px; transition: color .2s, transform .2s; }
+a.ds-kpi:hover .ds-kpi-go { color: #e8823c; transform: translate(2px, -2px); }
+.ds-kpi-val {
+  font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 30px;
+  color: #fff; line-height: 1.1;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ds-kpi-label { font-size: 13px; color: #928ea2; }
+
+.ds-dash-grid {
+  display: grid; grid-template-columns: 1.2fr 1fr;
+  gap: 14px; margin-bottom: 26px;
+}
+.ds-panel {
+  background: #191b22;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 20px;
+}
+.ds-panel h2, .ds-manage-title {
+  font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 600;
+  color: #ffc98b; margin: 0 0 12px;
+}
+.ds-manage-title { margin: 26px 0 14px; font-size: 17px; color: #fff; }
+.ds-list { list-style: none; margin: 0; padding: 0; }
+.ds-list li {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.ds-list li:last-child { border-bottom: none; }
+.ds-list-main { font-weight: 600; }
+.ds-list-sub { font-size: 12.5px; color: #928ea2; flex: 1 1 auto; }
+.ds-pill {
+  font-size: 11.5px; font-weight: 600; color: #fff;
+  padding: 3px 12px; border-radius: 999px; white-space: nowrap;
+}
+.ds-empty {
+  display: flex; align-items: center; gap: 8px;
+  color: #928ea2; font-size: 13.5px; margin: 6px 0;
+}
+.ds-empty .material-symbols-outlined { color: #1a7f37; }
+
+.ds-sec {
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: #c9c4d9; margin: 20px 0 10px;
+}
+.ds-sec .material-symbols-outlined { color: #e8823c; font-size: 20px; }
+.ds-cards {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px; margin-bottom: 6px;
+}
+.ds-card {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(26,29,36,0.7);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 16px;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+}
+.ds-card:hover { border-color: rgba(232,130,60,0.4); transform: translateY(-2px); box-shadow: 0 0 30px rgba(232,130,60,0.12); }
+.ds-card-icon {
+  flex: 0 0 auto;
+  width: 42px; height: 42px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(201,50,125,0.14); color: #c9327d;
+}
+.ds-card-body { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; }
+.ds-card-body strong { font-size: 14px; }
+.ds-card-body small { font-size: 12px; color: #928ea2; }
+.ds-card-links { display: flex; gap: 10px; font-size: 12.5px; font-weight: 600; }
+.ds-card-links .ds-add { color: #1a7f37; }
+
+.ds-activity { margin-top: 22px; }
+
+@media (max-width: 1024px) {
+  .ds-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .ds-dash-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- Phones ---------- */
+@media (max-width: 640px) {
+  .ds-dash-head { padding: 22px 18px; }
+  .ds-dash-head h1 { font-size: 24px; }
+  .ds-dash-cta { width: 100%; }
+  .ds-dash-cta .ds-btn { flex: 1 1 auto; padding: 12px 10px; font-size: 13px; }
+  .ds-kpi { padding: 16px; gap: 10px; }
+  .ds-kpi-val { font-size: 24px; }
+  .ds-kpi-label { font-size: 12px; }
+  .ds-panel { padding: 16px; }
+  .ds-cards { grid-template-columns: 1fr; }
+  .ds-list-sub { flex-basis: 100%; }
+  #header { padding: 10px 14px; }
+  #site-name a { font-size: 15px; }
+  .ds-brand img { height: 26px; width: 26px; }
+  .breadcrumbs { font-size: 12px; }
+  .submit-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .submit-row input { flex: 1 1 auto; }
+}
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1024px) {

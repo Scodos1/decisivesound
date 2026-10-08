@@ -6,15 +6,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Calendar — Decisive Sound NG Admin</title>
 <meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0e1116; --panel: #161b22; --panel-2: #1c2229; --border: #2a3038;
-    --text: #e6edf3; --muted: #8b949e; --accent: #6c4dff;
+    --bg: #111319; --panel: #1e1f26; --panel-2: #191b22; --border: rgba(255,255,255,0.08);
+    --text: #e2e2eb; --muted: #c9c4d9; --accent: #c9327d;
     --green: #1a7f37; --gold: #b8860b; --blue: #1f6feb; --red: #cf222e;
     --sidebar-w: 220px;
   }
   * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,"Segoe UI",Inter,Roboto,sans-serif; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:'Inter',-apple-system,"Segoe UI",Roboto,sans-serif; }
+  h1, h2, h3 { font-family: 'Poppins', 'Inter', sans-serif; }
   a { color: inherit; }
 
   /* ---------- Sidebar (mirrors admin_dashboard.html) ---------- */
@@ -23,14 +26,19 @@
     background: var(--panel); border-right: 1px solid var(--border);
     padding: 22px 16px; overflow-y: auto; z-index: 40; transition: transform .2s ease;
   }
-  .sidebar-brand { font-weight: 700; font-size: 16px; margin-bottom: 26px; padding-left: 6px; }
+  .sidebar-brand {
+    display:flex; align-items:center; gap:9px;
+    font-family:'Poppins',sans-serif; font-weight:700; font-size:16px;
+    margin-bottom:26px; padding-left:6px;
+  }
+  .sidebar-brand img { height:28px; width:auto; }
   .sidebar-brand span { color: var(--accent); }
   .sidebar nav a {
     display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--muted);
     font-size: 13.5px; font-weight: 500; padding: 10px 10px; border-radius: 8px; margin-bottom: 2px;
   }
   .sidebar nav a:hover { background: var(--panel-2); color: var(--text); }
-  .sidebar nav a.active { background: rgba(108,77,255,0.15); color: var(--text); }
+  .sidebar nav a.active { background: rgba(201,50,125,0.15); color: var(--text); box-shadow: inset 3px 0 0 var(--accent); }
   .sidebar-divider { border-top: 1px solid var(--border); margin: 14px 0; }
   .backdrop { display:none; position: fixed; inset:0; background: rgba(0,0,0,.55); z-index: 39; }
   .content { margin-left: var(--sidebar-w); padding: 28px 26px 80px; }
@@ -80,8 +88,9 @@
     border-radius:8px; padding:8px 10px; font-size:13px;
   }
   .jump-form button {
-    background: var(--accent); border:none; color:#fff; font-size:13px; font-weight:600;
+    background: linear-gradient(135deg, #8b2a82 0%, #e8823c 100%); border:none; color:#fff; font-size:13px; font-weight:600;
     padding:8px 14px; border-radius:8px; cursor:pointer;
+    box-shadow: 0 10px 40px -10px rgba(139,42,130,0.45);
   }
 
   /* ---------- Filters ---------- */
@@ -96,8 +105,9 @@
   }
   .filters-row-actions { display: flex; gap: 10px; margin-top: 2px; grid-column: 1 / -1; }
   .btn-small {
-    background: var(--accent); border: none; color: #fff; font-size: 13px;
+    background: linear-gradient(135deg, #8b2a82 0%, #e8823c 100%); border: none; color: #fff; font-size: 13px;
     font-weight: 600; padding: 9px 16px; border-radius: 8px; cursor: pointer;
+    box-shadow: 0 10px 40px -10px rgba(139,42,130,0.45);
   }
   .btn-small.ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); text-decoration:none; display:inline-block; }
 
@@ -182,7 +192,7 @@
 <div class="backdrop" id="backdrop"></div>
 
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-brand">🎧 Decisive Sound <span>NG</span></div>
+  <div class="sidebar-brand"><img src="{% static 'images/logo.png' %}" alt="Decisive Sound NG">Decisive Sound <span>NG</span></div>
   <nav>
     <a href="{% url 'admin_dashboard' %}">📊 Dashboard</a>
     <a href="{% url 'analytics_dashboard' %}">📈 Analytics</a>

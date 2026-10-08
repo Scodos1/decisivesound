@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.utils.html import format_html
 
 from . import notifications
+from .sites import STATUS_COLORS, decisive_site
 from .models import (
     Booking,
     CancellationRequest,
@@ -15,15 +16,6 @@ from .models import (
     Notification,
     PaymentTransaction,
 )
-
-STATUS_COLORS = {
-    Booking.STATUS_PENDING: "#b8860b",
-    Booking.STATUS_CONFIRMED: "#1a7f37",
-    Booking.STATUS_DEPOSIT_PAID: "#9a6700",
-    Booking.STATUS_FULLY_PAID: "#0969da",
-    Booking.STATUS_COMPLETED: "#1f6feb",
-    Booking.STATUS_CANCELLED: "#cf222e",
-}
 
 PAYMENT_TX_STATUS_COLORS = {
     PaymentTransaction.STATUS_PENDING: "#b8860b",
@@ -52,7 +44,7 @@ class PaymentTransactionInline(admin.TabularInline):
         return False
 
 
-@admin.register(Booking)
+@admin.register(Booking, site=decisive_site)
 class BookingAdmin(admin.ModelAdmin):
     change_list_template = "admin/booking/booking/change_list.html"
 
@@ -339,7 +331,7 @@ class BookingAdmin(admin.ModelAdmin):
                 level=messages.WARNING,
             )
 
-@admin.register(PaymentTransaction)
+@admin.register(PaymentTransaction, site=decisive_site)
 class PaymentTransactionAdmin(admin.ModelAdmin):
     """
     Standalone view of every payment attempt across all bookings — this is
@@ -385,7 +377,7 @@ class PaymentTransactionAdmin(admin.ModelAdmin):
     status_badge.admin_order_field = "status"
 
 
-@admin.register(EquipmentInventory)
+@admin.register(EquipmentInventory, site=decisive_site)
 class EquipmentInventoryAdmin(admin.ModelAdmin):
     """
     Add equipment types, edit total/maintenance quantities, and see
@@ -411,7 +403,7 @@ class EquipmentInventoryAdmin(admin.ModelAdmin):
     available_today_display.short_description = "Available (today)"
 
 
-@admin.register(EquipmentMaintenanceLog)
+@admin.register(EquipmentMaintenanceLog, site=decisive_site)
 class EquipmentMaintenanceLogAdmin(admin.ModelAdmin):
     """Log entries feeding the Analytics dashboard's Maintenance History
     panel. See EquipmentMaintenanceLog's docstring - this is a log only;
@@ -432,14 +424,14 @@ class EquipmentMaintenanceLogAdmin(admin.ModelAdmin):
 # Customer Portal
 # ---------------------------------------------------------------------
 
-@admin.register(CustomerProfile)
+@admin.register(CustomerProfile, site=decisive_site)
 class CustomerProfileAdmin(admin.ModelAdmin):
     list_display = ("user", "phone", "email_verified", "created_at")
     search_fields = ("user__username", "user__email", "user__first_name", "phone")
     list_filter = ("email_verified",)
 
 
-@admin.register(Notification)
+@admin.register(Notification, site=decisive_site)
 class NotificationAdmin(admin.ModelAdmin):
     list_display = ("user", "notif_type", "message", "booking", "is_read", "created_at")
     list_filter = ("notif_type", "is_read")
@@ -447,7 +439,7 @@ class NotificationAdmin(admin.ModelAdmin):
     autocomplete_fields = ["booking"]
 
 
-@admin.register(CancellationRequest)
+@admin.register(CancellationRequest, site=decisive_site)
 class CancellationRequestAdmin(admin.ModelAdmin):
     """
     Where staff review customer-submitted cancellation requests (Customer
@@ -495,7 +487,7 @@ class CancellationRequestAdmin(admin.ModelAdmin):
 # Gallery
 # ---------------------------------------------------------------------
 
-@admin.register(GalleryImage)
+@admin.register(GalleryImage, site=decisive_site)
 class GalleryImageAdmin(admin.ModelAdmin):
     """
     Where staff add/remove/reorder photos and video clips on the public
@@ -557,11 +549,3 @@ class GalleryImageAdmin(admin.ModelAdmin):
         )
     preview.short_description = "Preview"
 
-
-# ---------------------------------------------------------------------
-# Site branding — matches public site (Silent Pulse theme)
-# ---------------------------------------------------------------------
-
-admin.site.site_header = "Decisive Sound NG — Administration"
-admin.site.site_title = "Decisive Sound NG Admin"
-admin.site.index_title = "Bookings, Equipment & Gallery"
