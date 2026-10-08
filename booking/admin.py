@@ -556,3 +556,12 @@ class GalleryImageAdmin(admin.ModelAdmin):
             '<img src="{}" style="max-width:360px;max-height:360px;border-radius:8px;">', obj.image.url,
         )
     preview.short_description = "Preview"
+
+
+# ---------------------------------------------------------------------
+# Site branding — matches public site (Silent Pulse theme)
+# ---------------------------------------------------------------------
+
+admin.site.site_header = "Decisive Sound NG — Administration"
+admin.site.site_title = "Decisive Sound NG Admin"
+admin.site.index_title = "Bookings, Equipment & Gallery"
