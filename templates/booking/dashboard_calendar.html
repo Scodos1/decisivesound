@@ -185,6 +185,27 @@
   .empty { color: var(--muted); font-size:13.5px; padding: 10px 0; }
 
   .day-panel { display:none; }
+
+  /* ---------- Phones: compact month overview, tap a day for details ---------- */
+  @media (max-width: 640px) {
+    .cal-toolbar { padding: 12px 14px; }
+    .cal-month-title { font-size: 15px; min-width: 0; flex: 1 1 auto; }
+    .cal-nav { width: 100%; }
+    .cal-nav .cal-nav-btn { flex: 1 1 auto; text-align: center; padding: 8px 6px; }
+    .jump-form { width: 100%; }
+    .jump-form select { flex: 1 1 auto; }
+    .cal-weekdays div { padding: 8px 2px; font-size: 10px; }
+    .cal-day { min-height: 52px; padding: 5px 3px; gap: 3px; }
+    .cal-day-num { font-size: 11px; width: 19px; height: 19px; }
+    .cal-chip { font-size: 9px; padding: 1px 4px; }
+    .cal-chip-sub { display: none; }
+    .cal-more { font-size: 9px; }
+    .cal-conflict-badge { font-size: 0; }
+    .cal-conflict-badge::after { content: "\26A0"; font-size: 11px; }
+    .modal-backdrop { padding: 14px 10px; }
+    .modal-box { padding: 16px; }
+    .mini-btn { padding: 8px 12px; }
+  }
 </style>
 </head>
 <body>

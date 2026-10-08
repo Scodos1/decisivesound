@@ -129,6 +129,13 @@
   .date-list { display: flex; flex-wrap: wrap; gap: 8px; }
   .date-chip { background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 12.5px; }
   .date-chip.conflict { border-color: rgba(207,34,34,.5); color: #ff8080; }
+
+  /* ---------- Phones ---------- */
+  @media (max-width: 640px) {
+    .chart-grid { grid-template-columns: 1fr; }
+    .panel, .chart-box { padding: 14px; }
+    .stat-card .value { font-size: 20px; }
+  }
 </style>
 </head>
 <body>

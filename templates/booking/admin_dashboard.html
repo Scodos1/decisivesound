@@ -202,6 +202,13 @@
   .pagination { display: flex; gap: 10px; align-items: center; margin-top: 14px; font-size: 13px; color: var(--muted); }
   .pagination a { color: var(--text); text-decoration: none; border: 1px solid var(--border); padding: 6px 12px; border-radius: 7px; }
   .pagination a.disabled { opacity: .35; pointer-events: none; }
+
+  /* ---------- Phones ---------- */
+  @media (max-width: 640px) {
+    .panel { padding: 14px; }
+    .stat-card { padding: 12px 14px; }
+    .qa-btn { flex: 1 1 auto; justify-content: center; }
+  }
 </style>
 </head>
 <body>
