@@ -124,9 +124,6 @@ a:hover { color: var(--link-hover-color); }
   height: 32px;
   width: auto;
   object-fit: contain;
-  /* White-boxed logo files blend into the dark header instead of
-     rendering as a white disc (also covers stale cached badges). */
-  mix-blend-mode: screen;
 }
 
 /* equalizer bars — same signature as site nav */
