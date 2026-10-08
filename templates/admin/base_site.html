@@ -1,5 +1,5 @@
 {% extends "admin/base.html" %}
-{% load static %}
+{% load static i18n %}
 
 {% block title %}Decisive Sound NG — Admin{% endblock %}
 
@@ -44,6 +44,11 @@
   {% csrf_token %}
   <button type="submit">Log out</button>
 </form>
+{% endblock %}
+
+{# Wrap the stock greeting so phones can put it on its own row. #}
+{% block welcome-msg %}
+<span class="ds-welcome">{% translate 'Welcome,' %} <strong>{% firstof user.get_short_name user.get_username %}</strong>.</span>
 {% endblock %}
 
 {% block footer %}

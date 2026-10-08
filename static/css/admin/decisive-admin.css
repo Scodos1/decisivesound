@@ -517,15 +517,8 @@ a.ds-kpi:hover .ds-kpi-go { color: #e8823c; transform: translate(2px, -2px); }
   .ds-cards { grid-template-columns: 1fr; }
   .ds-list-sub { flex-basis: 100%; }
   #header { padding: 10px 14px; }
-  #user-tools {
-    flex-basis: 100%;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: 2px;
-    scrollbar-width: none;
-  }
-  #user-tools::-webkit-scrollbar { display: none; }
-  #user-tools a, #logout-form button { flex: 0 0 auto; white-space: nowrap; }
+  #user-tools { flex-basis: 100%; }
+  .ds-welcome { flex: 1 1 100%; margin-bottom: 4px; }
   #site-name a { font-size: 15px; }
   .ds-brand img { height: 26px; width: 26px; }
   .breadcrumbs { font-size: 12px; }
