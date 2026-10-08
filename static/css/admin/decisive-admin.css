@@ -517,14 +517,26 @@ a.ds-kpi:hover .ds-kpi-go { color: #e8823c; transform: translate(2px, -2px); }
   .ds-cards { grid-template-columns: 1fr; }
   .ds-list-sub { flex-basis: 100%; }
   #header { padding: 10px 14px; }
-  #user-tools { flex-basis: 100%; }
-  .ds-welcome { flex: 1 1 100%; margin-bottom: 4px; }
+  /* Stock Django stacks the header vertically here, so size across,
+     not along, the column. */
+  #user-tools { flex: none; width: 100%; }
+  .ds-welcome { flex: none; width: 100%; margin-bottom: 4px; }
   #site-name a { font-size: 15px; }
   .ds-brand img { height: 26px; width: 26px; }
   .breadcrumbs { font-size: 12px; }
   .submit-row { display: flex; flex-wrap: wrap; gap: 8px; }
   .submit-row input { flex: 1 1 auto; }
 }
+
+/* Grid blowout guards: nowrap values must truncate, never force tracks
+   wider than the screen (the cause of sideways scroll on phones). */
+.ds-kpi, .ds-panel, .ds-card { min-width: 0; }
+.ds-kpi-val { display: block; }
+.ds-list-main { min-width: 0; overflow-wrap: anywhere; }
+
+/* Last-resort guard: never allow horizontal page scroll in admin.
+   `clip` (not `hidden`) preserves the sticky header. */
+html, body { overflow-x: clip; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1024px) {
